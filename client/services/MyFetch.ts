@@ -1,8 +1,8 @@
-export function MyFetchJSON(uri: string, options: any = {}, cache = false) {
+export function myFetchJSON(uri: string, options: any = {}, cache = false) {
   if (cache) {
     const tmp1 = getItem(JSON.stringify([uri, options]));
 
-    if (tmp1 != undefined) {
+    if (tmp1 !== undefined) {
       return JSON.parse(tmp1);
     }
   }
@@ -26,11 +26,11 @@ export function MyFetchJSON(uri: string, options: any = {}, cache = false) {
   });
 }
 
-export function MyFetch(uri: string, options: any = {}, cache = false) {
+export function myFetch(uri: string, options: any = {}, cache = false) {
   if (cache) {
     const tmp1 = getItem(JSON.stringify([uri, options]));
 
-    if (tmp1 != undefined) {
+    if (tmp1 !== undefined) {
       return JSON.parse(tmp1);
     }
   }
@@ -54,13 +54,13 @@ export function MyFetch(uri: string, options: any = {}, cache = false) {
   });
 }
 
-const data: any = {};
+const mycache: any = {};
 function setItem(key: string, value: string) {
-  data[key] = value;
+  mycache[key] = value;
 }
 
 function getItem(key: string) {
-  return data[key];
+  return mycache[key];
 }
 
 function myResolve(resolve: Function, status: Number) {

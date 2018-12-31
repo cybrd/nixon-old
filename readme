@@ -1,6 +1,7 @@
 install mongodb
 https://www.mongodb.com/download-center/community
 
+mongo admin
 db.createUser(
   {
     user: "admin",
@@ -8,6 +9,14 @@ db.createUser(
     roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
   }
 )
+
+use nixon
+db.user.insert({
+  username: 'test',
+  password: 'test',
+  role: 'admin'
+});
+
 
 C:\Program Files\MongoDB\Server\4.0\bin\mongod.cfg
 security:

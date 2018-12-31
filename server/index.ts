@@ -1,6 +1,6 @@
-import * as path from 'path';
+import { join } from 'path';
 import * as express from 'express';
-import * as bodyParser from 'body-parser';
+import { urlencoded, json } from 'body-parser';
 
 import { setMongoDb } from './my.mongoose';
 import { setSession } from './my.session';
@@ -10,9 +10,9 @@ import { router } from './router';
 const myExpress = express();
 const port = 3000;
 
-myExpress.use(bodyParser.urlencoded({ extended: false }));
-myExpress.use(bodyParser.json());
-myExpress.use(express.static(path.join(__dirname, '../dist')));
+myExpress.use(urlencoded({ extended: false }));
+myExpress.use(json());
+myExpress.use(express.static(join(__dirname, '../dist')));
 
 setMongoDb();
 setSession(myExpress);
@@ -24,4 +24,6 @@ myExpress.all('/*', (req, res) => {
   res.sendFile('index.html', { root: __dirname + '/../dist' });
 });
 
-myExpress.listen(port, () => console.log(`App listening on port ${port}!`));
+myExpress.listen(port, () =>
+  process.stdout.write(`App listening on port ${port}!\n`)
+);

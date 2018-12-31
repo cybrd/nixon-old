@@ -1,7 +1,7 @@
 import * as session from 'express-session';
-import * as express from 'express';
+import { Express } from 'express';
 
-export function setSession(myExpress: express.Express) {
+export function setSession(myExpress: Express) {
   myExpress.use(
     session({
       secret: 'keyboard cat',

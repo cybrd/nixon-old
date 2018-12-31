@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
+import { set, connect } from 'mongoose';
 
-mongoose.set('debug', false);
-mongoose.set('useCreateIndex', true);
+set('debug', false);
+set('useCreateIndex', true);
 
 export function setMongoDb() {
   const db = 'mongodb://localhost:27017';
@@ -15,7 +15,7 @@ export function setMongoDb() {
     useNewUrlParser: true
   };
 
-  mongoose.connect(
+  connect(
     db,
     options
   );

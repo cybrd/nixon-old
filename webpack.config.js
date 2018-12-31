@@ -13,7 +13,11 @@ module.exports = {
   module: {
     rules: [
       { test: /\.tsx?$/, use: 'ts-loader' },
-      { test: /\.html$/, use: 'html-loader' }
+      { test: /\.html$/, use: 'html-loader' },
+      {
+        test: /\.css$/,
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
+      }
     ]
   },
   optimization: {

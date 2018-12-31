@@ -4,15 +4,19 @@ import { Link } from 'react-router-dom';
 
 import { Table } from '../Helper/Table';
 
-import { MyFetchJSON } from '../../services/MyFetch';
+import { list } from '../../services/user';
 
 export function List() {
   const [data, setData] = useState(null);
-  const headers: String[] = ['username', 'role'];
+  const headers = [
+    'username',
+    'role',
+    ['remove', '/api/user/{{ _id }}/remove']
+  ];
 
   if (data == null) {
     (async () => {
-      const tmp = await MyFetchJSON('/api/user/list', {});
+      const tmp = await list();
       setData(tmp);
     })();
   }

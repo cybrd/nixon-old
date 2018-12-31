@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { authLogin, authLogout } from '../services/Auth';
+import { login, logout } from '../services/auth';
 
 interface IAuth {
   username: string;
@@ -14,22 +14,22 @@ const authDefault: IAuth = {
   username: '',
   role: '',
   formLoginError: false,
-  login: () => {},
-  logout: () => {}
+  login: () => ({}),
+  logout: () => ({})
 };
 
-let authLocal: IAuth = JSON.parse(localStorage.getItem('auth'));
+const authLocal: IAuth = JSON.parse(localStorage.getItem('auth'));
 
 export const AuthContext = React.createContext(authLocal || authDefault);
 
 export class AuthProvider extends React.Component {
-  state = authLocal || authDefault;
+  public state = authLocal || authDefault;
 
   constructor(props: any) {
     super(props);
 
     this.state.login = async (username: string, password: string) => {
-      const data = await authLogin(username, password);
+      const data = await login(username, password);
 
       if (data) {
         this.setState(data);
@@ -38,7 +38,7 @@ export class AuthProvider extends React.Component {
     };
 
     this.state.logout = () => {
-      authLogout();
+      logout();
       this.setState({
         username: '',
         role: ''
@@ -47,7 +47,7 @@ export class AuthProvider extends React.Component {
     };
   }
 
-  render() {
+  public render() {
     return (
       <AuthContext.Provider value={this.state}>
         {this.props.children}

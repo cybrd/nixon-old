@@ -1,7 +1,7 @@
-import { MyFetchJSON } from './MyFetch';
+import { myFetchJSON } from './myFetch';
 
-export function authLogin(username: string, password: string) {
-  return MyFetchJSON('/api/auth/login', {
+export function login(username: string, password: string) {
+  return myFetchJSON('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -11,7 +11,7 @@ export function authLogin(username: string, password: string) {
   });
 }
 
-export function authLogout() {
+export function logout() {
   fetch('/api/auth/logout', {
     headers: { pragma: 'no-cache', 'cache-control': 'no-cache' }
   });

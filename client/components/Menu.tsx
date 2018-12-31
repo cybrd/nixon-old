@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { styled } from '../my.styled';
 
-import { AuthContext } from '../context/Auth';
+import { AuthContext } from '../context/auth';
 
 export function Menu() {
   const authContext = useContext(AuthContext);
@@ -15,33 +15,45 @@ export function Menu() {
     };
   }
 
-  const Menu = styled.ul`
+  const Ul = styled.ul`
     margin: 0;
     width: 200px;
   `;
 
   return (
-    <Menu>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/mongodb">MongoDb</Link>
-      </li>
-      <li>
-        <Link to="/about">About (api call)</Link>
-      </li>
-      <li>
-        <Link to="/topics">Topics (styled)</Link>
-      </li>
-      <li>
-        <Link to="/404">404</Link>
-      </li>
+    <Ul>
+      {authContext.role && (
+        <React.Fragment>
+          <li>
+            <Link to="/timesheet">Timesheet</Link>
+          </li>
+          <li>
+            <Link to="/timesheetSchedule">Timesheet Schedule</Link>
+          </li>
+        </React.Fragment>
+      )}
 
       {authContext.role === 'admin' && (
-        <li>
-          <Link to="/user">Manage User</Link>
-        </li>
+        <React.Fragment>
+          <li>
+            <Link to="/user">Manage User</Link>
+          </li>
+          <li>
+            <Link to="/employee">Employee</Link>
+          </li>
+          <li>
+            <Link to="/schedule">Schedule</Link>
+          </li>
+          <li>
+            <Link to="/payroll">Payroll</Link>
+          </li>
+          <li>
+            <Link to="/employeeSchedule">Employee Schedule</Link>
+          </li>
+          <li>
+            <Link to="/timesheet/load">Load Timesheet</Link>
+          </li>
+        </React.Fragment>
       )}
 
       {authContext.role ? (
@@ -53,6 +65,6 @@ export function Menu() {
           <Link to="/login">Login</Link>
         </li>
       )}
-    </Menu>
+    </Ul>
   );
 }

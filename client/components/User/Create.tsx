@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { userCreate } from '../../services/User';
+import { create } from '../../services/user';
 
 export function Create() {
   const username = useFormInput('');
@@ -26,7 +26,8 @@ export function Create() {
 
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const result = await userCreate(username.value, password.value, role);
+
+    const result = await create(username.value, password.value, role);
     if (result.errmsg) {
       setError(true);
     } else {
@@ -44,13 +45,22 @@ export function Create() {
 
   return (
     <form onSubmit={handleFormSubmit} method="POST">
-      <input type="text" name="username" {...username} />
-      <input type="password" name="password" {...password} />
-      <select name="role" onChange={handleRoleChange} value={role}>
-        <option>admin</option>
-        <option>supervisor</option>
-        <option>user</option>
-      </select>
+      <p>
+        Username
+        <input type="text" {...username} />
+      </p>
+      <p>
+        Password
+        <input type="password" {...password} />
+      </p>
+      <p>
+        Role
+        <select onChange={handleRoleChange} value={role}>
+          <option>admin</option>
+          <option>supervisor</option>
+          <option>user</option>
+        </select>
+      </p>
       <input type="submit" />
       {error && <p>Create error</p>}
     </form>

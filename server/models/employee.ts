@@ -1,10 +1,12 @@
-import * as mongoose from 'mongoose';
+import { model, Document, Schema } from 'mongoose';
 
-export const EmployeeSchema = new mongoose.Schema(
+export const EmployeeSchema = new Schema(
   {
-    employeeId: String,
+    fingerPrintId: String,
     firstName: String,
-    lastName: String
+    lastName: String,
+    department: String,
+    modifiedBy: String
   },
   {
     collection: 'employee',
@@ -12,9 +14,24 @@ export const EmployeeSchema = new mongoose.Schema(
   }
 );
 
+export const EmployeeArchiveSchema = new Schema(
+  {
+    oldId: Schema.Types.ObjectId,
+    fingerPrintId: String,
+    firstName: String,
+    lastName: String,
+    department: String,
+    modifiedBy: String
+  },
+  {
+    collection: 'employeeArchive',
+    timestamps: true
+  }
+);
+
 EmployeeSchema.index(
   {
-    employeeId: 1
+    fingerPrintId: 1
   },
   {
     name: 'uindex',
@@ -22,4 +39,16 @@ EmployeeSchema.index(
   }
 );
 
-export const EmployeeCollection = mongoose.model('employee', EmployeeSchema);
+export interface IEmployee extends Document {
+  fingerPrintId: string;
+  firstName: string;
+  lastName: string;
+  department: string;
+  modifiedBy: string;
+}
+
+export const EmployeeCollection = model<IEmployee>('employee', EmployeeSchema);
+export const EmployeeArchiveCollection = model<IEmployee>(
+  'employeeArchive',
+  EmployeeArchiveSchema
+);

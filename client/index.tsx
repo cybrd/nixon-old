@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Menu } from './components/Menu';
 import { Content } from './components/Content';
 
-import { AuthProvider } from './context/Auth';
+import { AuthProvider } from './context/auth';
 
 render(
   <BrowserRouter>

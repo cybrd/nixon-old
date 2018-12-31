@@ -1,10 +1,6 @@
-import * as express from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-export function userGuard(
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) {
+export function userGuard(req: Request, res: Response, next: NextFunction) {
   if (!req.user) {
     res.status(401).send('please relog');
   } else {
@@ -12,11 +8,7 @@ export function userGuard(
   }
 }
 
-export function adminGuard(
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) {
+export function adminGuard(req: Request, res: Response, next: NextFunction) {
   if (!req.user) {
     res.status(401).send('please relog');
   } else if (req.user.role !== 'admin') {
@@ -26,11 +18,7 @@ export function adminGuard(
   }
 }
 
-export function devGuard(
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) {
+export function devGuard(req: Request, res: Response, next: NextFunction) {
   if (!req.user) {
     res.status(401).send('please relog');
   } else if (req.user.role !== 'dev') {

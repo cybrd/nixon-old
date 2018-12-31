@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { AuthContext } from '../context/Auth';
+import { AuthContext } from '../context/auth';
 
 export function Login() {
   const username = useFormInput('');
