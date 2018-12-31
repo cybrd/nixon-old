@@ -16,6 +16,14 @@ export function create(data: any) {
   });
 }
 
+export function update(id: string, data: any) {
+  return myFetchJSON('/api/timesheet/' + id + '/update', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+}
+
 export function upload(file: File) {
   const data = new FormData();
   data.append('file', file);

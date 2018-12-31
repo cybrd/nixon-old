@@ -27,7 +27,13 @@ export function Create() {
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const result = await create(username.value, password.value, role);
+    const data = {
+      username: username.value,
+      password: password.value,
+      role: role
+    };
+
+    const result = await create(data);
     if (result.errmsg) {
       setError(true);
     } else {

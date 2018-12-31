@@ -5,6 +5,7 @@ import { NoMatch } from '../NoMatch';
 import { Load } from './Load';
 import { List } from './List';
 import { Create } from './Create';
+import { Edit } from './Edit';
 
 export function Timesheet() {
   return (
@@ -14,6 +15,7 @@ export function Timesheet() {
         <Route exact path="/timesheet" component={List} />
         <Route exact path="/timesheet/create" component={Create} />
         <Route exact path="/timesheet/load" component={Load} />
+        <Route exact path="/timesheet/:id" component={Edit} />
         <Route component={NoMatch} />
       </Switch>
     </React.Fragment>

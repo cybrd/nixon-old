@@ -3,7 +3,7 @@ import { render } from 'mustache';
 import { myFetch } from '../../services/myFetch';
 import { styled } from '../../my.styled';
 
-export function Delete(props: any) {
+export function Remove(props: any) {
   async function handleClick(
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) {
@@ -22,6 +22,7 @@ export function Delete(props: any) {
     color: blue;
     text-decoration: underline;
     cursor: pointer;
+    margin: 0 5px;
   `;
   return <A onClick={handleClick}>delete</A>;
 }

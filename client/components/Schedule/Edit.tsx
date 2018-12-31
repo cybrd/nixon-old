@@ -73,7 +73,7 @@ export function Edit(props: any) {
       startHour.onChange({ target: { value: tmp[0].startHour } });
       startMinute.onChange({ target: { value: tmp[0].startMinute } });
       endHour.onChange({ target: { value: tmp[0].endHour } });
-      endHour.onChange({ target: { value: tmp[0].endHour } });
+      endMinute.onChange({ target: { value: tmp[0].endMinute } });
       type.onChange({ target: { value: tmp[0].type } });
     })();
   }

@@ -42,6 +42,20 @@ export async function createFromUpload(user: IUser, data: any) {
   });
 }
 
+export async function update(user: IUser, id: string, data: any) {
+  const record = await TimesheetCollection.findOneAndUpdate(
+    { _id: id },
+    data
+  ).lean();
+
+  record.oldId = record._id;
+  delete record._id;
+  record.modifiedBy = user.username;
+  new TimesheetArchiveCollection(record).save();
+
+  return true;
+}
+
 export async function remove(user: IUser, id: String) {
   const record = await TimesheetCollection.findOne({ _id: id })
     .lean()

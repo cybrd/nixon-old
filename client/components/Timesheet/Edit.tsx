@@ -6,9 +6,9 @@ import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { list as employeeList } from '../../services/employee';
-import { create } from '../../services/timesheet';
+import { list, update } from '../../services/timesheet';
 
-export function Create() {
+export function Edit(props: any) {
   const currDate = new Date();
   const fingerPrintId = useFormSelect('');
   const hour = useFormSelect('0');
@@ -36,7 +36,7 @@ export function Create() {
   async function handleFormSubmit(e: any) {
     e.preventDefault();
 
-    const data = {
+    const tmp = {
       fingerPrintId: fingerPrintId.value,
       date: date,
       hour: hour.value,
@@ -44,7 +44,7 @@ export function Create() {
       type: type.value
     };
 
-    const result = await create(data);
+    const result = await update(props.match.params.id, tmp);
     if (result.errmsg) {
       setError(true);
     } else {
@@ -58,9 +58,14 @@ export function Create() {
 
   if (employeeOptions == null) {
     (async () => {
-      const tmp = await employeeList();
-      setEmployeeOptions(tmp);
-      fingerPrintId.onChange({ target: { value: tmp[0].fingerPrintId } });
+      const tmp = await Promise.all([
+        employeeList(),
+        list({ _id: props.match.params.id })
+      ]);
+      setEmployeeOptions(tmp[0]);
+
+      fingerPrintId.onChange({ target: { value: tmp[1][0].fingerPrintId } });
+      setDate(new Date(tmp[1][0].timestamp));
     })();
   }
 

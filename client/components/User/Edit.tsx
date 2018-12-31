@@ -2,11 +2,13 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { update, list } from '../../services/payroll';
+import { list, update } from '../../services/user';
 
 export function Edit(props: any) {
   const [data, setData] = useState(null);
-  const name = useFormInput('');
+  const username = useFormInput('');
+  const password = useFormInput('');
+  const [role, setRole] = useState('user');
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
 
@@ -26,9 +28,14 @@ export function Edit(props: any) {
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const tmp = {
-      name: name.value
+    const tmp: any = {
+      username: username.value,
+      role: role
     };
+
+    if (password.value) {
+      tmp.password = password.value;
+    }
 
     const result = await update(props.match.params.id, tmp);
     if (result.errmsg) {
@@ -38,23 +45,41 @@ export function Edit(props: any) {
     }
   }
 
+  function handleRoleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    setRole(e.target.value);
+  }
+
   if (done) {
-    return <Redirect to="/payroll" />;
+    return <Redirect to="/user" />;
   }
 
   if (data == null) {
     (async () => {
       const tmp = await list({ _id: props.match.params.id });
       setData(tmp[0]);
-      name.onChange({ target: { value: tmp[0].name } });
+      username.onChange({ target: { value: tmp[0].username } });
+      password.onChange({ target: { value: '' } });
+      setRole(tmp[0].role);
     })();
   }
 
   return (
     <form onSubmit={handleFormSubmit} method="POST">
       <p>
-        Name
-        <input type="text" {...name} />
+        Username
+        <input type="text" {...username} />
+      </p>
+      <p>
+        Password
+        <input type="password" {...password} />
+      </p>
+      <p>
+        Role
+        <select onChange={handleRoleChange} value={role}>
+          <option>admin</option>
+          <option>supervisor</option>
+          <option>user</option>
+        </select>
       </p>
       <input type="submit" />
       {error && <p>Create error</p>}

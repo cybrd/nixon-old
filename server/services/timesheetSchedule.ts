@@ -37,5 +37,5 @@ export async function list(args = {}) {
     });
   }
 
-  return {};
+  return timesheetIn;
 }

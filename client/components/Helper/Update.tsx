@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render } from 'mustache';
 import { Link } from 'react-router-dom';
 
-export function Edit(props: any) {
+export function Update(props: any) {
   const uri = render(props.view, props.children);
 
   async function handleClick(
@@ -11,5 +11,5 @@ export function Edit(props: any) {
     e.preventDefault();
   }
 
-  return <Link to={uri}>edit</Link>;
+  return <Link to={uri}>update</Link>;
 }

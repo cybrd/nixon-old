@@ -8,7 +8,13 @@ const reader = require('anviz-backup-reader');
 
 import { userGuard, adminGuard } from '../my.guard';
 
-import { list, create, createFromUpload, remove } from '../services/timesheet';
+import {
+  list,
+  create,
+  createFromUpload,
+  update,
+  remove
+} from '../services/timesheet';
 
 const router = Router();
 
@@ -41,6 +47,11 @@ router.post(
 
 router.post('/:id/remove', adminGuard, async (req, res) => {
   res.send(await remove(req.user, req.params.id));
+});
+
+router.post('/:id/update', adminGuard, async (req, res) => {
+  const result = await update(req.user, req.params.id, req.body);
+  res.send(result);
 });
 
 export const TimesheetCtrl = router;
