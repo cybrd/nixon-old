@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from 'mustache';
 import { myFetch } from '../../services/myFetch';
-import { styled } from '../../my.styled';
+import styled from 'styled-components';
 
 export function Remove(props: any) {
   async function handleClick(

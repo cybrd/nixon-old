@@ -74,7 +74,7 @@ export function Create() {
         Start Hour
         <select {...startHour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <option key={i}>{i}</option>
+            <option key={i.toString().concat('startHour')}>{i}</option>
           ))}
         </select>
       </p>
@@ -82,7 +82,7 @@ export function Create() {
         Start Minute
         <select {...startMinute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <option key={i}>{i}</option>
+            <option key={i.toString().concat('startMinute')}>{i}</option>
           ))}
         </select>
       </p>
@@ -90,7 +90,7 @@ export function Create() {
         End Hour
         <select {...endHour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <option key={i}>{i}</option>
+            <option key={i.toString().concat('endHour')}>{i}</option>
           ))}
         </select>
       </p>
@@ -98,7 +98,7 @@ export function Create() {
         End Minute
         <select {...endMinute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <option key={i}>{i}</option>
+            <option key={i.toString().concat('endMinute')}>{i}</option>
           ))}
         </select>
       </p>

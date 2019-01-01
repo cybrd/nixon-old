@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
-import { styled } from '../my.styled';
+import styled from 'styled-components';
 
 import { AuthContext } from '../context/auth';
 

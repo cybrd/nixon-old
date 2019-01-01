@@ -81,8 +81,8 @@ export function Edit(props: any) {
         Employee
         {employeeOptions != null ? (
           <select {...employeeId}>
-            {employeeOptions.map((x: any, i: number) => (
-              <option key={i} value={x._id}>
+            {employeeOptions.map((x: any) => (
+              <option key={x._id} value={x._id}>
                 {x.fingerPrintId} - {x.firstName} {x.lastName}
               </option>
             ))}
@@ -95,8 +95,8 @@ export function Edit(props: any) {
         Schedule
         {scheduleOptions != null ? (
           <select {...scheduleId}>
-            {scheduleOptions.map((x: any, i: number) => (
-              <option key={i} value={x._id}>
+            {scheduleOptions.map((x: any) => (
+              <option key={x._id} value={x._id}>
                 {x.name}
               </option>
             ))}
@@ -109,8 +109,8 @@ export function Edit(props: any) {
         Payroll
         {payrollOptions != null ? (
           <select {...payrollId}>
-            {payrollOptions.map((x: any, i: number) => (
-              <option key={i} value={x._id}>
+            {payrollOptions.map((x: any) => (
+              <option key={x._id} value={x._id}>
                 {x.name}
               </option>
             ))}

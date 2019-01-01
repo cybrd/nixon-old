@@ -70,8 +70,8 @@ export function Create() {
         Finger Print Id
         {employeeOptions != null ? (
           <select {...fingerPrintId}>
-            {employeeOptions.map((x: any, i: number) => (
-              <option key={i} value={x.fingerPrintId}>
+            {employeeOptions.map((x: any) => (
+              <option key={x._id} value={x.fingerPrintId}>
                 {x.fingerPrintId} - {x.firstName} {x.lastName}
               </option>
             ))}
@@ -94,7 +94,7 @@ export function Create() {
         Start Hour
         <select {...hour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <option key={i}>{i}</option>
+            <option key={i.toString().concat('hour')}>{i}</option>
           ))}
         </select>
       </p>
@@ -102,7 +102,7 @@ export function Create() {
         Start Minute
         <select {...minute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <option key={i}>{i}</option>
+            <option key={i.toString().concat('minute')}>{i}</option>
           ))}
         </select>
       </p>
