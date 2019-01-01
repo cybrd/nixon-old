@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
+import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
@@ -35,7 +35,9 @@ export function List() {
 
   return (
     <React.Fragment>
-      <Link to="/payroll/create">Create New Payroll</Link>
+      <ButtonLink to="/payroll/create" color="primary">
+        Create New Payroll
+      </ButtonLink>
       {data != null ? <Table data={data} columns={columns} /> : 'Loading...'}
     </React.Fragment>
   );

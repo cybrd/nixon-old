@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
+import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
@@ -46,7 +46,9 @@ export function List() {
 
   return (
     <React.Fragment>
-      <Link to="/timesheet/create">Create New Time In/Out</Link>
+      <ButtonLink to="/timesheet/create" color="primary">
+        Create New Time In/Out
+      </ButtonLink>
       {data != null ? (
         <Table columns={columns} data={data} orderBy="timestamp" />
       ) : (
