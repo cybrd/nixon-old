@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-
+import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { list } from '../../services/timesheetSchedule';
 
@@ -11,24 +9,22 @@ export function List() {
   const [data, setData] = useState(null);
   const columns = [
     {
-      Header: 'Finger Print Id',
-      accessor: 'fingerPrintId'
+      label: 'Finger Print Id',
+      field: 'fingerPrintId'
     },
     {
-      Header: 'Timestamp',
-      accessor: 'timestamp'
+      label: 'Timestamp',
+      field: 'timestamp'
     },
     {
-      Header: 'Type',
-      accessor: 'type'
+      label: 'Type',
+      field: 'type'
     },
     {
-      Header: 'Actions',
-      accessor: '_id',
-      Cell: (props: any) => (
-        <Remove view="/api/timesheet/{{ _id }}/remove">
-          {{ _id: props.value }}
-        </Remove>
+      label: 'Actions',
+      field: '_id',
+      cell: (value: any) => (
+        <Remove view="/api/timesheet/{{ _id }}/remove">{{ _id: value }}</Remove>
       )
     }
   ];
@@ -43,13 +39,7 @@ export function List() {
   return (
     <React.Fragment>
       {data != null && data.length ? (
-        <ReactTable
-          data={data}
-          columns={columns}
-          defaultPageSize={15}
-          showPageSizeOptions={false}
-          minRows={0}
-        />
+        <Table data={data} columns={columns} />
       ) : (
         'Loading...'
       )}

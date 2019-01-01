@@ -2,9 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-
+import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
 import { list } from '../../services/schedule';
@@ -13,37 +11,37 @@ export function List() {
   const [data, setData] = useState(null);
   const columns = [
     {
-      Header: 'name',
-      accessor: 'name'
+      label: 'name',
+      field: 'name'
     },
     {
-      Header: 'type',
-      accessor: 'type'
+      label: 'type',
+      field: 'type'
     },
     {
-      Header: 'startHour',
-      accessor: 'startHour'
+      label: 'startHour',
+      field: 'startHour'
     },
     {
-      Header: 'startMinute',
-      accessor: 'startMinute'
+      label: 'startMinute',
+      field: 'startMinute'
     },
     {
-      Header: 'endHour',
-      accessor: 'endHour'
+      label: 'endHour',
+      field: 'endHour'
     },
     {
-      Header: 'endMinute',
-      accessor: 'endMinute'
+      label: 'endMinute',
+      field: 'endMinute'
     },
     {
-      Header: 'Actions',
-      accessor: '_id',
-      Cell: (props: any) => (
+      label: 'Actions',
+      field: '_id',
+      cell: (value: any) => (
         <React.Fragment>
-          <Update view="/schedule/{{ _id }}">{{ _id: props.value }}</Update>
+          <Update view="/schedule/{{ _id }}">{{ _id: value }}</Update>
           <Remove view="/api/schedule/{{ _id }}/remove">
-            {{ _id: props.value }}
+            {{ _id: value }}
           </Remove>
         </React.Fragment>
       )
@@ -60,17 +58,7 @@ export function List() {
   return (
     <React.Fragment>
       <Link to="/schedule/create">Create New Schedule</Link>
-      {data != null ? (
-        <ReactTable
-          data={data}
-          columns={columns}
-          defaultPageSize={15}
-          showPageSizeOptions={false}
-          minRows={0}
-        />
-      ) : (
-        'Loading...'
-      )}
+      {data != null ? <Table data={data} columns={columns} /> : 'Loading...'}
     </React.Fragment>
   );
 }

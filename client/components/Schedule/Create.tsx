@@ -2,6 +2,15 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
+import {
+  FormControl,
+  Button,
+  InputLabel,
+  Input,
+  Select,
+  MenuItem
+} from '@material-ui/core';
+
 import { create } from '../../services/schedule';
 
 export function Create() {
@@ -54,7 +63,7 @@ export function Create() {
 
     const result = await create(data);
     if (result.errmsg) {
-      setError(true);
+      setError(result.errmsg);
     } else {
       setDone(true);
     }
@@ -65,52 +74,71 @@ export function Create() {
   }
 
   return (
-    <form onSubmit={handleFormSubmit} method="POST">
-      <p>
-        Name
-        <input type="text" {...name} />
-      </p>
-      <p>
-        Start Hour
-        <select {...startHour}>
+    <form onSubmit={handleFormSubmit}>
+      <FormControl fullWidth>
+        <InputLabel>Name</InputLabel>
+        <Input {...name} />
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Start Hour</InputLabel>
+        <Select {...startHour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <option key={i.toString().concat('startHour')}>{i}</option>
+            <MenuItem
+              key={i.toString().concat('startHour')}
+              value={i.toString()}
+            >
+              {i.toString()}
+            </MenuItem>
           ))}
-        </select>
-      </p>
-      <p>
-        Start Minute
-        <select {...startMinute}>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Start Minute</InputLabel>
+        <Select {...startMinute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <option key={i.toString().concat('startMinute')}>{i}</option>
+            <MenuItem
+              key={i.toString().concat('startMinute')}
+              value={i.toString()}
+            >
+              {i.toString()}
+            </MenuItem>
           ))}
-        </select>
-      </p>
-      <p>
-        End Hour
-        <select {...endHour}>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>End Hour</InputLabel>
+        <Select {...endHour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <option key={i.toString().concat('endHour')}>{i}</option>
+            <MenuItem key={i.toString().concat('endHour')} value={i.toString()}>
+              {i.toString()}
+            </MenuItem>
           ))}
-        </select>
-      </p>
-      <p>
-        End Minute
-        <select {...endMinute}>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>End Minute</InputLabel>
+        <Select {...endMinute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <option key={i.toString().concat('endMinute')}>{i}</option>
+            <MenuItem
+              key={i.toString().concat('endMinute')}
+              value={i.toString()}
+            >
+              {i.toString()}
+            </MenuItem>
           ))}
-        </select>
-      </p>
-      <p>
-        Type
-        <select {...type}>
-          <option>regular</option>
-          <option>overtime</option>
-        </select>
-      </p>
-      <input type="submit" />
-      {error && <p>Create error</p>}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Type</InputLabel>
+        <Select {...type}>
+          <MenuItem value="regular">regular</MenuItem>
+          <MenuItem value="overtime">overtime</MenuItem>
+        </Select>
+      </FormControl>
+      <Button type="submit" variant="contained" color="primary">
+        Submit
+      </Button>
+      {error && <p>Create error: {error}</p>}
     </form>
   );
 }

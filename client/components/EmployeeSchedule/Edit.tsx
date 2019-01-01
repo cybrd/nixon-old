@@ -1,8 +1,15 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import Datepicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+
+import {
+  FormControl,
+  Button,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem
+} from '@material-ui/core';
 
 import { list as employeeList } from '../../services/employee';
 import { list as scheduleList } from '../../services/schedule';
@@ -13,13 +20,26 @@ export function Edit(props: any) {
   const employeeId = useFormSelect('');
   const scheduleId = useFormSelect('');
   const payrollId = useFormSelect('');
+  const date = useFormInput('');
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
 
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [scheduleOptions, setScheduleOptions] = useState(null);
   const [payrollOptions, setPayrollOptions] = useState(null);
-  const [date, setDate] = useState(null);
+
+  function useFormInput(initialValue: string) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e: any) {
+      setValue(e.target.value);
+    }
+
+    return {
+      value: value,
+      onChange: handleChange
+    };
+  }
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);
@@ -41,12 +61,12 @@ export function Edit(props: any) {
       employeeId: employeeId.value,
       scheduleId: scheduleId.value,
       payrollId: payrollId.value,
-      date: date
+      date: date.value
     };
 
     const result = await update(props.match.params.id, tmp);
     if (result.errmsg) {
-      setError(true);
+      setError(result.errmsg);
     } else {
       setDone(true);
     }
@@ -71,60 +91,70 @@ export function Edit(props: any) {
       employeeId.onChange({ target: { value: tmp[3][0].employeeId } });
       scheduleId.onChange({ target: { value: tmp[3][0].scheduleId } });
       payrollId.onChange({ target: { value: tmp[3][0].payrollId } });
-      setDate(new Date(tmp[3][0].date));
+      date.onChange({
+        target: { value: new Date(tmp[3][0].date).toISOString().substr(0, 10) }
+      });
     })();
   }
 
   return (
-    <form onSubmit={handleFormSubmit} method="POST">
-      <p>
-        Employee
+    <form onSubmit={handleFormSubmit}>
+      <FormControl fullWidth>
+        <InputLabel>Employee</InputLabel>
         {employeeOptions != null ? (
-          <select {...employeeId}>
+          <Select {...employeeId}>
             {employeeOptions.map((x: any) => (
-              <option key={x._id} value={x._id}>
+              <MenuItem key={x._id} value={x._id}>
                 {x.fingerPrintId} - {x.firstName} {x.lastName}
-              </option>
+              </MenuItem>
             ))}
-          </select>
+          </Select>
         ) : (
           'Loading...'
         )}
-      </p>
-      <p>
-        Schedule
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Schedule</InputLabel>
         {scheduleOptions != null ? (
-          <select {...scheduleId}>
+          <Select {...scheduleId}>
             {scheduleOptions.map((x: any) => (
-              <option key={x._id} value={x._id}>
+              <MenuItem key={x._id} value={x._id}>
                 {x.name}
-              </option>
+              </MenuItem>
             ))}
-          </select>
+          </Select>
         ) : (
           'Loading...'
         )}
-      </p>
-      <p>
-        Payroll
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Payroll</InputLabel>
         {payrollOptions != null ? (
-          <select {...payrollId}>
+          <Select {...payrollId}>
             {payrollOptions.map((x: any) => (
-              <option key={x._id} value={x._id}>
+              <MenuItem key={x._id} value={x._id}>
                 {x.name}
-              </option>
+              </MenuItem>
             ))}
-          </select>
+          </Select>
         ) : (
           'Loading...'
         )}
-      </p>
-      <div>
-        Date
-        <Datepicker selected={date} onChange={setDate} />
-      </div>
-      <input type="submit" />
-      {error && <p>Create error</p>}
+      </FormControl>
+      <FormControl fullWidth>
+        <TextField
+          label="Date"
+          type="date"
+          InputLabelProps={{
+            shrink: true
+          }}
+          {...date}
+        />
+      </FormControl>
+      <Button type="submit" variant="contained" color="primary">
+        Submit
+      </Button>
+      {error && <p>Create error: {error}</p>}
     </form>
   );
 }

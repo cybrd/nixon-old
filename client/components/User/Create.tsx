@@ -2,12 +2,21 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
+import {
+  FormControl,
+  Button,
+  InputLabel,
+  Input,
+  Select,
+  MenuItem
+} from '@material-ui/core';
+
 import { create } from '../../services/user';
 
 export function Create() {
   const username = useFormInput('');
   const password = useFormInput('');
-  const [role, setRole] = useState('user');
+  const role = useFormSelect('user');
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
 
@@ -24,25 +33,34 @@ export function Create() {
     };
   }
 
+  function useFormSelect(initialValue: string) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+      setValue(e.target.value);
+    }
+
+    return {
+      value: value,
+      onChange: handleChange
+    };
+  }
+
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const data = {
       username: username.value,
       password: password.value,
-      role: role
+      role: role.value
     };
 
     const result = await create(data);
     if (result.errmsg) {
-      setError(true);
+      setError(result.errmsg);
     } else {
       setDone(true);
     }
-  }
-
-  function handleRoleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    setRole(e.target.value);
   }
 
   if (done) {
@@ -50,25 +68,27 @@ export function Create() {
   }
 
   return (
-    <form onSubmit={handleFormSubmit} method="POST">
-      <p>
-        Username
-        <input type="text" {...username} />
-      </p>
-      <p>
-        Password
-        <input type="password" {...password} />
-      </p>
-      <p>
-        Role
-        <select onChange={handleRoleChange} value={role}>
-          <option>admin</option>
-          <option>supervisor</option>
-          <option>user</option>
-        </select>
-      </p>
-      <input type="submit" />
-      {error && <p>Create error</p>}
+    <form onSubmit={handleFormSubmit}>
+      <FormControl fullWidth>
+        <InputLabel>Username</InputLabel>
+        <Input {...username} />
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Password</InputLabel>
+        <Input type="password" {...password} />
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Role</InputLabel>
+        <Select {...role}>
+          <MenuItem value="admin">admin</MenuItem>
+          <MenuItem value="supervisor">supervisor</MenuItem>
+          <MenuItem value="user">user</MenuItem>
+        </Select>
+      </FormControl>
+      <Button type="submit" variant="contained" color="primary">
+        Submit
+      </Button>
+      {error && <p>Create error: {error}</p>}
     </form>
   );
 }

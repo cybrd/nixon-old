@@ -43,6 +43,11 @@ export async function createFromUpload(user: IUser, data: any) {
 }
 
 export async function update(user: IUser, id: string, data: any) {
+  data.timestamp = new Date(data.date);
+  data.timestamp.setHours(data.hour);
+  data.timestamp.setMinutes(data.minute);
+  data.timestamp.setSeconds(0);
+
   const record = await TimesheetCollection.findOneAndUpdate(
     { _id: id },
     data

@@ -13,7 +13,7 @@ export function Load() {
     e.preventDefault();
     const result = await upload(file);
     if (result.errmsg) {
-      setError(true);
+      setError(result.errmsg);
     } else {
       setDone(true);
     }
@@ -28,10 +28,10 @@ export function Load() {
   }
 
   return (
-    <form onSubmit={handleFormSubmit} method="POST">
+    <form onSubmit={handleFormSubmit}>
       <input type="file" onChange={handleChange} />
       <input type="submit" />
-      {error && <p>Create error</p>}
+      {error && <p>Create error: {error}</p>}
     </form>
   );
 }

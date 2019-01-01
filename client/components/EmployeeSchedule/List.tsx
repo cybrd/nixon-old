@@ -2,9 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-
+import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
 import { listPopulated } from '../../services/employeeSchedule';
@@ -13,40 +11,38 @@ export function List() {
   const [data, setData] = useState(null);
   const columns = [
     {
-      Header: 'Finger Print Id',
-      accessor: 'employeeId.fingerPrintId'
+      label: 'Finger Print Id',
+      field: 'employeeFingerPrintId'
     },
     {
-      Header: 'First Name',
-      accessor: 'employeeId.firstName'
+      label: 'First Name',
+      field: 'employeeFirstName'
     },
     {
-      Header: 'Last Name',
-      accessor: 'employeeId.lastName'
+      label: 'Last Name',
+      field: 'employeeLastName'
     },
     {
-      Header: 'Schedule Name',
-      accessor: 'scheduleId.name'
+      label: 'Schedule Name',
+      field: 'scheduleName'
     },
     {
-      Header: 'Payroll Name',
-      accessor: 'payrollId.name'
+      label: 'Payroll Name',
+      field: 'payrollName'
     },
     {
-      Header: 'Date',
-      accessor: 'date',
-      Cell: (props: any) => new Date(props.value).toLocaleDateString()
+      label: 'Date',
+      field: 'date',
+      cell: (value: any) => new Date(value).toLocaleDateString()
     },
     {
-      Header: 'Actions',
-      accessor: '_id',
-      Cell: (props: any) => (
+      label: 'Actions',
+      field: '_id',
+      cell: (value: any) => (
         <React.Fragment>
-          <Update view="/employeeSchedule/{{ _id }}">
-            {{ _id: props.value }}
-          </Update>
+          <Update view="/employeeSchedule/{{ _id }}">{{ _id: value }}</Update>
           <Remove view="/api/employeeSchedule/{{ _id }}/remove">
-            {{ _id: props.value }}
+            {{ _id: value }}
           </Remove>
         </React.Fragment>
       )
@@ -56,6 +52,19 @@ export function List() {
   if (data == null) {
     (async () => {
       const tmp = await listPopulated();
+      tmp.forEach((x: any) => {
+        if (x.employeeId) {
+          x.employeeFingerPrintId = x.employeeId.fingerPrintId;
+          x.employeeFirstName = x.employeeId.firstName;
+          x.employeeLastName = x.employeeId.lastName;
+        }
+        if (x.scheduleId) {
+          x.scheduleName = x.scheduleId.name;
+        }
+        if (x.payrollId) {
+          x.payrollName = x.payrollId.name;
+        }
+      });
       setData(tmp);
     })();
   }
@@ -63,17 +72,7 @@ export function List() {
   return (
     <React.Fragment>
       <Link to="/employeeSchedule/create">Create New Employee Schedule</Link>
-      {data != null ? (
-        <ReactTable
-          data={data}
-          columns={columns}
-          defaultPageSize={15}
-          showPageSizeOptions={false}
-          minRows={0}
-        />
-      ) : (
-        'Loading...'
-      )}
+      {data != null ? <Table data={data} columns={columns} /> : 'Loading...'}
     </React.Fragment>
   );
 }

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
+import { FormControl, Button, Input, InputLabel } from '@material-ui/core';
+
 import { create } from '../../services/payroll';
 
 export function Create() {
@@ -31,7 +33,7 @@ export function Create() {
 
     const result = await create(data);
     if (result.errmsg) {
-      setError(true);
+      setError(result.errmsg);
     } else {
       setDone(true);
     }
@@ -42,13 +44,15 @@ export function Create() {
   }
 
   return (
-    <form onSubmit={handleFormSubmit} method="POST">
-      <p>
-        Name
-        <input type="text" {...name} />
-      </p>
-      <input type="submit" />
-      {error && <p>Create error</p>}
+    <form onSubmit={handleFormSubmit}>
+      <FormControl fullWidth>
+        <InputLabel>Name</InputLabel>
+        <Input {...name} />
+      </FormControl>
+      <Button type="submit" variant="contained" color="primary">
+        Submit
+      </Button>
+      {error && <p>Create error: {error}</p>}
     </form>
   );
 }

@@ -2,9 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-
+import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
 import { list } from '../../services/employee';
@@ -13,25 +11,25 @@ export function List() {
   const [data, setData] = useState(null);
   const columns = [
     {
-      Header: 'Finger Print Id',
-      accessor: 'fingerPrintId'
+      label: 'Finger Print Id',
+      field: 'fingerPrintId'
     },
     {
-      Header: 'First Name',
-      accessor: 'firstName'
+      label: 'First Name',
+      field: 'firstName'
     },
     {
-      Header: 'Last Name',
-      accessor: 'lastName'
+      label: 'Last Name',
+      field: 'lastName'
     },
     {
-      Header: 'Actions',
-      accessor: '_id',
-      Cell: (props: any) => (
+      label: 'Actions',
+      field: '_id',
+      cell: (value: any) => (
         <React.Fragment>
-          <Update view="/employee/{{ _id }}">{{ _id: props.value }}</Update>
+          <Update view="/employee/{{ _id }}">{{ _id: value }}</Update>
           <Remove view="/api/employee/{{ _id }}/remove">
-            {{ _id: props.value }}
+            {{ _id: value }}
           </Remove>
         </React.Fragment>
       )
@@ -48,17 +46,7 @@ export function List() {
   return (
     <React.Fragment>
       <Link to="/employee/create">Create New Employee</Link>
-      {data != null ? (
-        <ReactTable
-          data={data}
-          columns={columns}
-          defaultPageSize={15}
-          showPageSizeOptions={false}
-          minRows={0}
-        />
-      ) : (
-        'Loading...'
-      )}
+      {data != null ? <Table data={data} columns={columns} /> : 'Loading...'}
     </React.Fragment>
   );
 }

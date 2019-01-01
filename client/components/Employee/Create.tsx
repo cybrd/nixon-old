@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
+import { FormControl, Button, Input, InputLabel } from '@material-ui/core';
+
 import { create } from '../../services/employee';
 
 export function Create() {
@@ -37,7 +39,7 @@ export function Create() {
 
     const result = await create(data);
     if (result.errmsg) {
-      setError(true);
+      setError(result.errmsg);
     } else {
       setDone(true);
     }
@@ -48,25 +50,27 @@ export function Create() {
   }
 
   return (
-    <form onSubmit={handleFormSubmit} method="POST">
-      <p>
-        Finger Print Id
-        <input type="text" {...fingerPrintId} />
-      </p>
-      <p>
-        First Name
-        <input type="text" {...firstName} />
-      </p>
-      <p>
-        Last Name
-        <input type="text" {...lastName} />
-      </p>
-      <p>
-        Department
-        <input type="text" {...department} />
-      </p>
-      <input type="submit" />
-      {error && <p>Create error</p>}
+    <form onSubmit={handleFormSubmit}>
+      <FormControl fullWidth>
+        <InputLabel>Finger Print Id</InputLabel>
+        <Input {...fingerPrintId} />
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>First Name</InputLabel>
+        <Input {...firstName} />
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Last Name</InputLabel>
+        <Input {...lastName} />
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Department</InputLabel>
+        <Input {...department} />
+      </FormControl>
+      <Button type="submit" variant="contained" color="primary">
+        Submit
+      </Button>
+      {error && <p>Create error: {error}</p>}
     </form>
   );
 }

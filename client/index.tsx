@@ -7,12 +7,15 @@ import { Content } from './components/Content';
 
 import { AuthProvider } from './context/auth';
 
-render(
-  <BrowserRouter>
-    <AuthProvider>
-      <Menu />
-      <Content />
-    </AuthProvider>
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Menu />
+        <Content />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
+
+render(<App />, document.getElementById('app'));

@@ -2,9 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-
+import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
 import { list } from '../../services/user';
@@ -13,22 +11,20 @@ export function List() {
   const [data, setData] = useState(null);
   const columns = [
     {
-      Header: 'Username',
-      accessor: 'username'
+      label: 'Username',
+      field: 'username'
     },
     {
-      Header: 'Role',
-      accessor: 'role'
+      label: 'Role',
+      field: 'role'
     },
     {
-      Header: 'Actions',
-      accessor: '_id',
-      Cell: (props: any) => (
+      label: 'Actions',
+      field: '_id',
+      cell: (value: any) => (
         <React.Fragment>
-          <Update view="/user/{{ _id }}">{{ _id: props.value }}</Update>
-          <Remove view="/api/user/{{ _id }}/remove">
-            {{ _id: props.value }}
-          </Remove>
+          <Update view="/user/{{ _id }}">{{ _id: value }}</Update>
+          <Remove view="/api/user/{{ _id }}/remove">{{ _id: value }}</Remove>
         </React.Fragment>
       )
     }
@@ -44,17 +40,7 @@ export function List() {
   return (
     <React.Fragment>
       <Link to="/user/create">Create New User</Link>
-      {data != null ? (
-        <ReactTable
-          data={data}
-          columns={columns}
-          defaultPageSize={15}
-          showPageSizeOptions={false}
-          minRows={0}
-        />
-      ) : (
-        'Loading...'
-      )}
+      {data != null ? <Table data={data} columns={columns} /> : 'Loading...'}
     </React.Fragment>
   );
 }

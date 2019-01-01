@@ -2,15 +2,21 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import Datepicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import {
+  FormControl,
+  Button,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem
+} from '@material-ui/core';
 
 import { list as employeeList } from '../../services/employee';
 import { list, update } from '../../services/timesheet';
 
 export function Edit(props: any) {
-  const currDate = new Date();
   const fingerPrintId = useFormSelect('');
+  const date = useFormInput('');
   const hour = useFormSelect('0');
   const minute = useFormSelect('0');
   const type = useFormSelect('IN');
@@ -18,7 +24,19 @@ export function Edit(props: any) {
   const [error, setError] = useState(false);
 
   const [employeeOptions, setEmployeeOptions] = useState(null);
-  const [date, setDate] = useState(null);
+
+  function useFormInput(initialValue: string) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e: any) {
+      setValue(e.target.value);
+    }
+
+    return {
+      value: value,
+      onChange: handleChange
+    };
+  }
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);
@@ -38,7 +56,7 @@ export function Edit(props: any) {
 
     const tmp = {
       fingerPrintId: fingerPrintId.value,
-      date: date,
+      date: date.value,
       hour: hour.value,
       minute: minute.value,
       type: type.value
@@ -46,7 +64,7 @@ export function Edit(props: any) {
 
     const result = await update(props.match.params.id, tmp);
     if (result.errmsg) {
-      setError(true);
+      setError(result.errmsg);
     } else {
       setDone(true);
     }
@@ -65,61 +83,80 @@ export function Edit(props: any) {
       setEmployeeOptions(tmp[0]);
 
       fingerPrintId.onChange({ target: { value: tmp[1][0].fingerPrintId } });
-      setDate(new Date(tmp[1][0].timestamp));
+      date.onChange({
+        target: {
+          value: new Date(tmp[1][0].timestamp).toISOString().substr(0, 10)
+        }
+      });
+      hour.onChange({
+        target: { value: new Date(tmp[1][0].timestamp).getHours() }
+      });
+      minute.onChange({
+        target: { value: new Date(tmp[1][0].timestamp).getMinutes() }
+      });
     })();
   }
 
   return (
-    <form onSubmit={handleFormSubmit} method="POST">
-      <p>
-        Finger Print Id
+    <form onSubmit={handleFormSubmit}>
+      <FormControl fullWidth>
+        <InputLabel>Finger Print Id</InputLabel>
         {employeeOptions != null ? (
-          <select {...fingerPrintId}>
+          <Select {...fingerPrintId}>
             {employeeOptions.map((x: any) => (
-              <option key={x._id} value={x.fingerPrintId}>
+              <MenuItem key={x._id} value={x.fingerPrintId}>
                 {x.fingerPrintId} - {x.firstName} {x.lastName}
-              </option>
+              </MenuItem>
             ))}
-          </select>
+          </Select>
         ) : (
           'Loading...'
         )}
-      </p>
-      <div>
-        Date
-        <Datepicker
-          selected={date}
-          onChange={setDate}
-          showMonthYearDropdown
-          minDate={new Date(currDate.getFullYear(), currDate.getMonth() - 6)}
-          maxDate={new Date(currDate.getFullYear(), currDate.getMonth() + 1)}
+      </FormControl>
+      <FormControl fullWidth>
+        <TextField
+          label="Date"
+          type="date"
+          InputLabelProps={{
+            shrink: true
+          }}
+          {...date}
         />
-      </div>
-      <p>
-        Start Hour
-        <select {...hour}>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Start Hour</InputLabel>
+        <Select {...hour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <option key={i.toString().concat('hour')}>{i}</option>
+            <MenuItem key={i.toString().concat('hour')} value={i.toString()}>
+              {i.toString()}
+            </MenuItem>
           ))}
-        </select>
-      </p>
-      <p>
-        Start Minute
-        <select {...minute}>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Start Minute</InputLabel>
+        <Select {...minute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <option key={i.toString().concat('minute')}>{i}</option>
+            <MenuItem
+              key={i.toString().concat('startMinute')}
+              value={i.toString()}
+            >
+              {i.toString()}
+            </MenuItem>
           ))}
-        </select>
-      </p>
-      <p>
-        Type
-        <select {...type}>
-          <option>IN</option>
-          <option>OUT</option>
-        </select>
-      </p>
-      <input type="submit" />
-      {error && <p>Create error</p>}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Type</InputLabel>
+        <Select {...type}>
+          <MenuItem value="IN">IN</MenuItem>
+          <MenuItem value="OUT">OUT</MenuItem>
+        </Select>
+      </FormControl>
+      <Button type="submit" variant="contained" color="primary">
+        Submit
+      </Button>
+      {error && <p>Create error: {error}</p>}
     </form>
   );
 }

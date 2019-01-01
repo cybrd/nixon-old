@@ -34,7 +34,7 @@ export function Login() {
   }
 
   return (
-    <form onSubmit={handleFormSubmit(authContext.login)} method="POST">
+    <form onSubmit={handleFormSubmit(authContext.login)}>
       <input type="text" name="username" {...username} />
       <input type="password" name="password" {...password} />
       <input type="submit" />
