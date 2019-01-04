@@ -1,29 +1,40 @@
 import { join } from 'path';
 import * as express from 'express';
 import { urlencoded, json } from 'body-parser';
+import * as morgan from 'morgan';
 
 import { setMongoDb } from './my.mongoose';
 import { setSession } from './my.session';
 import { setPassport } from './my.passport';
 import { router } from './router';
 
-const myExpress = express();
+const app = express();
 const port = 3000;
 
-myExpress.use(urlencoded({ extended: false }));
-myExpress.use(json());
-myExpress.use(express.static(join(__dirname, '../dist')));
+app.use(urlencoded({ extended: false }));
+app.use(json());
+app.use(express.static(join(__dirname, '../dist')));
+
+morgan.token('myDate', () => {
+  return new Date().toLocaleString();
+});
+
+app.use(
+  morgan(
+    ':myDate :method :url :status :res[content-length] - :response-time ms'
+  )
+);
 
 setMongoDb();
-setSession(myExpress);
-setPassport(myExpress);
+setSession(app);
+setPassport(app);
 
-myExpress.use(router);
+app.use(router);
 
-myExpress.all('/*', (req, res) => {
+app.all('/*', (req, res) => {
   res.sendFile('index.html', { root: __dirname + '/../dist' });
 });
 
-myExpress.listen(port, () =>
+app.listen(port, () =>
   process.stdout.write(`App listening on port ${port}!\n`)
 );
