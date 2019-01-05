@@ -34,6 +34,7 @@ export const ScheduleArchiveSchema = new Schema(
 );
 
 export interface ISchedule extends Document {
+  oldId?: string;
   name: string;
   startHour: string;
   startMinute: string;

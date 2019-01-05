@@ -40,6 +40,7 @@ EmployeeSchema.index(
 );
 
 export interface IEmployee extends Document {
+  oldId?: string;
   fingerPrintId: string;
   firstName: string;
   lastName: string;

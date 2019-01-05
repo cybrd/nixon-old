@@ -1,6 +1,6 @@
 import { set, connect } from 'mongoose';
 
-set('debug', false);
+set('debug', true);
 set('useCreateIndex', true);
 
 export function setMongoDb() {

@@ -12,6 +12,7 @@ export function Timesheet() {
     <React.Fragment>
       <h3>Timesheet</h3>
       <Switch>
+        <Route exact path="/" component={List} />
         <Route exact path="/timesheet" component={List} />
         <Route exact path="/timesheet/create" component={Create} />
         <Route exact path="/timesheet/load" component={Load} />

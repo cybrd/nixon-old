@@ -4,7 +4,6 @@ import { Route, Switch } from 'react-router-dom';
 import { Login } from './Login';
 import { ProtectedRoute, ProtectedAdminRoute } from './ProtectedRoute';
 
-import { Home } from './Home';
 import { NoMatch } from './NoMatch';
 import { User } from './User/User';
 import { Timesheet } from './Timesheet/Timesheet';
@@ -18,9 +17,8 @@ export function Content() {
   return (
     <div id="content">
       <Switch>
-        <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
-        <ProtectedAdminRoute path="/user" component={User} />
+        <ProtectedRoute exact path="/" component={Timesheet} />
         <ProtectedRoute path="/timesheet" component={Timesheet} />
         <ProtectedRoute path="/employee" component={Employee} />
         <ProtectedRoute path="/schedule" component={Schedule} />
@@ -30,6 +28,7 @@ export function Content() {
           path="/timesheetSchedule"
           component={TimesheetSchedule}
         />
+        <ProtectedAdminRoute path="/user" component={User} />
         <Route component={NoMatch} />
       </Switch>
     </div>

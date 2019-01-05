@@ -40,6 +40,7 @@ UserSchema.index(
 );
 
 export interface IUser extends Document {
+  oldId?: string;
   username: string;
   password: string;
   role: string;

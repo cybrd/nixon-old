@@ -39,10 +39,8 @@ export function List() {
       field: '_id',
       cell: (value: any) => (
         <React.Fragment>
-          <Update view="/schedule/{{ _id }}">{{ _id: value }}</Update>
-          <Remove view="/api/schedule/{{ _id }}/remove">
-            {{ _id: value }}
-          </Remove>
+          <Update view="/schedule/{{ _id }}" data={{ _id: value }} />
+          <Remove view="/api/schedule/{{ _id }}/remove" data={{ _id: value }} />
         </React.Fragment>
       )
     }

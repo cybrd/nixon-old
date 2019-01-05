@@ -16,7 +16,7 @@ export async function listPopulated(args = {}) {
     .exec();
 }
 
-export async function create(user: IUser, data: any) {
+export function create(user: IUser, data: any) {
   const record = new EmployeeScheduleCollection(data);
   record.modifiedBy = user.username;
 
@@ -28,18 +28,25 @@ export async function create(user: IUser, data: any) {
   });
 }
 
-export async function update(user: IUser, id: string, data: any) {
-  const record = await EmployeeScheduleCollection.findOneAndUpdate(
-    { _id: id },
-    data
-  ).lean();
+export function update(user: IUser, id: string, data: any) {
+  return new Promise(resolve => {
+    EmployeeScheduleCollection.findOneAndUpdate(
+      { _id: id },
+      data,
+      (err, record) => {
+        if (err) {
+          return resolve(err);
+        }
 
-  record.oldId = record._id;
-  delete record._id;
-  record.modifiedBy = user.username;
-  new EmployeeScheduleArchiveCollection(record).save();
+        record.oldId = record._id;
+        delete record._id;
+        record.modifiedBy = user.username;
+        new EmployeeScheduleArchiveCollection(record).save();
 
-  return true;
+        resolve(true);
+      }
+    );
+  });
 }
 
 export async function remove(user: IUser, id: string) {

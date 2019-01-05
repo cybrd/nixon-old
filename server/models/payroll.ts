@@ -24,6 +24,7 @@ export const PayrollArchiveSchema = new Schema(
 );
 
 export interface IPayroll extends Document {
+  oldId?: string;
   name: string;
   modifiedBy: string;
 }

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { Table } from '../Helper/Table';
-import { Remove } from '../Helper/Remove';
 import { list } from '../../services/timesheetSchedule';
 
 export function List() {
@@ -13,19 +12,69 @@ export function List() {
       field: 'fingerPrintId'
     },
     {
-      label: 'Timestamp',
-      field: 'timestamp'
+      label: 'Schedule Name',
+      field: 'scheduleName'
     },
     {
-      label: 'Type',
-      field: 'type'
+      label: 'Work Day',
+      field: 'workDay',
+      cell: (value: string) => new Date(value).toLocaleDateString()
     },
     {
-      label: 'Actions',
-      field: '_id',
-      cell: (value: any) => (
-        <Remove view="/api/timesheet/{{ _id }}/remove">{{ _id: value }}</Remove>
-      )
+      label: 'WorkDayTotal',
+      field: 'workDayTotal',
+      cell: (value: number) => {
+        value /= 1000;
+        const hours = Math.floor(value / 60 / 60);
+        value -= hours * 60 * 60;
+        const minutes = Math.floor(value / 60);
+        value -= minutes * 60;
+        const seconds = value;
+
+        const result: string[] = [];
+
+        if (hours) {
+          result.push(`${hours} hours`);
+        }
+
+        if (minutes) {
+          result.push(`${minutes} minutes`);
+        }
+
+        if (seconds) {
+          result.push(`${seconds} seconds`);
+        }
+
+        return result.join(' ');
+      }
+    },
+    {
+      label: 'WorkDayWorked',
+      field: 'workDayWorked',
+      cell: (value: number) => {
+        value /= 1000;
+        const hours = Math.floor(value / 60 / 60);
+        value -= hours * 60 * 60;
+        const minutes = Math.floor(value / 60);
+        value -= minutes * 60;
+        const seconds = value;
+
+        const result: string[] = [];
+
+        if (hours) {
+          result.push(`${hours} hours`);
+        }
+
+        if (minutes) {
+          result.push(`${minutes} minutes`);
+        }
+
+        if (seconds) {
+          result.push(`${seconds} seconds`);
+        }
+
+        return result.join(' ');
+      }
     }
   ];
 
@@ -39,7 +88,7 @@ export function List() {
   return (
     <React.Fragment>
       {data != null && data.length ? (
-        <Table data={data} columns={columns} />
+        <Table data={data} columns={columns} orderBy="workDay" />
       ) : (
         'Loading...'
       )}

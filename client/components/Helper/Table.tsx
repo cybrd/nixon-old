@@ -100,14 +100,18 @@ export function Table(props: any) {
         <TableBody>
           {stableSort(data, getSorting(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row: any) => {
+            .map((row: any, index: number) => {
               return (
-                <TableRow hover key={row._id}>
+                <TableRow
+                  hover
+                  key={row._id}
+                  selected={index % 2 ? false : true}
+                >
                   {props.columns.map((column: any) => {
                     if (column.cell) {
                       return (
                         <TableCell key={row._id.concat(column.field)}>
-                          {column.cell(row[column.field])}
+                          {column.cell(row[column.field], row)}
                         </TableCell>
                       );
                     } else {

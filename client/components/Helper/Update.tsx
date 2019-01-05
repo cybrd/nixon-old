@@ -3,13 +3,7 @@ import { render } from 'mustache';
 import { Link } from 'react-router-dom';
 
 export function Update(props: any) {
-  const uri = render(props.view, props.children);
+  const uri = render(props.view, props.data);
 
-  async function handleClick(
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) {
-    e.preventDefault();
-  }
-
-  return <Link to={uri}>update</Link>;
+  return <Link to={uri}>{props.children || 'update'}</Link>;
 }

@@ -10,7 +10,7 @@ export function Remove(props: any) {
     e.preventDefault();
 
     if (confirm('Are you sure?')) {
-      const uri = render(props.view, props.children);
+      const uri = render(props.view, props.data);
       await myFetch(uri, {
         method: 'POST'
       });
@@ -24,5 +24,5 @@ export function Remove(props: any) {
     cursor: pointer;
     margin: 0 5px;
   `;
-  return <A onClick={handleClick}>delete</A>;
+  return <A onClick={handleClick}>{props.children || 'delete'}</A>;
 }

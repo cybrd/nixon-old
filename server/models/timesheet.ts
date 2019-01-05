@@ -41,7 +41,8 @@ TimesheetSchema.index(
   }
 );
 
-interface ITimesheet extends Document {
+export interface ITimesheet extends Document {
+  oldId?: string;
   fingerPrintId: string;
   timestamp: Date;
   type: string;

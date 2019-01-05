@@ -33,6 +33,7 @@ export const EmployeeScheduleArchiveSchema = new Schema(
 );
 
 export interface IEmployeeSchedule extends Document {
+  oldId?: string;
   employeeId: IEmployee;
   scheduleId: ISchedule;
   payrollId: IPayroll;

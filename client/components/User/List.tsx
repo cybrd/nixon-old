@@ -23,8 +23,8 @@ export function List() {
       field: '_id',
       cell: (value: any) => (
         <React.Fragment>
-          <Update view="/user/{{ _id }}">{{ _id: value }}</Update>
-          <Remove view="/api/user/{{ _id }}/remove">{{ _id: value }}</Remove>
+          <Update view="/user/{{ _id }}" data={{ _id: value }} />
+          <Remove view="/api/user/{{ _id }}/remove" data={{ _id: value }} />
         </React.Fragment>
       )
     }
