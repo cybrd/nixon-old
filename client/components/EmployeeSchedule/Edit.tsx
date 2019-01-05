@@ -99,7 +99,7 @@ export function Edit(props: any) {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Employee</InputLabel>
         {employeeOptions != null ? (
           <Select {...employeeId}>
@@ -113,7 +113,7 @@ export function Edit(props: any) {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Schedule</InputLabel>
         {scheduleOptions != null ? (
           <Select {...scheduleId}>
@@ -127,7 +127,7 @@ export function Edit(props: any) {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Payroll</InputLabel>
         {payrollOptions != null ? (
           <Select {...payrollId}>
@@ -141,7 +141,7 @@ export function Edit(props: any) {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <TextField
           label="Date"
           type="date"

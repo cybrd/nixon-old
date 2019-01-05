@@ -19,10 +19,15 @@ export function Remove(props: any) {
   }
 
   const A = styled.a`
-    color: blue;
+    color: red;
     text-decoration: underline;
     cursor: pointer;
     margin: 0 5px;
+
+    text-decoration: none;
+    :hover {
+      text-decoration: underline;
+    }
   `;
-  return <A onClick={handleClick}>{props.children || 'delete'}</A>;
+  return <A onClick={handleClick}>{props.children || 'remove'}</A>;
 }

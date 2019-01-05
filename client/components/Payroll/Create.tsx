@@ -45,7 +45,7 @@ export function Create() {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Name</InputLabel>
         <Input {...name} />
       </FormControl>

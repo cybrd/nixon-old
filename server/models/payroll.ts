@@ -23,6 +23,16 @@ export const PayrollArchiveSchema = new Schema(
   }
 );
 
+PayrollSchema.index(
+  {
+    name: 1
+  },
+  {
+    name: 'uindex',
+    unique: true
+  }
+);
+
 export interface IPayroll extends Document {
   oldId?: string;
   name: string;

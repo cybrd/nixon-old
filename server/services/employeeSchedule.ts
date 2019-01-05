@@ -21,6 +21,12 @@ export function create(user: IUser, data: any) {
   record.modifiedBy = user.username;
 
   return new Promise(resolve => {
+    if (!data.date) {
+      return resolve({
+        errmsg: 'Error'
+      });
+    }
+
     record
       .save()
       .then(tmp => resolve(tmp))

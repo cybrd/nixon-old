@@ -83,15 +83,15 @@ export function Edit(props: any) {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Username</InputLabel>
         <Input {...username} />
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Password</InputLabel>
         <Input type="password" {...password} />
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Role</InputLabel>
         <Select {...role}>
           <MenuItem value="admin">admin</MenuItem>

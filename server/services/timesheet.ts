@@ -13,12 +13,19 @@ export async function list(args = {}) {
 export function create(user: IUser, data: any) {
   const record = new TimesheetCollection(data);
   record.modifiedBy = user.username;
-  record.timestamp = new Date(data.date);
-  record.timestamp.setHours(data.hour);
-  record.timestamp.setMinutes(data.minute);
-  record.timestamp.setSeconds(0);
 
   return new Promise(resolve => {
+    if (!data.date) {
+      return resolve({
+        errmsg: 'Error'
+      });
+    }
+
+    record.timestamp = new Date(data.date);
+    record.timestamp.setHours(data.hour);
+    record.timestamp.setMinutes(data.minute);
+    record.timestamp.setSeconds(0);
+
     record
       .save()
       .then(tmp => resolve(tmp))

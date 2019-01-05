@@ -89,11 +89,11 @@ export function Edit(props: any) {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Name</InputLabel>
         <Input {...name} />
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Start Hour</InputLabel>
         <Select {...startHour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
@@ -106,7 +106,7 @@ export function Edit(props: any) {
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Start Minute</InputLabel>
         <Select {...startMinute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
@@ -119,7 +119,7 @@ export function Edit(props: any) {
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>End Hour</InputLabel>
         <Select {...endHour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
@@ -129,7 +129,7 @@ export function Edit(props: any) {
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>End Minute</InputLabel>
         <Select {...endMinute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
@@ -142,7 +142,7 @@ export function Edit(props: any) {
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Type</InputLabel>
         <Select {...type}>
           <MenuItem value="regular">regular</MenuItem>

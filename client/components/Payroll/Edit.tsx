@@ -54,7 +54,7 @@ export function Edit(props: any) {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Name</InputLabel>
         <Input {...name} />
       </FormControl>

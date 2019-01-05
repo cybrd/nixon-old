@@ -51,11 +51,11 @@ export function Create() {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Finger Print Id</InputLabel>
         <Input {...fingerPrintId} />
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>First Name</InputLabel>
         <Input {...firstName} />
       </FormControl>

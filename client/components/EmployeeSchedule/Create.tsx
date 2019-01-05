@@ -95,7 +95,7 @@ export function Create() {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Employee</InputLabel>
         {employeeOptions != null ? (
           <Select {...employeeId}>
@@ -109,7 +109,7 @@ export function Create() {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Schedule</InputLabel>
         {scheduleOptions != null ? (
           <Select {...scheduleId}>
@@ -123,7 +123,7 @@ export function Create() {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Payroll</InputLabel>
         {payrollOptions != null ? (
           <Select {...payrollId}>
@@ -137,7 +137,7 @@ export function Create() {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <TextField
           label="Date"
           type="date"

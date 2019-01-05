@@ -99,7 +99,7 @@ export function Edit(props: any) {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Finger Print Id</InputLabel>
         {employeeOptions != null ? (
           <Select {...fingerPrintId}>
@@ -113,7 +113,7 @@ export function Edit(props: any) {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <TextField
           label="Date"
           type="date"
@@ -123,7 +123,7 @@ export function Edit(props: any) {
           {...date}
         />
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Start Hour</InputLabel>
         <Select {...hour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
@@ -133,7 +133,7 @@ export function Edit(props: any) {
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Start Minute</InputLabel>
         <Select {...minute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
@@ -146,7 +146,7 @@ export function Edit(props: any) {
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel>Type</InputLabel>
         <Select {...type}>
           <MenuItem value="IN">IN</MenuItem>

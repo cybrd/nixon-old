@@ -33,6 +33,16 @@ export const ScheduleArchiveSchema = new Schema(
   }
 );
 
+ScheduleSchema.index(
+  {
+    name: 1
+  },
+  {
+    name: 'uindex',
+    unique: true
+  }
+);
+
 export interface ISchedule extends Document {
   oldId?: string;
   name: string;
