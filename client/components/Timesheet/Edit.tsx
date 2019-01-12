@@ -50,6 +50,32 @@ export function Edit(props: any) {
     };
   }
 
+  async function fetchData() {
+    const tmp = await Promise.all([
+      employeeList(),
+      list({ _id: props.match.params.id })
+    ]);
+    setEmployeeOptions(tmp[0]);
+
+    fingerPrintId.onChange({ target: { value: tmp[1][0].fingerPrintId } });
+    date.onChange({
+      target: {
+        value: new Date(tmp[1][0].timestamp).toISOString().substr(0, 10)
+      }
+    });
+    hour.onChange({
+      target: { value: new Date(tmp[1][0].timestamp).getHours() }
+    });
+    minute.onChange({
+      target: { value: new Date(tmp[1][0].timestamp).getMinutes() }
+    });
+    type.onChange({ target: { value: tmp[1][0].type } });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   async function handleFormSubmit(e: any) {
     e.preventDefault();
 
@@ -72,31 +98,6 @@ export function Edit(props: any) {
   if (done) {
     return <Redirect to="/timesheet" />;
   }
-
-  async function fetchData() {
-    const tmp = await Promise.all([
-      employeeList(),
-      list({ _id: props.match.params.id })
-    ]);
-    setEmployeeOptions(tmp[0]);
-
-    fingerPrintId.onChange({ target: { value: tmp[1][0].fingerPrintId } });
-    date.onChange({
-      target: {
-        value: new Date(tmp[1][0].timestamp).toISOString().substr(0, 10)
-      }
-    });
-    hour.onChange({
-      target: { value: new Date(tmp[1][0].timestamp).getHours() }
-    });
-    minute.onChange({
-      target: { value: new Date(tmp[1][0].timestamp).getMinutes() }
-    });
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

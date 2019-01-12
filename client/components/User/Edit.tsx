@@ -46,6 +46,18 @@ export function Edit(props: any) {
     };
   }
 
+  async function fetchData() {
+    const tmp = await list({ _id: props.match.params.id });
+    setData(tmp[0]);
+    username.onChange({ target: { value: tmp[0].username } });
+    password.onChange({ target: { value: '' } });
+    role.onChange({ target: { value: tmp[0].role } });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -70,25 +82,13 @@ export function Edit(props: any) {
     return <Redirect to="/user" />;
   }
 
-  async function fetchData() {
-    const tmp = await list({ _id: props.match.params.id });
-    setData(tmp[0]);
-    username.onChange({ target: { value: tmp[0].username } });
-    password.onChange({ target: { value: '' } });
-    role.onChange({ target: { value: tmp[0].role } });
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <form onSubmit={handleFormSubmit}>
       <FormControl fullWidth required>
         <InputLabel>Username</InputLabel>
         <Input {...username} />
       </FormControl>
-      <FormControl fullWidth required>
+      <FormControl fullWidth>
         <InputLabel>Password</InputLabel>
         <Input type="password" {...password} />
       </FormControl>

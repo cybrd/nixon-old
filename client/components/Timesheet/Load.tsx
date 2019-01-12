@@ -9,6 +9,10 @@ export function Load() {
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
 
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setFile(e.target.files[0]);
+  }
+
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = await upload(file);
@@ -17,10 +21,6 @@ export function Load() {
     } else {
       setDone(true);
     }
-  }
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFile(e.target.files[0]);
   }
 
   if (done) {

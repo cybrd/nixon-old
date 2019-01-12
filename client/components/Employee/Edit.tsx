@@ -28,6 +28,19 @@ export function Edit(props: any) {
     };
   }
 
+  async function fetchData() {
+    const tmp = await list({ _id: props.match.params.id });
+    setData(tmp[0]);
+    fingerPrintId.onChange({ target: { value: tmp[0].fingerPrintId } });
+    firstName.onChange({ target: { value: tmp[0].firstName } });
+    lastName.onChange({ target: { value: tmp[0].lastName } });
+    department.onChange({ target: { value: tmp[0].department } });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -49,19 +62,6 @@ export function Edit(props: any) {
   if (done) {
     return <Redirect to="/employee" />;
   }
-
-  async function fetchData() {
-    const tmp = await list({ _id: props.match.params.id });
-    setData(tmp[0]);
-    fingerPrintId.onChange({ target: { value: tmp[0].fingerPrintId } });
-    firstName.onChange({ target: { value: tmp[0].firstName } });
-    lastName.onChange({ target: { value: tmp[0].lastName } });
-    department.onChange({ target: { value: tmp[0].department } });
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

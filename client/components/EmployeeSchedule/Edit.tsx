@@ -53,28 +53,6 @@ export function Edit(props: any) {
     };
   }
 
-  async function handleFormSubmit(e: any) {
-    e.preventDefault();
-
-    const tmp = {
-      employeeId: employeeId.value,
-      scheduleId: scheduleId.value,
-      payrollId: payrollId.value,
-      date: date.value
-    };
-
-    const result = await update(props.match.params.id, tmp);
-    if (result.errmsg) {
-      setError(result.errmsg);
-    } else {
-      setDone(true);
-    }
-  }
-
-  if (done) {
-    return <Redirect to="/employeeSchedule" />;
-  }
-
   async function fetchData() {
     const tmp = await Promise.all([
       employeeList(),
@@ -97,6 +75,28 @@ export function Edit(props: any) {
   useEffect(() => {
     fetchData();
   }, []);
+
+  async function handleFormSubmit(e: any) {
+    e.preventDefault();
+
+    const tmp = {
+      employeeId: employeeId.value,
+      scheduleId: scheduleId.value,
+      payrollId: payrollId.value,
+      date: date.value
+    };
+
+    const result = await update(props.match.params.id, tmp);
+    if (result.errmsg) {
+      setError(result.errmsg);
+    } else {
+      setDone(true);
+    }
+  }
+
+  if (done) {
+    return <Redirect to="/employeeSchedule" />;
+  }
 
   return (
     <form onSubmit={handleFormSubmit}>

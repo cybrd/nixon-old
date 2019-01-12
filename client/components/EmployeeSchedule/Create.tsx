@@ -20,6 +20,7 @@ export function Create() {
   const employeeId = useFormSelect('');
   const scheduleId = useFormSelect('');
   const payrollId = useFormSelect('');
+  const [done, setDone] = useState(false);
   const [dates, setDates] = useState([new Date().toISOString().substr(0, 10)]);
   const [error, setError] = useState(false);
 
@@ -45,24 +46,6 @@ export function Create() {
       value: value,
       onChange: handleChange
     };
-  }
-
-  async function handleFormSubmit(e: any) {
-    e.preventDefault();
-
-    const data = {
-      employeeId: employeeId.value,
-      scheduleId: scheduleId.value,
-      payrollId: payrollId.value,
-      dates: dates
-    };
-
-    const result = await create(data);
-    if (result.errmsg) {
-      setError(result.errmsg);
-    } else {
-      return <Redirect to="/employeeSchedule" />;
-    }
   }
 
   function addDate() {
@@ -103,6 +86,28 @@ export function Create() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  async function handleFormSubmit(e: any) {
+    e.preventDefault();
+
+    const data = {
+      employeeId: employeeId.value,
+      scheduleId: scheduleId.value,
+      payrollId: payrollId.value,
+      dates: dates
+    };
+
+    const result = await create(data);
+    if (result.errmsg) {
+      setError(result.errmsg);
+    } else {
+      setDone(true);
+    }
+  }
+
+  if (done) {
+    return <Redirect to="/employeeSchedule" />;
+  }
 
   return (
     <form onSubmit={handleFormSubmit}>

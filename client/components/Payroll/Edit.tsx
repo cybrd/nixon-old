@@ -25,6 +25,16 @@ export function Edit(props: any) {
     };
   }
 
+  async function fetchData() {
+    const tmp = await list({ _id: props.match.params.id });
+    setData(tmp[0]);
+    name.onChange({ target: { value: tmp[0].name } });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -43,16 +53,6 @@ export function Edit(props: any) {
   if (done) {
     return <Redirect to="/payroll" />;
   }
-
-  async function fetchData() {
-    const tmp = await list({ _id: props.match.params.id });
-    setData(tmp[0]);
-    name.onChange({ target: { value: tmp[0].name } });
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>
