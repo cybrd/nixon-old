@@ -14,5 +14,6 @@ export function Update(props: any) {
       text-decoration: underline;
     }
   `;
+
   return <LinkStyled to={uri}>{props.children || 'update'}</LinkStyled>;
 }

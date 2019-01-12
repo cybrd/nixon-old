@@ -11,6 +11,7 @@ import {
   MenuItem
 } from '@material-ui/core';
 
+import { FormControlWithRemove } from '../Helper/FormControlWithRemove';
 import { list as employeeList } from '../../services/employee';
 import { list as scheduleList } from '../../services/schedule';
 import { list as payrollList } from '../../services/payroll';
@@ -20,7 +21,7 @@ export function Create() {
   const employeeId = useFormSelect('');
   const scheduleId = useFormSelect('');
   const payrollId = useFormSelect('');
-  const date = useFormInput('');
+  const [dates, setDates] = useState([new Date().toISOString().substr(0, 10)]);
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
 
@@ -28,16 +29,10 @@ export function Create() {
   const [scheduleOptions, setScheduleOptions] = useState(null);
   const [payrollOptions, setPayrollOptions] = useState(null);
 
-  function useFormInput(initialValue: string) {
-    const [value, setValue] = useState(initialValue);
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-      setValue(e.target.value);
-    }
-
-    return {
-      value: value,
-      onChange: handleChange
+  function handleDatesChange(i: number) {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      dates[i] = e.target.value;
+      setDates(dates);
     };
   }
 
@@ -61,7 +56,7 @@ export function Create() {
       employeeId: employeeId.value,
       scheduleId: scheduleId.value,
       payrollId: payrollId.value,
-      date: date.value
+      dates: dates
     };
 
     const result = await create(data);
@@ -70,6 +65,26 @@ export function Create() {
     } else {
       setDone(true);
     }
+  }
+
+  function addDate() {
+    if (dates.length) {
+      const newDate = new Date(dates[dates.length - 1]);
+      newDate.setDate(newDate.getDate() + 1);
+
+      dates.push(newDate.toISOString().substr(0, 10));
+    } else {
+      dates.push(new Date().toISOString().substr(0, 10));
+    }
+
+    setDates(dates);
+  }
+
+  function removeDate(i: number) {
+    return () => {
+      dates.splice(i, 1);
+      setDates(dates);
+    };
   }
 
   if (done) {
@@ -137,19 +152,39 @@ export function Create() {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth required>
-        <TextField
-          label="Date"
-          type="date"
-          InputLabelProps={{
-            shrink: true
-          }}
-          {...date}
-        />
-      </FormControl>
-      <Button type="submit" variant="contained" color="primary">
-        Submit
-      </Button>
+
+      {dates.map((date, i) => (
+        <FormControlWithRemove
+          fullWidth
+          required
+          key={'dates' + i}
+          remove={removeDate(i)}
+        >
+          <TextField
+            label="Date"
+            type="date"
+            InputLabelProps={{
+              shrink: true
+            }}
+            value={date}
+            onChange={handleDatesChange(i)}
+          />
+        </FormControlWithRemove>
+      ))}
+
+      <p>
+        <Button
+          type="button"
+          variant="contained"
+          color="primary"
+          onClick={addDate}
+        >
+          Add date
+        </Button>
+        <Button type="submit" variant="contained" color="primary">
+          Submit
+        </Button>
+      </p>
       {error && <p>Create error: {error}</p>}
     </form>
   );

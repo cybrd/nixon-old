@@ -21,7 +21,13 @@ router.post('/listPopulated', userGuard, async (req, res) => {
 });
 
 router.post('/create', adminGuard, async (req, res) => {
-  res.send(await create(req.user, req.body));
+  const { dates, ...params } = req.body;
+  const results = await Promise.all(
+    dates.map((date: any) =>
+      create(req.user, Object.assign({}, params, { date: date }))
+    )
+  );
+  res.send(results);
 });
 
 router.post('/:id/remove', adminGuard, async (req, res) => {

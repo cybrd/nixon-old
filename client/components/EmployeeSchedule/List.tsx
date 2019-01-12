@@ -1,15 +1,23 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+
+import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import styled from 'styled-components';
 
 import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
 import { listPopulated } from '../../services/employeeSchedule';
+import { list as employeeList } from '../../services/employee';
+import { list as payrollList } from '../../services/payroll';
 
 export function List() {
   const [data, setData] = useState(null);
+  const employeeId = useFormSelect('');
+  const payrollId = useFormSelect('');
+  const [employeeOptions, setEmployeeOptions] = useState(null);
+  const [payrollOptions, setPayrollOptions] = useState(null);
   const columns = [
     {
       label: 'Employee',
@@ -70,13 +78,69 @@ export function List() {
 
   if (data == null) {
     (async () => {
-      const tmp = await listPopulated();
-      setData(tmp);
+      const tmp = await Promise.all([
+        employeeList(),
+        payrollList(),
+        listPopulated()
+      ]);
+
+      setEmployeeOptions(tmp[0]);
+      setPayrollOptions(tmp[1]);
+      setData(tmp[2]);
     })();
   }
 
+  function useFormSelect(initialValue: string) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e: any) {
+      setValue(e.target.value);
+    }
+
+    return {
+      value: value,
+      onChange: handleChange
+    };
+  }
+
+  const MyForm = styled.form`
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  `;
+
   return (
     <React.Fragment>
+      <MyForm>
+        <FormControl fullWidth>
+          <InputLabel>Employee</InputLabel>
+          {employeeOptions != null ? (
+            <Select {...employeeId}>
+              {employeeOptions.map((x: any) => (
+                <MenuItem key={x._id} value={x._id}>
+                  {x.fingerPrintId} - {x.firstName} {x.lastName}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Payroll</InputLabel>
+          {payrollOptions != null ? (
+            <Select {...payrollId}>
+              {payrollOptions.map((x: any) => (
+                <MenuItem key={x._id} value={x._id}>
+                  {x.name}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
+        </FormControl>
+      </MyForm>
       <ButtonLink to="/employeeSchedule/create" color="primary">
         Create New Employee Schedule
       </ButtonLink>
