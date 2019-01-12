@@ -7,8 +7,7 @@ import {
   Button,
   InputLabel,
   Input,
-  Select,
-  MenuItem
+  Select
 } from '@material-ui/core';
 
 import { list, update } from '../../services/user';
@@ -95,10 +94,10 @@ export function Edit(props: any) {
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>Role</InputLabel>
-        <Select {...role}>
-          <MenuItem value="admin">admin</MenuItem>
-          <MenuItem value="supervisor">supervisor</MenuItem>
-          <MenuItem value="user">user</MenuItem>
+        <Select native {...role}>
+          <option value="admin">admin</option>
+          <option value="supervisor">supervisor</option>
+          <option value="user">user</option>
         </Select>
       </FormControl>
       <Button type="submit" variant="contained" color="primary">

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
 
 import { ButtonLink } from '../Helper/ButtonLink';
@@ -76,31 +76,38 @@ export function List() {
     }
   ];
 
-  const query = payrollId.value + employeeId.value;
-  useEffect(
-    () => {
-      if (payrollId.value || employeeId.value) {
-        //
-      }
-    },
-    [query]
-  );
-
-  async function fetchData() {
-    const tmp = await Promise.all([
-      employeeList(),
-      payrollList(),
-      listPopulated()
-    ]);
+  async function fetchOptions() {
+    const tmp = await Promise.all([employeeList(), payrollList()]);
 
     setEmployeeOptions(tmp[0]);
     setPayrollOptions(tmp[1]);
-    setData(tmp[2]);
   }
 
   useEffect(() => {
-    fetchData();
+    fetchOptions();
   }, []);
+
+  async function fetchData() {
+    const args: any = {};
+    if (payrollId.value) {
+      args.payrollId = payrollId.value;
+    }
+    if (employeeId.value) {
+      args.employeeId = employeeId.value;
+    }
+
+    const tmp = await listPopulated(args);
+
+    setData(tmp);
+  }
+
+  const query = payrollId.value + employeeId.value;
+  useEffect(
+    () => {
+      fetchData();
+    },
+    [query]
+  );
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);
@@ -123,15 +130,19 @@ export function List() {
 
   return (
     <React.Fragment>
+      <ButtonLink to="/employeeSchedule/create" color="primary">
+        Create New Employee Schedule
+      </ButtonLink>
       <MyForm>
         <FormControl fullWidth>
-          <InputLabel>Employee</InputLabel>
+          <InputLabel>Select Employee</InputLabel>
           {employeeOptions != null ? (
-            <Select {...employeeId}>
+            <Select native {...employeeId}>
+              <option value="" />
               {employeeOptions.map((x: any) => (
-                <MenuItem key={x._id} value={x._id}>
+                <option key={x._id} value={x._id}>
                   {x.fingerPrintId} - {x.firstName} {x.lastName}
-                </MenuItem>
+                </option>
               ))}
             </Select>
           ) : (
@@ -139,13 +150,14 @@ export function List() {
           )}
         </FormControl>
         <FormControl fullWidth>
-          <InputLabel>Payroll</InputLabel>
+          <InputLabel>Select Payroll</InputLabel>
           {payrollOptions != null ? (
-            <Select {...payrollId}>
+            <Select native {...payrollId}>
+              <option value="" />
               {payrollOptions.map((x: any) => (
-                <MenuItem key={x._id} value={x._id}>
+                <option key={x._id} value={x._id}>
                   {x.name}
-                </MenuItem>
+                </option>
               ))}
             </Select>
           ) : (
@@ -153,9 +165,6 @@ export function List() {
           )}
         </FormControl>
       </MyForm>
-      <ButtonLink to="/employeeSchedule/create" color="primary">
-        Create New Employee Schedule
-      </ButtonLink>
       {data != null ? (
         <Table data={data} columns={columns} orderBy="date" />
       ) : (

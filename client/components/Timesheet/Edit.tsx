@@ -7,8 +7,7 @@ import {
   Button,
   TextField,
   InputLabel,
-  Select,
-  MenuItem
+  Select
 } from '@material-ui/core';
 
 import { list as employeeList } from '../../services/employee';
@@ -104,11 +103,11 @@ export function Edit(props: any) {
       <FormControl fullWidth required>
         <InputLabel>Finger Print Id</InputLabel>
         {employeeOptions != null ? (
-          <Select {...fingerPrintId}>
+          <Select native {...fingerPrintId}>
             {employeeOptions.map((x: any) => (
-              <MenuItem key={x._id} value={x.fingerPrintId}>
+              <option key={x._id} value={x.fingerPrintId}>
                 {x.fingerPrintId} - {x.firstName} {x.lastName}
-              </MenuItem>
+              </option>
             ))}
           </Select>
         ) : (
@@ -127,32 +126,32 @@ export function Edit(props: any) {
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>Start Hour</InputLabel>
-        <Select {...hour}>
+        <Select native {...hour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <MenuItem key={i.toString().concat('hour')} value={i.toString()}>
+            <option key={i.toString().concat('hour')} value={i.toString()}>
               {i.toString()}
-            </MenuItem>
+            </option>
           ))}
         </Select>
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>Start Minute</InputLabel>
-        <Select {...minute}>
+        <Select native {...minute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <MenuItem
+            <option
               key={i.toString().concat('startMinute')}
               value={i.toString()}
             >
               {i.toString()}
-            </MenuItem>
+            </option>
           ))}
         </Select>
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>Type</InputLabel>
-        <Select {...type}>
-          <MenuItem value="IN">IN</MenuItem>
-          <MenuItem value="OUT">OUT</MenuItem>
+        <Select native {...type}>
+          <option value="IN">IN</option>
+          <option value="OUT">OUT</option>
         </Select>
       </FormControl>
       <Button type="submit" variant="contained" color="primary">

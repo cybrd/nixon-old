@@ -7,8 +7,7 @@ import {
   Button,
   TextField,
   InputLabel,
-  Select,
-  MenuItem
+  Select
 } from '@material-ui/core';
 
 import { list as employeeList } from '../../services/employee';
@@ -104,11 +103,11 @@ export function Edit(props: any) {
       <FormControl fullWidth required>
         <InputLabel>Employee</InputLabel>
         {employeeOptions != null ? (
-          <Select {...employeeId}>
+          <Select native {...employeeId}>
             {employeeOptions.map((x: any) => (
-              <MenuItem key={x._id} value={x._id}>
+              <option key={x._id} value={x._id}>
                 {x.fingerPrintId} - {x.firstName} {x.lastName}
-              </MenuItem>
+              </option>
             ))}
           </Select>
         ) : (
@@ -118,11 +117,11 @@ export function Edit(props: any) {
       <FormControl fullWidth required>
         <InputLabel>Schedule</InputLabel>
         {scheduleOptions != null ? (
-          <Select {...scheduleId}>
+          <Select native {...scheduleId}>
             {scheduleOptions.map((x: any) => (
-              <MenuItem key={x._id} value={x._id}>
+              <option key={x._id} value={x._id}>
                 {x.name}
-              </MenuItem>
+              </option>
             ))}
           </Select>
         ) : (
@@ -132,11 +131,11 @@ export function Edit(props: any) {
       <FormControl fullWidth required>
         <InputLabel>Payroll</InputLabel>
         {payrollOptions != null ? (
-          <Select {...payrollId}>
+          <Select native {...payrollId}>
             {payrollOptions.map((x: any) => (
-              <MenuItem key={x._id} value={x._id}>
+              <option key={x._id} value={x._id}>
                 {x.name}
-              </MenuItem>
+              </option>
             ))}
           </Select>
         ) : (

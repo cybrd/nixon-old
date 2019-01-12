@@ -74,7 +74,6 @@ function getSorting(order: any, orderBy: any) {
 export function Table(props: any) {
   const [order, setOrder] = useState(props.order || 'asc');
   const [orderBy, setOrderBy] = useState(props.orderBy || '_id');
-  const [data] = useState(props.data);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
 
@@ -98,7 +97,7 @@ export function Table(props: any) {
           onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {stableSort(data, getSorting(order, orderBy))
+          {stableSort(props.data, getSorting(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row: any, index: number) => {
               return (
@@ -132,7 +131,7 @@ export function Table(props: any) {
 
       <TablePagination
         component="div"
-        count={data.length}
+        count={props.data.length}
         rowsPerPageOptions={[]}
         rowsPerPage={rowsPerPage}
         page={page}

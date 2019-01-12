@@ -7,8 +7,7 @@ import {
   Button,
   TextField,
   InputLabel,
-  Select,
-  MenuItem
+  Select
 } from '@material-ui/core';
 
 import { FormControlWithRemove } from '../Helper/FormControlWithRemove';
@@ -22,7 +21,6 @@ export function Create() {
   const scheduleId = useFormSelect('');
   const payrollId = useFormSelect('');
   const [dates, setDates] = useState([new Date().toISOString().substr(0, 10)]);
-  const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
 
   const [employeeOptions, setEmployeeOptions] = useState(null);
@@ -63,7 +61,7 @@ export function Create() {
     if (result.errmsg) {
       setError(result.errmsg);
     } else {
-      setDone(true);
+      return <Redirect to="/employeeSchedule" />;
     }
   }
 
@@ -85,10 +83,6 @@ export function Create() {
       dates.splice(i, 1);
       setDates(dates);
     };
-  }
-
-  if (done) {
-    return <Redirect to="/employeeSchedule" />;
   }
 
   async function fetchData() {
@@ -115,11 +109,11 @@ export function Create() {
       <FormControl fullWidth required>
         <InputLabel>Employee</InputLabel>
         {employeeOptions != null ? (
-          <Select {...employeeId}>
+          <Select native {...employeeId}>
             {employeeOptions.map((x: any) => (
-              <MenuItem key={x._id} value={x._id}>
+              <option key={x._id} value={x._id}>
                 {x.fingerPrintId} - {x.firstName} {x.lastName}
-              </MenuItem>
+              </option>
             ))}
           </Select>
         ) : (
@@ -129,11 +123,11 @@ export function Create() {
       <FormControl fullWidth required>
         <InputLabel>Schedule</InputLabel>
         {scheduleOptions != null ? (
-          <Select {...scheduleId}>
+          <Select native {...scheduleId}>
             {scheduleOptions.map((x: any) => (
-              <MenuItem key={x._id} value={x._id}>
+              <option key={x._id} value={x._id}>
                 {x.name}
-              </MenuItem>
+              </option>
             ))}
           </Select>
         ) : (
@@ -143,11 +137,11 @@ export function Create() {
       <FormControl fullWidth required>
         <InputLabel>Payroll</InputLabel>
         {payrollOptions != null ? (
-          <Select {...payrollId}>
+          <Select native {...payrollId}>
             {payrollOptions.map((x: any) => (
-              <MenuItem key={x._id} value={x._id}>
+              <option key={x._id} value={x._id}>
                 {x.name}
-              </MenuItem>
+              </option>
             ))}
           </Select>
         ) : (

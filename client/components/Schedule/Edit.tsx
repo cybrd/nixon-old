@@ -7,8 +7,7 @@ import {
   Button,
   InputLabel,
   Input,
-  Select,
-  MenuItem
+  Select
 } from '@material-ui/core';
 
 import { update, list } from '../../services/schedule';
@@ -97,58 +96,52 @@ export function Edit(props: any) {
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>Start Hour</InputLabel>
-        <Select {...startHour}>
+        <Select native {...startHour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <MenuItem
-              key={i.toString().concat('startHour')}
-              value={i.toString()}
-            >
+            <option key={i.toString().concat('startHour')} value={i.toString()}>
               {i.toString()}
-            </MenuItem>
+            </option>
           ))}
         </Select>
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>Start Minute</InputLabel>
-        <Select {...startMinute}>
+        <Select native {...startMinute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <MenuItem
+            <option
               key={i.toString().concat('startMinute')}
               value={i.toString()}
             >
               {i.toString()}
-            </MenuItem>
+            </option>
           ))}
         </Select>
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>End Hour</InputLabel>
-        <Select {...endHour}>
+        <Select native {...endHour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <MenuItem key={i.toString().concat('endHour')} value={i.toString()}>
+            <option key={i.toString().concat('endHour')} value={i.toString()}>
               {i.toString()}
-            </MenuItem>
+            </option>
           ))}
         </Select>
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>End Minute</InputLabel>
-        <Select {...endMinute}>
+        <Select native {...endMinute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <MenuItem
-              key={i.toString().concat('endMinute')}
-              value={i.toString()}
-            >
+            <option key={i.toString().concat('endMinute')} value={i.toString()}>
               {i.toString()}
-            </MenuItem>
+            </option>
           ))}
         </Select>
       </FormControl>
       <FormControl fullWidth required>
         <InputLabel>Type</InputLabel>
-        <Select {...type}>
-          <MenuItem value="regular">regular</MenuItem>
-          <MenuItem value="overtime">overtime</MenuItem>
+        <Select native {...type}>
+          <option value="regular">regular</option>
+          <option value="overtime">overtime</option>
         </Select>
       </FormControl>
       <Button type="submit" variant="contained" color="primary">
