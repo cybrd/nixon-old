@@ -54,7 +54,7 @@ export function Menu() {
             Logout
           </ListItem>
         ) : (
-          <ListItemLink to="/login">Login</ListItemLink>
+          <ListItemLink to="/login">Login Page</ListItemLink>
         )}
       </List>
     </MenuWrapper>

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-
 import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -13,7 +12,7 @@ import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
 
 export function List() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const employeeId = useFormSelect('');
   const payrollId = useFormSelect('');
   const [employeeOptions, setEmployeeOptions] = useState(null);
@@ -104,7 +103,9 @@ export function List() {
   const query = payrollId.value + employeeId.value;
   useEffect(
     () => {
-      fetchData();
+      if (employeeOptions) {
+        fetchData();
+      }
     },
     [query]
   );

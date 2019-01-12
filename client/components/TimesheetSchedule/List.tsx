@@ -1,11 +1,19 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { FormControl, InputLabel, Select } from '@material-ui/core';
+import styled from 'styled-components';
 
 import { Table } from '../Helper/Table';
 import { list } from '../../services/timesheetSchedule';
+import { list as employeeList } from '../../services/employee';
+import { list as payrollList } from '../../services/payroll';
 
 export function List() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
+  const employeeId = useFormSelect('');
+  const payrollId = useFormSelect('');
+  const [employeeOptions, setEmployeeOptions] = useState(null);
+  const [payrollOptions, setPayrollOptions] = useState(null);
   const columns = [
     {
       label: 'Finger Print Id',
@@ -107,18 +115,95 @@ export function List() {
     }
   ];
 
-  async function fetchData() {
-    const tmp = await list();
-    setData(tmp);
+  function useFormSelect(initialValue: string) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e: any) {
+      setValue(e.target.value);
+    }
+
+    return {
+      value: value,
+      onChange: handleChange
+    };
+  }
+
+  async function fetchOptions() {
+    const tmp = await Promise.all([employeeList(), payrollList()]);
+
+    setEmployeeOptions(tmp[0]);
+    setPayrollOptions(tmp[1]);
   }
 
   useEffect(() => {
-    fetchData();
+    fetchOptions();
   }, []);
+
+  async function fetchData() {
+    const args: any = {};
+    if (payrollId.value) {
+      args.payrollId = payrollId.value;
+    }
+    if (employeeId.value) {
+      args.employeeId = employeeId.value;
+    }
+
+    const tmp = await list(args);
+
+    setData(tmp);
+  }
+
+  const query = payrollId.value + employeeId.value;
+  useEffect(
+    () => {
+      if (employeeOptions) {
+        fetchData();
+      }
+    },
+    [query]
+  );
+
+  const MyForm = styled.form`
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  `;
 
   return (
     <React.Fragment>
-      {data != null && data.length ? (
+      <MyForm>
+        <FormControl fullWidth>
+          <InputLabel>Select Employee</InputLabel>
+          {employeeOptions != null ? (
+            <Select native {...employeeId}>
+              <option value="" />
+              {employeeOptions.map((x: any) => (
+                <option key={x._id} value={x._id}>
+                  {x.fingerPrintId} - {x.firstName} {x.lastName}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Select Payroll</InputLabel>
+          {payrollOptions != null ? (
+            <Select native {...payrollId}>
+              <option value="" />
+              {payrollOptions.map((x: any) => (
+                <option key={x._id} value={x._id}>
+                  {x.name}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
+        </FormControl>
+      </MyForm>
+      {data != null ? (
         <Table data={data} columns={columns} orderBy="workDay" />
       ) : (
         'Loading...'
