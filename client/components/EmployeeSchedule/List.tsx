@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import styled from 'styled-components';
@@ -76,19 +76,31 @@ export function List() {
     }
   ];
 
-  if (data == null) {
-    (async () => {
-      const tmp = await Promise.all([
-        employeeList(),
-        payrollList(),
-        listPopulated()
-      ]);
+  const query = payrollId.value + employeeId.value;
+  useEffect(
+    () => {
+      if (payrollId.value || employeeId.value) {
+        //
+      }
+    },
+    [query]
+  );
 
-      setEmployeeOptions(tmp[0]);
-      setPayrollOptions(tmp[1]);
-      setData(tmp[2]);
-    })();
+  async function fetchData() {
+    const tmp = await Promise.all([
+      employeeList(),
+      payrollList(),
+      listPopulated()
+    ]);
+
+    setEmployeeOptions(tmp[0]);
+    setPayrollOptions(tmp[1]);
+    setData(tmp[2]);
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);

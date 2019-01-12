@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -74,28 +74,30 @@ export function Edit(props: any) {
     return <Redirect to="/timesheet" />;
   }
 
-  if (employeeOptions == null) {
-    (async () => {
-      const tmp = await Promise.all([
-        employeeList(),
-        list({ _id: props.match.params.id })
-      ]);
-      setEmployeeOptions(tmp[0]);
+  async function fetchData() {
+    const tmp = await Promise.all([
+      employeeList(),
+      list({ _id: props.match.params.id })
+    ]);
+    setEmployeeOptions(tmp[0]);
 
-      fingerPrintId.onChange({ target: { value: tmp[1][0].fingerPrintId } });
-      date.onChange({
-        target: {
-          value: new Date(tmp[1][0].timestamp).toISOString().substr(0, 10)
-        }
-      });
-      hour.onChange({
-        target: { value: new Date(tmp[1][0].timestamp).getHours() }
-      });
-      minute.onChange({
-        target: { value: new Date(tmp[1][0].timestamp).getMinutes() }
-      });
-    })();
+    fingerPrintId.onChange({ target: { value: tmp[1][0].fingerPrintId } });
+    date.onChange({
+      target: {
+        value: new Date(tmp[1][0].timestamp).toISOString().substr(0, 10)
+      }
+    });
+    hour.onChange({
+      target: { value: new Date(tmp[1][0].timestamp).getHours() }
+    });
+    minute.onChange({
+      target: { value: new Date(tmp[1][0].timestamp).getMinutes() }
+    });
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

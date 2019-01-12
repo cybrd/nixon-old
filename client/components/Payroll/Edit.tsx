@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { FormControl, Button, Input, InputLabel } from '@material-ui/core';
@@ -44,13 +44,15 @@ export function Edit(props: any) {
     return <Redirect to="/payroll" />;
   }
 
-  if (data == null) {
-    (async () => {
-      const tmp = await list({ _id: props.match.params.id });
-      setData(tmp[0]);
-      name.onChange({ target: { value: tmp[0].name } });
-    })();
+  async function fetchData() {
+    const tmp = await list({ _id: props.match.params.id });
+    setData(tmp[0]);
+    name.onChange({ target: { value: tmp[0].name } });
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -71,15 +71,17 @@ export function Edit(props: any) {
     return <Redirect to="/user" />;
   }
 
-  if (data == null) {
-    (async () => {
-      const tmp = await list({ _id: props.match.params.id });
-      setData(tmp[0]);
-      username.onChange({ target: { value: tmp[0].username } });
-      password.onChange({ target: { value: '' } });
-      role.onChange({ target: { value: tmp[0].role } });
-    })();
+  async function fetchData() {
+    const tmp = await list({ _id: props.match.params.id });
+    setData(tmp[0]);
+    username.onChange({ target: { value: tmp[0].username } });
+    password.onChange({ target: { value: '' } });
+    role.onChange({ target: { value: tmp[0].role } });
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

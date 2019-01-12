@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -74,13 +74,15 @@ export function Create() {
     return <Redirect to="/timesheet" />;
   }
 
-  if (employeeOptions == null) {
-    (async () => {
-      const tmp = await employeeList();
-      setEmployeeOptions(tmp);
-      fingerPrintId.onChange({ target: { value: tmp[0].fingerPrintId } });
-    })();
+  async function fetchData() {
+    const tmp = await employeeList();
+    setEmployeeOptions(tmp);
+    fingerPrintId.onChange({ target: { value: tmp[0].fingerPrintId } });
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

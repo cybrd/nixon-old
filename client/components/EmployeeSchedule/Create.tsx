@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -91,22 +91,24 @@ export function Create() {
     return <Redirect to="/employeeSchedule" />;
   }
 
-  if (employeeOptions == null) {
-    (async () => {
-      const tmp = await Promise.all([
-        employeeList(),
-        scheduleList(),
-        payrollList()
-      ]);
-      setEmployeeOptions(tmp[0]);
-      setScheduleOptions(tmp[1]);
-      setPayrollOptions(tmp[2]);
+  async function fetchData() {
+    const tmp = await Promise.all([
+      employeeList(),
+      scheduleList(),
+      payrollList()
+    ]);
+    setEmployeeOptions(tmp[0]);
+    setScheduleOptions(tmp[1]);
+    setPayrollOptions(tmp[2]);
 
-      employeeId.onChange({ target: { value: tmp[0][0]._id } });
-      scheduleId.onChange({ target: { value: tmp[1][0]._id } });
-      payrollId.onChange({ target: { value: tmp[2][0]._id } });
-    })();
+    employeeId.onChange({ target: { value: tmp[0][0]._id } });
+    scheduleId.onChange({ target: { value: tmp[1][0]._id } });
+    payrollId.onChange({ target: { value: tmp[2][0]._id } });
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

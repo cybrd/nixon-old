@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { FormControl, Button, Input, InputLabel } from '@material-ui/core';
@@ -50,16 +50,18 @@ export function Edit(props: any) {
     return <Redirect to="/employee" />;
   }
 
-  if (data == null) {
-    (async () => {
-      const tmp = await list({ _id: props.match.params.id });
-      setData(tmp[0]);
-      fingerPrintId.onChange({ target: { value: tmp[0].fingerPrintId } });
-      firstName.onChange({ target: { value: tmp[0].firstName } });
-      lastName.onChange({ target: { value: tmp[0].lastName } });
-      department.onChange({ target: { value: tmp[0].department } });
-    })();
+  async function fetchData() {
+    const tmp = await list({ _id: props.match.params.id });
+    setData(tmp[0]);
+    fingerPrintId.onChange({ target: { value: tmp[0].fingerPrintId } });
+    firstName.onChange({ target: { value: tmp[0].firstName } });
+    lastName.onChange({ target: { value: tmp[0].lastName } });
+    department.onChange({ target: { value: tmp[0].department } });
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

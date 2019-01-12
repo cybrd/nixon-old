@@ -110,7 +110,9 @@ export function Table(props: any) {
                   {props.columns.map((column: any) => {
                     if (column.cell) {
                       return (
-                        <TableCell key={row._id.concat(column.field)}>
+                        <TableCell
+                          key={row._id.concat(column.label, column.field)}
+                        >
                           {column.cell(row[column.field], row)}
                         </TableCell>
                       );

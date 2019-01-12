@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -76,26 +76,28 @@ export function Edit(props: any) {
     return <Redirect to="/employeeSchedule" />;
   }
 
-  if (employeeOptions == null) {
-    (async () => {
-      const tmp = await Promise.all([
-        employeeList(),
-        scheduleList(),
-        payrollList(),
-        list({ _id: props.match.params.id })
-      ]);
-      setEmployeeOptions(tmp[0]);
-      setScheduleOptions(tmp[1]);
-      setPayrollOptions(tmp[2]);
+  async function fetchData() {
+    const tmp = await Promise.all([
+      employeeList(),
+      scheduleList(),
+      payrollList(),
+      list({ _id: props.match.params.id })
+    ]);
+    setEmployeeOptions(tmp[0]);
+    setScheduleOptions(tmp[1]);
+    setPayrollOptions(tmp[2]);
 
-      employeeId.onChange({ target: { value: tmp[3][0].employeeId } });
-      scheduleId.onChange({ target: { value: tmp[3][0].scheduleId } });
-      payrollId.onChange({ target: { value: tmp[3][0].payrollId } });
-      date.onChange({
-        target: { value: new Date(tmp[3][0].date).toISOString().substr(0, 10) }
-      });
-    })();
+    employeeId.onChange({ target: { value: tmp[3][0].employeeId } });
+    scheduleId.onChange({ target: { value: tmp[3][0].scheduleId } });
+    payrollId.onChange({ target: { value: tmp[3][0].payrollId } });
+    date.onChange({
+      target: { value: new Date(tmp[3][0].date).toISOString().substr(0, 10) }
+    });
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <form onSubmit={handleFormSubmit}>

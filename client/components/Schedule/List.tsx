@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
@@ -46,12 +46,14 @@ export function List() {
     }
   ];
 
-  if (data == null) {
-    (async () => {
-      const tmp = await list();
-      setData(tmp);
-    })();
+  async function fetchData() {
+    const tmp = await list();
+    setData(tmp);
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <React.Fragment>
