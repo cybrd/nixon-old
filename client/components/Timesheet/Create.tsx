@@ -80,7 +80,13 @@ export function Create() {
   }
 
   if (done) {
-    return <Redirect to="/timesheet" />;
+    let history = '';
+
+    if (fingerPrintId.value) {
+      history += '/employee/' + fingerPrintId.value;
+    }
+
+    return <Redirect to={'/timesheet' + history} />;
   }
 
   return (

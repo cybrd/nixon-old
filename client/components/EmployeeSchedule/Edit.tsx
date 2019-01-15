@@ -95,7 +95,17 @@ export function Edit(props: any) {
   }
 
   if (done) {
-    return <Redirect to="/employeeSchedule" />;
+    let history = '';
+
+    if (employeeId.value) {
+      history += '/employee/' + employeeId.value;
+    }
+
+    if (payrollId.value) {
+      history += '/payroll/' + payrollId.value;
+    }
+
+    return <Redirect to={'/employeeSchedule' + history} />;
   }
 
   return (
