@@ -5,6 +5,7 @@ import { NoMatch } from '../NoMatch';
 import { List } from './List';
 import { Create } from './Create';
 import { Edit } from './Edit';
+import { Load } from './Load';
 
 export function EmployeeSchedule() {
   return (
@@ -13,6 +14,14 @@ export function EmployeeSchedule() {
       <Switch>
         <Route exact path="/employeeSchedule" component={List} />
         <Route exact path="/employeeSchedule/create" component={Create} />
+        <Route
+          exact
+          path="/employeeSchedule/employee/:eid/payroll/:pid"
+          component={List}
+        />
+        <Route exact path="/employeeSchedule/employee/:eid" component={List} />
+        <Route exact path="/employeeSchedule/payroll/:pid" component={List} />
+        <Route exact path="/employeeSchedule/load" component={Load} />
         <Route exact path="/employeeSchedule/:id" component={Edit} />
         <Route component={NoMatch} />
       </Switch>

@@ -11,7 +11,7 @@ import { listPopulated } from '../../services/employeeSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
 
-export function List() {
+export function List(props: any) {
   const [data, setData] = useState([]);
   const employeeId = useFormSelect('');
   const payrollId = useFormSelect('');
@@ -80,6 +80,14 @@ export function List() {
 
     setEmployeeOptions(tmp[0]);
     setPayrollOptions(tmp[1]);
+
+    if (props.match.params.eid) {
+      employeeId.onChange({ target: { value: props.match.params.eid } });
+    }
+
+    if (props.match.params.pid) {
+      payrollId.onChange({ target: { value: props.match.params.pid } });
+    }
   }
 
   useEffect(() => {
@@ -88,16 +96,21 @@ export function List() {
 
   async function fetchData() {
     const args: any = {};
-    if (payrollId.value) {
-      args.payrollId = payrollId.value;
-    }
+    let history = '';
+
     if (employeeId.value) {
+      history += '/employee/' + employeeId.value;
       args.employeeId = employeeId.value;
+    }
+    if (payrollId.value) {
+      history += '/payroll/' + payrollId.value;
+      args.payrollId = payrollId.value;
     }
 
     const tmp = await listPopulated(args);
-
     setData(tmp);
+
+    props.history.push('/employeeSchedule' + history);
   }
 
   const query = payrollId.value + employeeId.value;

@@ -10,6 +10,13 @@ export function TimesheetSchedule() {
       <h3>Timesheet Schedule</h3>
       <Switch>
         <Route exact path="/timesheetSchedule" component={List} />
+        <Route
+          exact
+          path="/timesheetSchedule/employee/:eid/payroll/:pid"
+          component={List}
+        />
+        <Route exact path="/timesheetSchedule/employee/:eid" component={List} />
+        <Route exact path="/timesheetSchedule/payroll/:pid" component={List} />
         <Route component={NoMatch} />
       </Switch>
     </React.Fragment>

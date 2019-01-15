@@ -32,6 +32,19 @@ export const EmployeeScheduleArchiveSchema = new Schema(
   }
 );
 
+EmployeeScheduleSchema.index(
+  {
+    employeeId: 1,
+    scheduleId: 1,
+    payrollId: 1,
+    date: 1
+  },
+  {
+    name: 'uindex',
+    unique: true
+  }
+);
+
 export interface IEmployeeSchedule extends Document {
   oldId?: string;
   employeeId: IEmployee;

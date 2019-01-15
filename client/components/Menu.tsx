@@ -46,6 +46,9 @@ export function Menu() {
               Employee Schedule
             </ListItemLink>
             <ListItemLink to="/timesheet/load">Load Timesheet</ListItemLink>
+            <ListItemLink to="/employeeSchedule/load">
+              Load Employee Schedule
+            </ListItemLink>
           </React.Fragment>
         )}
 

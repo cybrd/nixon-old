@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { upload } from '../../services/timesheet';
+import { upload } from '../../services/employeeSchedule';
 
 export function Load() {
   const [file, setFile] = useState(null);

@@ -31,17 +31,18 @@ router.post(
   adminGuard,
   multer().single('file'),
   async (req, res) => {
-    const filename = './logs/' + dateformat(new Date(), 'yyyymmddhhMMss');
+    const filename =
+      './logs/timesheet' + dateformat(new Date(), 'yyyymmddhhMMss');
     writeFileSync(filename, req.file.buffer);
 
     const records = reader.readFileSync(filename);
-    await Promise.all(
-      records.map((record: any) => {
-        createFromUpload(req.user, record);
-      })
+    res.send(
+      await Promise.all(
+        records.map(async (record: any) => {
+          return await createFromUpload(req.user, record);
+        })
+      )
     );
-
-    res.send('test');
   }
 );
 
