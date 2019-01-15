@@ -22,7 +22,7 @@ export function TimesheetSchedule() {
         <Route
           exact
           path="/timesheetSchedule/summary/employee/:eid/payroll/:pid"
-          component={List}
+          component={Summary}
         />
         <Route
           exact
