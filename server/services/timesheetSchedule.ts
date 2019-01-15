@@ -72,7 +72,7 @@ export async function list(args = {}) {
     });
 
     r.push({
-      _id: employeeSchedule[i]._id + employeeSchedule[i].employeeId,
+      _id: employeeSchedule[i]._id + employeeSchedule[i].employeeId._id,
       fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
       scheduleName: employeeSchedule[i].scheduleId.name,
       workDay: workDay,
@@ -124,4 +124,29 @@ function sumTimeIntersect(
       rangeMax.start
     );
   }
+}
+
+export async function summary(args = {}) {
+  const tmp = await list(args);
+  const result: any = {};
+
+  tmp.forEach(x => {
+    const id =
+      'fingerPrintId' + x.fingerPrintId + 'scheduleName' + x.scheduleName;
+
+    if (result[id]) {
+      result[id].payrollWorkDayTotal += x.workDayTotal;
+      result[id].payrollWorkDayWorked += x.workDayWorked;
+    } else {
+      result[id] = {
+        _id: id,
+        fingerPrintId: x.fingerPrintId,
+        scheduleName: x.scheduleName,
+        payrollWorkDayTotal: x.workDayTotal,
+        payrollWorkDayWorked: x.workDayWorked
+      };
+    }
+  });
+
+  return (Object as any).values(result);
 }

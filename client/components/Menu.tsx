@@ -33,6 +33,9 @@ export function Menu() {
             <ListItemLink to="/timesheetSchedule">
               Timesheet Schedule
             </ListItemLink>
+            <ListItemLink to="/timesheetSchedule/summary">
+              Timesheet Summary
+            </ListItemLink>
           </React.Fragment>
         )}
 

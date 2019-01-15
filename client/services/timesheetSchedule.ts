@@ -7,3 +7,11 @@ export function list(args = {}) {
     body: JSON.stringify(args)
   });
 }
+
+export function summary(args = {}) {
+  return myFetchJSON('/api/timesheetSchedule/summary', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(args)
+  });
+}
