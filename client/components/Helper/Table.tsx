@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import styled from 'styled-components';
 
 import {
   Table as MTable,
@@ -11,6 +12,8 @@ import {
   TablePagination,
   Paper
 } from '@material-ui/core';
+
+import { ButtonCopyClipboard } from './ButtonCopyClipboard';
 
 function EnhancedTableHead(props: any) {
   const { order, orderBy, onRequestSort } = props;
@@ -130,7 +133,7 @@ export function Table(props: any) {
       </MTable>
 
       <TablePagination
-        component="div"
+        component={MyTablePagination(props.data, props.columns)}
         count={props.data.length}
         rowsPerPageOptions={[]}
         rowsPerPage={rowsPerPage}
@@ -139,4 +142,29 @@ export function Table(props: any) {
       />
     </Paper>
   );
+}
+
+function MyTablePagination(data: any, columns: any) {
+  return (props: any) => {
+    const MyDiv = styled.div`
+      min-width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    `;
+
+    const MyDivChild = styled.div`
+      align-self: center;
+    `;
+
+    return (
+      <MyDiv>
+        <MyDivChild>
+          <ButtonCopyClipboard data={data} columns={columns}>
+            Copy to Clipboard
+          </ButtonCopyClipboard>
+        </MyDivChild>
+        <div>{props.children}</div>
+      </MyDiv>
+    );
+  };
 }
