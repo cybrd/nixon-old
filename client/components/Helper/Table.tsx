@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 
 import {
@@ -15,6 +16,18 @@ import {
 
 import { ButtonCopyClipboard } from './ButtonCopyClipboard';
 
+const MyTableCell = withStyles({
+  root: {
+    padding: '2px 28px 2px 12px'
+  }
+})(TableCell);
+
+const MyTableRow = withStyles({
+  root: {
+    height: '36px'
+  }
+})(TableRow);
+
 function EnhancedTableHead(props: any) {
   const { order, orderBy, onRequestSort } = props;
 
@@ -27,7 +40,7 @@ function EnhancedTableHead(props: any) {
       <TableRow>
         {props.columns.map((column: any) => {
           return (
-            <TableCell
+            <MyTableCell
               key={'th'.concat(column.label)}
               sortDirection={orderBy === column.field ? order : false}
             >
@@ -38,7 +51,7 @@ function EnhancedTableHead(props: any) {
               >
                 {column.label}
               </TableSortLabel>
-            </TableCell>
+            </MyTableCell>
           );
         })}
       </TableRow>
@@ -104,7 +117,7 @@ export function Table(props: any) {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row: any, index: number) => {
               return (
-                <TableRow
+                <MyTableRow
                   hover
                   key={row._id}
                   selected={index % 2 ? false : true}
@@ -112,21 +125,21 @@ export function Table(props: any) {
                   {props.columns.map((column: any) => {
                     if (column.cell) {
                       return (
-                        <TableCell
+                        <MyTableCell
                           key={row._id.concat(column.label, column.field)}
                         >
                           {column.cell(row[column.field], row)}
-                        </TableCell>
+                        </MyTableCell>
                       );
                     } else {
                       return (
-                        <TableCell key={row._id.concat(column.field)}>
+                        <MyTableCell key={row._id.concat(column.field)}>
                           {row[column.field]}
-                        </TableCell>
+                        </MyTableCell>
                       );
                     }
                   })}
-                </TableRow>
+                </MyTableRow>
               );
             })}
         </TableBody>
