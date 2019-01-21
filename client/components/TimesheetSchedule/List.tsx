@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { Table } from '../Helper/Table';
+import { Table, readableTime } from '../Helper/Table';
 import { list } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
@@ -36,87 +36,27 @@ export function List(props: any) {
     {
       label: 'WorkDayTotal',
       field: 'workDayTotal',
-      cell: (value: number) => {
-        value /= 1000;
-        const hours = Math.floor(value / 60 / 60);
-        value -= hours * 60 * 60;
-        const minutes = Math.floor(value / 60);
-        value -= minutes * 60;
-        const seconds = value;
-
-        const result: string[] = [];
-
-        if (hours) {
-          result.push(`${hours} hours`);
-        }
-
-        if (minutes) {
-          result.push(`${minutes} minutes`);
-        }
-
-        if (seconds) {
-          result.push(`${seconds} seconds`);
-        }
-
-        return result.join(' ');
-      }
+      cell: readableTime
     },
     {
       label: 'WorkDayWorked',
       field: 'workDayWorked',
-      cell: (value: number) => {
-        value /= 1000;
-        const hours = Math.floor(value / 60 / 60);
-        value -= hours * 60 * 60;
-        const minutes = Math.floor(value / 60);
-        value -= minutes * 60;
-        const seconds = value;
-
-        const result: string[] = [];
-
-        if (hours) {
-          result.push(`${hours} hours`);
-        }
-
-        if (minutes) {
-          result.push(`${minutes} minutes`);
-        }
-
-        if (seconds) {
-          result.push(`${seconds} seconds`);
-        }
-
-        return result.join(' ');
-      }
+      cell: readableTime
     },
     {
       label: 'WorkDayMissing',
-      field: 'workDayTotal',
-      cell: (value: number, rowData: any) => {
-        value -= rowData.workDayWorked;
-        value /= 1000;
-        const hours = Math.floor(value / 60 / 60);
-        value -= hours * 60 * 60;
-        const minutes = Math.floor(value / 60);
-        value -= minutes * 60;
-        const seconds = value;
-
-        const result: string[] = [];
-
-        if (hours) {
-          result.push(`${hours} hours`);
-        }
-
-        if (minutes) {
-          result.push(`${minutes} minutes`);
-        }
-
-        if (seconds) {
-          result.push(`${seconds} seconds`);
-        }
-
-        return result.join(' ');
-      }
+      field: 'workDayMissing',
+      cell: readableTime
+    },
+    {
+      label: 'Is Absent',
+      field: 'isAbsent',
+      cell: (value: string) => value && value.toString()
+    },
+    {
+      label: 'Late Allowance',
+      field: 'lateAllowance',
+      cell: (value: string) => value && value.toString()
     }
   ];
 

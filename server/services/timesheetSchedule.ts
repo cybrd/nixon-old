@@ -15,13 +15,16 @@ interface ITimesheetSchedule {
   workDay: Date;
   workDayTotal: number;
   workDayWorked: number;
+  workDayMissing: number;
+  lateAllowance: boolean;
+  isAbsent: boolean;
 }
 
 export async function list(args = {}) {
   let workDay;
   let timesheet;
-  let start: Date;
-  let end: Date;
+  let queryStart: Date;
+  let queryEnd: Date;
   let realStart: Date;
   let realEnd: Date;
   const r: ITimesheetSchedule[] = [];
@@ -29,14 +32,14 @@ export async function list(args = {}) {
   const employeeSchedule = await listPopulated(args);
   for (let i = 0; i < employeeSchedule.length; i++) {
     workDay = new Date(employeeSchedule[i].date);
-    start = new Date(
+    queryStart = new Date(
       workDay.getFullYear(),
       workDay.getMonth(),
       workDay.getDate(),
       parseInt(employeeSchedule[i].scheduleId.startHour, 10) - 10,
       parseInt(employeeSchedule[i].scheduleId.startMinute, 10)
     );
-    end = new Date(
+    queryEnd = new Date(
       workDay.getFullYear(),
       workDay.getMonth(),
       workDay.getDate(),
@@ -61,7 +64,7 @@ export async function list(args = {}) {
     timesheet = await timesheetList(
       {
         fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
-        timestamp: { $gt: start, $lt: end }
+        timestamp: { $gt: queryStart, $lt: queryEnd }
       },
       1
     );
@@ -75,14 +78,32 @@ export async function list(args = {}) {
       });
     });
 
+    const workDayTotal = realEnd.getTime() - realStart.getTime();
+
+    let workDayMissing = 0;
+    let isAbsent = false;
+    if (workDayWorked) {
+      workDayMissing = workDayTotal - workDayWorked;
+    } else {
+      isAbsent = true;
+    }
+
+    let lateAllowance = null;
+    if (getLateAmount(timesheet, realStart.getTime())) {
+      lateAllowance = getLateAmount(timesheet, realStart.getTime()) < 900;
+    }
+
     r.push({
       _id: employeeSchedule[i]._id + employeeSchedule[i].employeeId._id,
       fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
       scheduleName: employeeSchedule[i].scheduleId.name,
       payrollName: employeeSchedule[i].payrollId.name,
       workDay: workDay,
-      workDayTotal: realEnd.getTime() - realStart.getTime(),
-      workDayWorked: workDayWorked
+      workDayTotal: workDayTotal,
+      workDayWorked: workDayWorked,
+      workDayMissing: workDayMissing,
+      lateAllowance: lateAllowance,
+      isAbsent: isAbsent
     });
   }
 
@@ -131,6 +152,20 @@ function sumTimeIntersect(
   }
 }
 
+function getLateAmount(timesheet: ITimesheet[], realStart: number) {
+  for (let i = 0; i < timesheet.length; i++) {
+    if (timesheet[i].type === 'IN') {
+      if (realStart > timesheet[i].timestamp.getTime()) {
+        return 0;
+      } else {
+        return (timesheet[i].timestamp.getTime() - realStart) / 1000;
+      }
+    }
+  }
+
+  return 0;
+}
+
 export async function summary(args = {}) {
   const tmp = await list(args);
   const result: any = {};
@@ -142,13 +177,20 @@ export async function summary(args = {}) {
     if (result[id]) {
       result[id].payrollWorkDayTotal += x.workDayTotal;
       result[id].payrollWorkDayWorked += x.workDayWorked;
+      result[id].payrollWorkDayMissing += x.workDayMissing;
+      result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
+      result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
     } else {
       result[id] = {
         _id: id,
         fingerPrintId: x.fingerPrintId,
         scheduleName: x.scheduleName,
+        payrollName: x.payrollName,
         payrollWorkDayTotal: x.workDayTotal,
-        payrollWorkDayWorked: x.workDayWorked
+        payrollWorkDayWorked: x.workDayWorked,
+        payrollWorkDayMissing: x.workDayMissing,
+        payrollLateAllowance: x.lateAllowance ? 1 : 0,
+        payrollIsAbsent: x.isAbsent ? 1 : 0
       };
     }
   });

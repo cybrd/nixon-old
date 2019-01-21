@@ -7,7 +7,6 @@ import { FormControl, Button, Input, InputLabel } from '@material-ui/core';
 import { update, list } from '../../services/payroll';
 
 export function Edit(props: any) {
-  const [data, setData] = useState(null);
   const name = useFormInput('');
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
@@ -27,7 +26,7 @@ export function Edit(props: any) {
 
   async function fetchData() {
     const tmp = await list({ _id: props.match.params.id });
-    setData(tmp[0]);
+
     name.onChange({ target: { value: tmp[0].name } });
   }
 

@@ -14,6 +14,25 @@ const EmployeeSchema = new Schema(
     fingerPrintId: String,
     name: String,
     department: String,
+    employeeNumber: String,
+    hireDate: Date,
+    position: String,
+    startingSalary: String,
+    latestSalary: String,
+    dateResigned: Date,
+    totalBalance: String,
+    gender: String,
+    birthDate: Date,
+    address: String,
+    contactNumber: String,
+    TIN: String,
+    SSS: String,
+    philHealth: String,
+    pagIbig: String,
+    contactName: String,
+    contactRelationship: String,
+    contactAddress: String,
+    contactContactNumber: String,
     modifiedBy: String
   },
   {
@@ -28,6 +47,25 @@ const EmployeeArchiveSchema = new Schema(
     fingerPrintId: String,
     name: String,
     department: String,
+    employeeNumber: String,
+    hireDate: Date,
+    position: String,
+    startingSalary: String,
+    latestSalary: String,
+    dateResigned: Date,
+    totalBalance: String,
+    gender: String,
+    birthDate: Date,
+    address: String,
+    contactNumber: String,
+    TIN: String,
+    SSS: String,
+    philHealth: String,
+    pagIbig: String,
+    contactName: String,
+    contactRelationship: String,
+    contactAddress: String,
+    contactContactNumber: String,
     modifiedBy: String
   },
   {
@@ -50,7 +88,26 @@ export interface IEmployee extends Document {
   oldId?: string;
   fingerPrintId: string;
   name: string;
-  department: string;
+  department?: string;
+  employeeNumber?: string;
+  hireDate?: Date;
+  position?: string;
+  startingSalar?: string;
+  latestSalary?: string;
+  dateResigned?: Date;
+  totalBalance?: string;
+  gender?: string;
+  birthDate?: Date;
+  address?: string;
+  contactNumber?: string;
+  TIN?: string;
+  SSS?: string;
+  philHealth?: string;
+  pagIbig?: string;
+  contactName?: string;
+  contactRelationship?: string;
+  contactAddress?: string;
+  contactContactNumber?: string;
   modifiedBy: string;
 }
 

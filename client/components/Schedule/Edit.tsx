@@ -94,49 +94,59 @@ export function Edit(props: any) {
         <InputLabel>Name</InputLabel>
         <Input {...name} />
       </FormControl>
-      <FormControl fullWidth required>
-        <InputLabel>Start Hour</InputLabel>
-        <Select native {...startHour}>
-          {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <option key={i.toString().concat('startHour')} value={i.toString()}>
-              {i.toString()}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl fullWidth required>
-        <InputLabel>Start Minute</InputLabel>
-        <Select native {...startMinute}>
-          {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <option
-              key={i.toString().concat('startMinute')}
-              value={i.toString()}
-            >
-              {i.toString()}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl fullWidth required>
-        <InputLabel>End Hour</InputLabel>
-        <Select native {...endHour}>
-          {Array.apply(0, Array(24)).map((x: any, i: number) => (
-            <option key={i.toString().concat('endHour')} value={i.toString()}>
-              {i.toString()}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl fullWidth required>
-        <InputLabel>End Minute</InputLabel>
-        <Select native {...endMinute}>
-          {Array.apply(0, Array(60)).map((x: any, i: number) => (
-            <option key={i.toString().concat('endMinute')} value={i.toString()}>
-              {i.toString()}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
+      <div>
+        <FormControl required>
+          <InputLabel>Start Hour</InputLabel>
+          <Select native {...startHour}>
+            {Array.apply(0, Array(24)).map((x: any, i: number) => (
+              <option
+                key={i.toString().concat('startHour')}
+                value={i.toString()}
+              >
+                {i.toString()}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl required>
+          <InputLabel>Start Minute</InputLabel>
+          <Select native {...startMinute}>
+            {Array.apply(0, Array(60)).map((x: any, i: number) => (
+              <option
+                key={i.toString().concat('startMinute')}
+                value={i.toString()}
+              >
+                {i.toString()}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div>
+        <FormControl required>
+          <InputLabel>End Hour</InputLabel>
+          <Select native {...endHour}>
+            {Array.apply(0, Array(24)).map((x: any, i: number) => (
+              <option key={i.toString().concat('endHour')} value={i.toString()}>
+                {i.toString()}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl required>
+          <InputLabel>End Minute</InputLabel>
+          <Select native {...endMinute}>
+            {Array.apply(0, Array(60)).map((x: any, i: number) => (
+              <option
+                key={i.toString().concat('endMinute')}
+                value={i.toString()}
+              >
+                {i.toString()}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
       <FormControl fullWidth required>
         <InputLabel>Type</InputLabel>
         <Select native {...type}>

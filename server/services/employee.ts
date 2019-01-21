@@ -30,6 +30,7 @@ export function update(user: IUser, id: string, data: any) {
         return resolve(err);
       }
 
+      record = record.toJSON();
       record.oldId = record._id;
       delete record._id;
       record.modifiedBy = user.username;

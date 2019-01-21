@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { Table } from '../Helper/Table';
+import { Table, readableTime } from '../Helper/Table';
 import { summary } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
@@ -25,89 +25,31 @@ export function Summary(props: any) {
       field: 'scheduleName'
     },
     {
+      label: 'Payroll Name',
+      field: 'payrollName'
+    },
+    {
       label: 'WorkDayTotal',
       field: 'payrollWorkDayTotal',
-      cell: (value: number) => {
-        value /= 1000;
-        const hours = Math.floor(value / 60 / 60);
-        value -= hours * 60 * 60;
-        const minutes = Math.floor(value / 60);
-        value -= minutes * 60;
-        const seconds = value;
-
-        const result: string[] = [];
-
-        if (hours) {
-          result.push(`${hours} hours`);
-        }
-
-        if (minutes) {
-          result.push(`${minutes} minutes`);
-        }
-
-        if (seconds) {
-          result.push(`${seconds} seconds`);
-        }
-
-        return result.join(' ');
-      }
+      cell: readableTime
     },
     {
       label: 'WorkDayWorked',
       field: 'payrollWorkDayWorked',
-      cell: (value: number) => {
-        value /= 1000;
-        const hours = Math.floor(value / 60 / 60);
-        value -= hours * 60 * 60;
-        const minutes = Math.floor(value / 60);
-        value -= minutes * 60;
-        const seconds = value;
-
-        const result: string[] = [];
-
-        if (hours) {
-          result.push(`${hours} hours`);
-        }
-
-        if (minutes) {
-          result.push(`${minutes} minutes`);
-        }
-
-        if (seconds) {
-          result.push(`${seconds} seconds`);
-        }
-
-        return result.join(' ');
-      }
+      cell: readableTime
     },
     {
       label: 'WorkDayMissing',
-      field: 'payrollWorkDayTotal',
-      cell: (value: number, rowData: any) => {
-        value -= rowData.payrollWorkDayWorked;
-        value /= 1000;
-        const hours = Math.floor(value / 60 / 60);
-        value -= hours * 60 * 60;
-        const minutes = Math.floor(value / 60);
-        value -= minutes * 60;
-        const seconds = value;
-
-        const result: string[] = [];
-
-        if (hours) {
-          result.push(`${hours} hours`);
-        }
-
-        if (minutes) {
-          result.push(`${minutes} minutes`);
-        }
-
-        if (seconds) {
-          result.push(`${seconds} seconds`);
-        }
-
-        return result.join(' ');
-      }
+      field: 'payrollWorkDayMissing',
+      cell: readableTime
+    },
+    {
+      label: '# Late Allowance',
+      field: 'payrollLateAllowance'
+    },
+    {
+      label: '# Is Absent',
+      field: 'payrollIsAbsent'
     }
   ];
 

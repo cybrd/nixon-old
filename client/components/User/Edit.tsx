@@ -13,7 +13,6 @@ import {
 import { list, update } from '../../services/user';
 
 export function Edit(props: any) {
-  const [data, setData] = useState(null);
   const username = useFormInput('');
   const password = useFormInput('');
   const role = useFormSelect('user');
@@ -48,7 +47,7 @@ export function Edit(props: any) {
 
   async function fetchData() {
     const tmp = await list({ _id: props.match.params.id });
-    setData(tmp[0]);
+
     username.onChange({ target: { value: tmp[0].username } });
     password.onChange({ target: { value: '' } });
     role.onChange({ target: { value: tmp[0].role } });
