@@ -36,13 +36,7 @@ router.post(
     writeFileSync(filename, req.file.buffer);
 
     const records = reader.readFileSync(filename);
-    res.send(
-      await Promise.all(
-        records.map(async (record: any) => {
-          return await createFromUpload(req.user, record);
-        })
-      )
-    );
+    res.send(await createFromUpload(req.user, records));
   }
 );
 

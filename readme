@@ -23,3 +23,6 @@ security:
     authorization: enabled
 
 mongodb://admin:123qwe@localhost:27017/admin?3t.uriVersion=3&3t.connectTimeout=10000&3t.connectionMode=direct&3t.proxyType=default&3t.proxyHost=&3t.proxyPort=&readPreference=primary&3t.proxyProtocol=&3t.socketTimeout=0&3t.connection.name=localhost
+
+
+mongodump -o <path>

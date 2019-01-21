@@ -1,6 +1,6 @@
 import { model, Document, Schema } from 'mongoose';
 
-export const UserSchema = new Schema(
+const UserSchema = new Schema(
   {
     username: String,
     password: String,
@@ -14,7 +14,7 @@ export const UserSchema = new Schema(
   }
 );
 
-export const UserArchiveSchema = new Schema(
+const UserArchiveSchema = new Schema(
   {
     oldId: Schema.Types.ObjectId,
     username: String,

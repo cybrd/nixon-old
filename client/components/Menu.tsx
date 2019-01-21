@@ -50,8 +50,9 @@ export function Menu() {
             </ListItemLink>
             <ListItemLink to="/timesheet/load">Load Timesheet</ListItemLink>
             <ListItemLink to="/employeeSchedule/load">
-              Load Employee Schedule
+              Load Employee Schedules
             </ListItemLink>
+            <ListItemLink to="/employee/load">Load Employees</ListItemLink>
           </React.Fragment>
         )}
 

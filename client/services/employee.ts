@@ -1,4 +1,4 @@
-import { myFetchJSON } from './myFetch';
+import { myFetchJSON, myFetch } from './myFetch';
 
 export function list(args = {}) {
   return myFetchJSON('/api/employee/list', {
@@ -21,5 +21,15 @@ export function update(id: string, data: any) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
+  });
+}
+
+export function upload(file: File) {
+  const data = new FormData();
+  data.append('file', file);
+
+  return myFetch('/api/employee/upload', {
+    method: 'POST',
+    body: data
   });
 }

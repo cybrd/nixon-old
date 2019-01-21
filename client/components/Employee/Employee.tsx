@@ -5,6 +5,7 @@ import { NoMatch } from '../NoMatch';
 import { List } from './List';
 import { Create } from './Create';
 import { Edit } from './Edit';
+import { Load } from './Load';
 
 export function Employee() {
   return (
@@ -13,6 +14,7 @@ export function Employee() {
       <Switch>
         <Route exact path="/employee" component={List} />
         <Route exact path="/employee/create" component={Create} />
+        <Route exact path="/employee/load" component={Load} />
         <Route exact path="/employee/:id" component={Edit} />
         <Route component={NoMatch} />
       </Switch>

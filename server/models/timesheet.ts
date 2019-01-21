@@ -1,6 +1,6 @@
 import { model, Document, Schema } from 'mongoose';
 
-export const TimesheetSchema = new Schema(
+const TimesheetSchema = new Schema(
   {
     fingerPrintId: String,
     timestamp: Date,
@@ -14,7 +14,7 @@ export const TimesheetSchema = new Schema(
   }
 );
 
-export const TimesheetArchiveSchema = new Schema(
+const TimesheetArchiveSchema = new Schema(
   {
     oldId: Schema.Types.ObjectId,
     fingerPrintId: String,

@@ -26,11 +26,7 @@ export function List(props: any) {
           view="/employee/{{ _id }}"
           data={{ _id: rowData.employeeId._id }}
         >
-          {rowData.employeeId.fingerPrintId +
-            ' ' +
-            rowData.employeeId.firstName +
-            ' ' +
-            rowData.employeeId.lastName}
+          {rowData.employeeId.fingerPrintId + ' ' + rowData.employeeId.name}
         </Update>
       )
     },
@@ -155,7 +151,7 @@ export function List(props: any) {
               <option value="" />
               {employeeOptions.map((x: any) => (
                 <option key={x._id} value={x._id}>
-                  {x.fingerPrintId} - {x.firstName} {x.lastName}
+                  {x.fingerPrintId} - {x.name}
                 </option>
               ))}
             </Select>

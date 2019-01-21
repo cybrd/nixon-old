@@ -18,27 +18,23 @@ export function Load() {
     setUploading(true);
     const result = JSON.parse(await upload(file));
 
-    let errorCount = 0;
-    let insertCount = 0;
-    result.forEach((x: any) => {
-      if (x.errmsg) {
-        errorCount++;
-      } else {
-        insertCount++;
-      }
-    });
-    setErrors(errorCount);
-    setInserted(insertCount);
+    setErrors(result.errors);
+    setInserted(result.inserted);
     setUploading(false);
   }
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <input type="file" onChange={handleChange} />
-      <input type="submit" />
-      {uploading && <p>Uploading...</p>}
-      {errors > 0 && <p># errors/duplicates: {errors}</p>}
-      {inserted > 0 && <p># inserted: {inserted}</p>}
-    </form>
+    <React.Fragment>
+      <form onSubmit={handleFormSubmit}>
+        <input type="file" onChange={handleChange} />
+        <input type="submit" />
+        {uploading && <p>Uploading...</p>}
+        {errors > 0 && <p># errors/duplicates: {errors}</p>}
+        {inserted > 0 && <p># inserted: {inserted}</p>}
+      </form>
+      <div>
+        <p>Note: backup KQ file</p>
+      </div>
+    </React.Fragment>
   );
 }

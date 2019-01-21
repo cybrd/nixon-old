@@ -1,6 +1,6 @@
 import { model, Document, Schema } from 'mongoose';
 
-export const ScheduleSchema = new Schema(
+const ScheduleSchema = new Schema(
   {
     name: String,
     startHour: String,
@@ -16,7 +16,7 @@ export const ScheduleSchema = new Schema(
   }
 );
 
-export const ScheduleArchiveSchema = new Schema(
+const ScheduleArchiveSchema = new Schema(
   {
     oldId: Schema.Types.ObjectId,
     name: String,

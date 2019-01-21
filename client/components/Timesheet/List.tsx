@@ -114,7 +114,7 @@ export function List(props: any) {
               <option value="" />
               {employeeOptions.map((x: any) => (
                 <option key={x._id} value={x.fingerPrintId}>
-                  {x.fingerPrintId} - {x.firstName} {x.lastName}
+                  {x.fingerPrintId} - {x.name}
                 </option>
               ))}
             </Select>
@@ -124,7 +124,7 @@ export function List(props: any) {
         </FormControl>
       </MyForm>
       {data != null ? (
-        <Table data={data} columns={columns} orderBy="timestamp" />
+        <Table data={data} columns={columns} orderBy="timestamp" order="desc" />
       ) : (
         'Loading...'
       )}

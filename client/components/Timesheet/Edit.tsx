@@ -113,7 +113,7 @@ export function Edit(props: any) {
           <Select native {...fingerPrintId}>
             {employeeOptions.map((x: any) => (
               <option key={x._id} value={x.fingerPrintId}>
-                {x.fingerPrintId} - {x.firstName} {x.lastName}
+                {x.fingerPrintId} - {x.name}
               </option>
             ))}
           </Select>

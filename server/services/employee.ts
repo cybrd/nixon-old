@@ -1,6 +1,9 @@
+import * as parse from 'csv-parse/lib/sync';
+
 import {
   EmployeeCollection,
-  EmployeeArchiveCollection
+  EmployeeArchiveCollection,
+  EmployeeNotStrictCollection
 } from '../models/employee';
 import { IUser } from '../models/user';
 
@@ -48,4 +51,32 @@ export async function remove(user: IUser, id: string) {
   new EmployeeArchiveCollection(record).save();
 
   return await EmployeeCollection.deleteOne({ _id: id }).exec();
+}
+
+export async function createFromUpload(user: IUser, raw: any) {
+  const records = parse(raw, {
+    columns: true,
+    skip_empty_lines: true,
+    trim: true
+  });
+
+  return new Promise(resolve => {
+    EmployeeNotStrictCollection.insertMany(
+      records,
+      { ordered: false },
+      (err, docs: any) => {
+        if (err) {
+          return resolve({
+            errors: err.writeErrors.length,
+            inserted: err.result.result.nInserted
+          });
+        }
+
+        resolve({
+          errors: 0,
+          inserted: docs.length
+        });
+      }
+    );
+  });
 }

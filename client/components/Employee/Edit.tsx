@@ -9,8 +9,7 @@ import { update, list } from '../../services/employee';
 export function Edit(props: any) {
   const [data, setData] = useState(null);
   const fingerPrintId = useFormInput('');
-  const firstName = useFormInput('');
-  const lastName = useFormInput('');
+  const name = useFormInput('');
   const department = useFormInput('');
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
@@ -32,8 +31,7 @@ export function Edit(props: any) {
     const tmp = await list({ _id: props.match.params.id });
     setData(tmp[0]);
     fingerPrintId.onChange({ target: { value: tmp[0].fingerPrintId } });
-    firstName.onChange({ target: { value: tmp[0].firstName } });
-    lastName.onChange({ target: { value: tmp[0].lastName } });
+    name.onChange({ target: { value: tmp[0].name } });
     department.onChange({ target: { value: tmp[0].department } });
   }
 
@@ -46,8 +44,7 @@ export function Edit(props: any) {
 
     const tmp = {
       fingerPrintId: fingerPrintId.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
+      name: name.value,
       department: department.value
     };
 
@@ -70,12 +67,8 @@ export function Edit(props: any) {
         <Input {...fingerPrintId} />
       </FormControl>
       <FormControl fullWidth required>
-        <InputLabel>First Name</InputLabel>
-        <Input {...firstName} />
-      </FormControl>
-      <FormControl fullWidth>
-        <InputLabel>Last Name</InputLabel>
-        <Input {...lastName} />
+        <InputLabel>Name</InputLabel>
+        <Input {...name} />
       </FormControl>
       <FormControl fullWidth>
         <InputLabel>Department</InputLabel>

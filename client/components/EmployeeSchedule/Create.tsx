@@ -127,7 +127,7 @@ export function Create() {
           <Select native {...employeeId}>
             {employeeOptions.map((x: any) => (
               <option key={x._id} value={x._id}>
-                {x.fingerPrintId} - {x.firstName} {x.lastName}
+                {x.fingerPrintId} - {x.name}
               </option>
             ))}
           </Select>

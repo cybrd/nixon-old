@@ -1,6 +1,6 @@
 import { model, Document, Schema } from 'mongoose';
 
-export const PayrollSchema = new Schema(
+const PayrollSchema = new Schema(
   {
     name: String,
     modifiedBy: String
@@ -11,7 +11,7 @@ export const PayrollSchema = new Schema(
   }
 );
 
-export const PayrollArchiveSchema = new Schema(
+const PayrollArchiveSchema = new Schema(
   {
     oldId: Schema.Types.ObjectId,
     name: String,

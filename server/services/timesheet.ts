@@ -1,12 +1,14 @@
 import {
   TimesheetCollection,
-  TimesheetArchiveCollection
+  TimesheetArchiveCollection,
+  ITimesheet
 } from '../models/timesheet';
 import { IUser } from '../models/user';
 
 export async function list(args = {}) {
   return await TimesheetCollection.find(args)
-    .sort({ timestamp: 1 })
+    .sort({ timestamp: -1 })
+    .limit(2000)
     .exec();
 }
 
@@ -33,19 +35,35 @@ export function create(user: IUser, data: any) {
   });
 }
 
-export function createFromUpload(user: IUser, data: any) {
-  const record = new TimesheetCollection({
-    fingerPrintId: data.userId,
-    timestamp: data.time,
-    type: data.code,
-    modifiedBy: user.username
+export function createFromUpload(user: IUser, records: any) {
+  const data: any = [];
+  records.forEach((record: any) => {
+    data.push({
+      fingerPrintId: record.userId,
+      timestamp: record.time,
+      type: record.code,
+      modifiedBy: user.username
+    });
   });
 
   return new Promise(resolve => {
-    record
-      .save()
-      .then(tmp => resolve(tmp))
-      .catch(err => resolve(err));
+    TimesheetCollection.insertMany(
+      data,
+      { ordered: false },
+      (err, docs: any) => {
+        if (err) {
+          return resolve({
+            errors: err.writeErrors.length,
+            inserted: err.result.result.nInserted
+          });
+        }
+
+        resolve({
+          errors: 0,
+          inserted: docs.length
+        });
+      }
+    );
   });
 }
 

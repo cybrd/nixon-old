@@ -8,8 +8,7 @@ import { create } from '../../services/employee';
 
 export function Create() {
   const fingerPrintId = useFormInput('');
-  const firstName = useFormInput('');
-  const lastName = useFormInput('');
+  const name = useFormInput('');
   const department = useFormInput('');
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
@@ -32,8 +31,7 @@ export function Create() {
 
     const data = {
       fingerPrintId: fingerPrintId.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
+      name: name.value,
       department: department.value
     };
 
@@ -56,12 +54,8 @@ export function Create() {
         <Input {...fingerPrintId} />
       </FormControl>
       <FormControl fullWidth required>
-        <InputLabel>First Name</InputLabel>
-        <Input {...firstName} />
-      </FormControl>
-      <FormControl fullWidth>
-        <InputLabel>Last Name</InputLabel>
-        <Input {...lastName} />
+        <InputLabel>Name</InputLabel>
+        <Input {...name} />
       </FormControl>
       <FormControl fullWidth>
         <InputLabel>Department</InputLabel>

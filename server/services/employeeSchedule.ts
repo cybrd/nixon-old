@@ -13,11 +13,24 @@ export async function list(args = {}) {
 }
 
 export async function listPopulated(args = {}) {
-  return await EmployeeScheduleCollection.find(args)
+  const results = await EmployeeScheduleCollection.find(args)
     .populate('employeeId')
     .populate('scheduleId')
     .populate('payrollId')
     .exec();
+
+  return results.filter(result => {
+    if (!result.employeeId) {
+      return false;
+    }
+    if (!result.scheduleId) {
+      return false;
+    }
+    if (!result.payrollId) {
+      return false;
+    }
+    return true;
+  });
 }
 
 export function create(user: IUser, data: any) {
@@ -94,23 +107,36 @@ export async function createFromUpload(user: IUser, raw: any) {
     return acc;
   }, {});
 
-  return await Promise.all(
-    raw.split('\n').map((line: string) => {
-      const data = line.split(',');
-      const record = new EmployeeScheduleCollection({
-        employeeId: employeesObj[data[0]],
-        scheduleId: schedulesObj[data[1]],
-        payrollId: payrollsObj[data[2]],
-        date: new Date(data[3]),
-        modifiedBy: user.username
-      });
+  const data: any = [];
 
-      return new Promise(resolve => {
-        record
-          .save()
-          .then(tmp => resolve(tmp))
-          .catch(err => resolve(err));
-      });
-    })
-  );
+  raw.split('\n').forEach((line: string) => {
+    const tmp = line.split(',');
+    data.push({
+      employeeId: employeesObj[tmp[0]],
+      scheduleId: schedulesObj[tmp[1]],
+      payrollId: payrollsObj[tmp[2]],
+      date: new Date(tmp[3]),
+      modifiedBy: user.username
+    });
+  });
+
+  return new Promise(resolve => {
+    EmployeeScheduleCollection.insertMany(
+      data,
+      { ordered: false },
+      (err, docs: any) => {
+        if (err) {
+          return resolve({
+            errors: err.writeErrors.length,
+            inserted: err.result.result.nInserted
+          });
+        }
+
+        resolve({
+          errors: 0,
+          inserted: docs.length
+        });
+      }
+    );
+  });
 }

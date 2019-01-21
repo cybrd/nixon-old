@@ -3,7 +3,7 @@ import { IEmployee } from './employee';
 import { ISchedule } from './schedule';
 import { IPayroll } from './payroll';
 
-export const EmployeeScheduleSchema = new Schema(
+const EmployeeScheduleSchema = new Schema(
   {
     employeeId: { type: Schema.Types.ObjectId, ref: 'employee' },
     scheduleId: { type: Schema.Types.ObjectId, ref: 'schedule' },
@@ -17,7 +17,7 @@ export const EmployeeScheduleSchema = new Schema(
   }
 );
 
-export const EmployeeScheduleArchiveSchema = new Schema(
+const EmployeeScheduleArchiveSchema = new Schema(
   {
     oldId: Schema.Types.ObjectId,
     employeeId: { type: Schema.Types.ObjectId, ref: 'employee' },

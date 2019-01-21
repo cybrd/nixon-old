@@ -24,7 +24,13 @@ const MyTableCell = withStyles({
 
 const MyTableRow = withStyles({
   root: {
-    height: '36px'
+    height: '36px',
+    '&:hover': {
+      'background-color': 'lightblue !important'
+    }
+  },
+  selected: {
+    'background-color': 'aliceblue !important'
   }
 })(TableRow);
 
@@ -88,8 +94,8 @@ function getSorting(order: any, orderBy: any) {
 }
 
 export function Table(props: any) {
-  const [order, setOrder] = useState(props.order || 'asc');
   const [orderBy, setOrderBy] = useState(props.orderBy || '_id');
+  const [order, setOrder] = useState(props.order || 'asc');
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
 

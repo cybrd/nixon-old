@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { upload } from '../../services/employeeSchedule';
+import { upload } from '../../services/employee';
 
 export function Load() {
   const [file, setFile] = useState(null);
@@ -34,15 +34,11 @@ export function Load() {
       </form>
 
       <div>
-        <p>CSV Format:</p>
-        <p>Finger Print, Schedule Name, Payroll Name, Schedule Date</p>
-        <p>Example:</p>
+        <p>Notes:</p>
+        <p>Encoding UTF8</p>
+        <p>Header:</p>
         <p>
-          222222,OfficeMorning,2018-11,2019-01-16
-          <br />
-          222222,OfficeMorning,2018-11,2019-01-17
-          <br />
-          222222,OfficeMorning,2018-11,2019-01-18
+          employeeNumber,fingerPrintId,name,hireDate,department,position,startingSalary,latestSalary,dateResigned,totalBalance,gender,birthDate,address,contactNumber,TIN,SSS,philHealth,pagIbig,contactName,contactRelationship,contactAddress,contactContactNumber,,,,,,,,,,,,,,
         </p>
       </div>
     </React.Fragment>

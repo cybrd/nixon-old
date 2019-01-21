@@ -1,10 +1,18 @@
 import { model, Document, Schema } from 'mongoose';
 
-export const EmployeeSchema = new Schema(
+const EmployeeNotStrictSchema = new Schema(
+  {},
+  {
+    collection: 'employee',
+    timestamps: true,
+    strict: false
+  }
+);
+
+const EmployeeSchema = new Schema(
   {
     fingerPrintId: String,
-    firstName: String,
-    lastName: String,
+    name: String,
     department: String,
     modifiedBy: String
   },
@@ -14,12 +22,11 @@ export const EmployeeSchema = new Schema(
   }
 );
 
-export const EmployeeArchiveSchema = new Schema(
+const EmployeeArchiveSchema = new Schema(
   {
     oldId: Schema.Types.ObjectId,
     fingerPrintId: String,
-    firstName: String,
-    lastName: String,
+    name: String,
     department: String,
     modifiedBy: String
   },
@@ -42,8 +49,7 @@ EmployeeSchema.index(
 export interface IEmployee extends Document {
   oldId?: string;
   fingerPrintId: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   department: string;
   modifiedBy: string;
 }
@@ -52,4 +58,8 @@ export const EmployeeCollection = model<IEmployee>('employee', EmployeeSchema);
 export const EmployeeArchiveCollection = model<IEmployee>(
   'employeeArchive',
   EmployeeArchiveSchema
+);
+export const EmployeeNotStrictCollection = model<IEmployee>(
+  'employeeNotStrict',
+  EmployeeNotStrictSchema
 );

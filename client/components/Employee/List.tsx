@@ -15,12 +15,8 @@ export function List() {
       field: 'fingerPrintId'
     },
     {
-      label: 'First Name',
-      field: 'firstName'
-    },
-    {
-      label: 'Last Name',
-      field: 'lastName'
+      label: 'Name',
+      field: 'name'
     },
     {
       label: 'Department',
