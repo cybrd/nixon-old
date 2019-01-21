@@ -9,6 +9,7 @@ import { list } from '../../services/payroll';
 
 export function List() {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const columns = [
     {
       label: 'Name',
@@ -27,8 +28,10 @@ export function List() {
   ];
 
   async function fetchData() {
+    setLoading(true);
     const tmp = await list();
     setData(tmp);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -40,7 +43,11 @@ export function List() {
       <ButtonLink to="/payroll/create" color="primary">
         Create New Payroll
       </ButtonLink>
-      {data != null ? <Table data={data} columns={columns} /> : 'Loading...'}
+      {data != null ? (
+        <Table data={data} columns={columns} loading={loading} />
+      ) : (
+        'Loading...'
+      )}
     </React.Fragment>
   );
 }

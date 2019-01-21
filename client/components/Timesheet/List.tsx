@@ -4,7 +4,7 @@ import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
 
 import { ButtonLink } from '../Helper/ButtonLink';
-import { Table } from '../Helper/Table';
+import { Table, MyCircularProgress } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
 import { list } from '../../services/timesheet';
@@ -12,6 +12,7 @@ import { list as employeeList } from '../../services/employee';
 
 export function List(props: any) {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const employeeId = useFormSelect('');
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const columns = [
@@ -79,8 +80,10 @@ export function List(props: any) {
       args.fingerPrintId = employeeId.value;
     }
 
+    setLoading(true);
     const tmp = await list(args);
     setData(tmp);
+    setLoading(false);
 
     props.history.push('/timesheet' + history);
   }
@@ -124,7 +127,13 @@ export function List(props: any) {
         </FormControl>
       </MyForm>
       {data != null ? (
-        <Table data={data} columns={columns} orderBy="timestamp" order="desc" />
+        <Table
+          data={data}
+          columns={columns}
+          orderBy="timestamp"
+          order="desc"
+          loading={loading}
+        />
       ) : (
         'Loading...'
       )}

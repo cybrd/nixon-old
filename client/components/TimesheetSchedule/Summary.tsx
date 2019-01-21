@@ -10,6 +10,7 @@ import { list as payrollList } from '../../services/payroll';
 
 export function Summary(props: any) {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const employeeId = useFormSelect('');
   const payrollId = useFormSelect('');
   const [employeeOptions, setEmployeeOptions] = useState(null);
@@ -155,8 +156,10 @@ export function Summary(props: any) {
       args.payrollId = payrollId.value;
     }
 
+    setLoading(true);
     const tmp = await summary(args);
     setData(tmp);
+    setLoading(false);
 
     props.history.push('/timesheetSchedule/summary' + history);
   }
@@ -212,7 +215,12 @@ export function Summary(props: any) {
         </FormControl>
       </MyForm>
       {data != null ? (
-        <Table data={data} columns={columns} orderBy="workDay" />
+        <Table
+          data={data}
+          columns={columns}
+          orderBy="workDay"
+          loading={loading}
+        />
       ) : (
         'Loading...'
       )}

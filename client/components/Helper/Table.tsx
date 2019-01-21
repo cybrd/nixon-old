@@ -11,10 +11,27 @@ import {
   TableRow,
   TableSortLabel,
   TablePagination,
-  Paper
+  Paper,
+  CircularProgress
 } from '@material-ui/core';
 
 import { ButtonCopyClipboard } from './ButtonCopyClipboard';
+
+export const MyPaper = withStyles({
+  root: {
+    position: 'relative'
+  }
+})(Paper);
+
+export const MyCircularProgress = withStyles({
+  root: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -28,
+    marginLeft: -28
+  }
+})(CircularProgress);
 
 const MyTableCell = withStyles({
   root: {
@@ -110,7 +127,8 @@ export function Table(props: any) {
   }
 
   return (
-    <Paper>
+    <MyPaper>
+      {props.loading && <MyCircularProgress />}
       <MTable>
         <EnhancedTableHead
           columns={props.columns}
@@ -159,7 +177,7 @@ export function Table(props: any) {
         page={page}
         onChangePage={handleChangePage}
       />
-    </Paper>
+    </MyPaper>
   );
 }
 

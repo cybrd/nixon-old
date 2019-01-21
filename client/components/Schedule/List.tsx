@@ -9,6 +9,7 @@ import { list } from '../../services/schedule';
 
 export function List() {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const columns = [
     {
       label: 'name',
@@ -47,8 +48,10 @@ export function List() {
   ];
 
   async function fetchData() {
+    setLoading(true);
     const tmp = await list();
     setData(tmp);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -60,7 +63,11 @@ export function List() {
       <ButtonLink to="/schedule/create" color="primary">
         Create New Schedule
       </ButtonLink>
-      {data != null ? <Table data={data} columns={columns} /> : 'Loading...'}
+      {data != null ? (
+        <Table data={data} columns={columns} loading={loading} />
+      ) : (
+        'Loading...'
+      )}
     </React.Fragment>
   );
 }
