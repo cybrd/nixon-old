@@ -111,13 +111,18 @@ export async function createFromUpload(user: IUser, raw: any) {
 
   raw.split('\n').forEach((line: string) => {
     const tmp = line.split(',');
-    data.push({
-      employeeId: employeesObj[tmp[0]],
-      scheduleId: schedulesObj[tmp[1]],
-      payrollId: payrollsObj[tmp[2]],
-      date: new Date(tmp[3]),
-      modifiedBy: user.username
-    });
+
+    let i = 3;
+    while (tmp[i]) {
+      data.push({
+        employeeId: employeesObj[tmp[0]],
+        scheduleId: schedulesObj[tmp[1]],
+        payrollId: payrollsObj[tmp[2]],
+        date: new Date(tmp[i]),
+        modifiedBy: user.username
+      });
+      i++;
+    }
   });
 
   return new Promise(resolve => {

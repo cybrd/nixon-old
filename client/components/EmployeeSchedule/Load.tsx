@@ -35,14 +35,24 @@ export function Load() {
 
       <div>
         <p>CSV Format:</p>
-        <p>Finger Print, Schedule Name, Payroll Name, Schedule Date</p>
+        <p>Finger Print, Schedule Name, Payroll Name,Date1,Date2,Date3...</p>
         <p>Example:</p>
         <p>
-          222222,OfficeMorning,2018-11,2019-01-16
+          2,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          222222,OfficeMorning,2018-11,2019-01-17
+          3,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          222222,OfficeMorning,2018-11,2019-01-18
+          4,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          <br />
+          5,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          <br />
+          6,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          <br />
+          7,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          <br />
+          8,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          <br />
+          9,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
         </p>
       </div>
     </React.Fragment>

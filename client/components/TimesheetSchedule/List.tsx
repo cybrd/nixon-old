@@ -24,6 +24,10 @@ export function List(props: any) {
       field: 'scheduleName'
     },
     {
+      label: 'Payroll Name',
+      field: 'payrollName'
+    },
+    {
       label: 'Work Day',
       field: 'workDay',
       cell: (value: string) => new Date(value).toLocaleDateString()

@@ -11,6 +11,7 @@ interface ITimesheetSchedule {
   _id: string;
   fingerPrintId: string;
   scheduleName: string;
+  payrollName: string;
   workDay: Date;
   workDayTotal: number;
   workDayWorked: number;
@@ -57,10 +58,13 @@ export async function list(args = {}) {
       parseInt(employeeSchedule[i].scheduleId.endMinute, 10)
     );
 
-    timesheet = await timesheetList({
-      fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
-      timestamp: { $gt: start, $lt: end }
-    });
+    timesheet = await timesheetList(
+      {
+        fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
+        timestamp: { $gt: start, $lt: end }
+      },
+      1
+    );
 
     let workDayWorked = 0;
     const pairs = getTimesheetPairs(timesheet);
@@ -75,6 +79,7 @@ export async function list(args = {}) {
       _id: employeeSchedule[i]._id + employeeSchedule[i].employeeId._id,
       fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
       scheduleName: employeeSchedule[i].scheduleId.name,
+      payrollName: employeeSchedule[i].payrollId.name,
       workDay: workDay,
       workDayTotal: realEnd.getTime() - realStart.getTime(),
       workDayWorked: workDayWorked

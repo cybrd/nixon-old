@@ -5,9 +5,9 @@ import {
 } from '../models/timesheet';
 import { IUser } from '../models/user';
 
-export async function list(args = {}) {
+export async function list(args = {}, sort = -1) {
   return await TimesheetCollection.find(args)
-    .sort({ timestamp: -1 })
+    .sort({ timestamp: sort })
     .limit(2000)
     .exec();
 }
