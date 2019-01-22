@@ -17,13 +17,13 @@ import {
 
 import { ButtonCopyClipboard } from './ButtonCopyClipboard';
 
-export const MyPaper = withStyles({
+const MyPaper = withStyles({
   root: {
     position: 'relative'
   }
 })(Paper);
 
-export const MyCircularProgress = withStyles({
+const MyCircularProgress = withStyles({
   root: {
     position: 'absolute',
     top: '50%',

@@ -2,9 +2,41 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { FormControl, Button, Input, InputLabel } from '@material-ui/core';
+import {
+  FormControl,
+  Button,
+  Input,
+  InputLabel,
+  withStyles
+} from '@material-ui/core';
 
 import { update, list } from '../../services/employee';
+
+const MyFormControl = withStyles({
+  root: {
+    height: '40px',
+    margin: '3px 0'
+  }
+})(FormControl);
+
+const MyInput = withStyles({
+  root: {
+    'margin-top': '10px !important',
+    'font-size': '.9em'
+  },
+  input: {
+    'padding-bottom': 0
+  }
+})(Input);
+
+const MyInputLabel = withStyles({
+  root: {
+    transform: 'translate(0, 10px)'
+  },
+  shrink: {
+    transform: 'translate(0, 1.5px) scale(0.75)'
+  }
+})(InputLabel);
 
 export function Edit(props: any) {
   const [done, setDone] = useState(false);
@@ -147,10 +179,10 @@ export function Edit(props: any) {
   return (
     <form onSubmit={handleFormSubmit}>
       {Object.keys(inputKeys).map(key => (
-        <FormControl fullWidth>
-          <InputLabel>{inputKeys[key].label}</InputLabel>
-          <Input {...inputKeys[key].field} />
-        </FormControl>
+        <MyFormControl fullWidth>
+          <MyInputLabel>{inputKeys[key].label}</MyInputLabel>
+          <MyInput {...inputKeys[key].field} />
+        </MyFormControl>
       ))}
       <Button type="submit" variant="contained" color="primary">
         Submit

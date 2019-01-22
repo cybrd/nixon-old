@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "npx webpack --watch --mode=development --devtool=source-map",
-    "server": "npx nodemon --watch server/**/*.ts --ignore server/**/*.spec.ts --exec ts-node server/index.ts"
+    "server": "npx nodemon --watch server/**/*.ts --ignore server/**/*.spec.ts --exec ts-node server/index.ts",
+    "build": "npx webpack --mode=production"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.0",

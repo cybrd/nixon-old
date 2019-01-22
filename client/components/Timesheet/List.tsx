@@ -4,7 +4,7 @@ import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
 
 import { ButtonLink } from '../Helper/ButtonLink';
-import { Table, MyCircularProgress } from '../Helper/Table';
+import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
 import { list } from '../../services/timesheet';

@@ -1,11 +1,57 @@
 import * as React from 'react';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import { List, ListItem } from '@material-ui/core';
+import {
+  List,
+  ListItem,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  withStyles
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import styled from 'styled-components';
 
 import { AuthContext } from '../context/auth';
+
+const MyExpansionPanel = withStyles({
+  root: {
+    margin: 'auto'
+  }
+})(ExpansionPanel);
+
+const MyExpansionPanelSummary = withStyles({
+  expanded: {
+    'min-height': '40px !important',
+    'align-items': 'center'
+  },
+  content: {
+    margin: '0 !important'
+  }
+})(ExpansionPanelSummary);
+
+const MyExpansionPanelDetails = withStyles({
+  root: {
+    padding: '0 22px'
+  }
+})(ExpansionPanelDetails);
+
+function MyNavLink(props: any) {
+  return (
+    <NavLink
+      {...props}
+      exact
+      activeStyle={{
+        fontWeight: 'bold',
+        color: 'red'
+      }}
+    >
+      {props.children}
+    </NavLink>
+  );
+}
 
 export function Menu() {
   const authContext = useContext(AuthContext);
@@ -17,7 +63,7 @@ export function Menu() {
   }
 
   function ListItemLink(props: any) {
-    return <ListItem button component={Link} {...props} />;
+    return <ListItem button component={MyNavLink} {...props} />;
   }
 
   const MenuWrapper = styled.div`
@@ -48,11 +94,24 @@ export function Menu() {
             <ListItemLink to="/employeeSchedule">
               Employee Schedule
             </ListItemLink>
-            <ListItemLink to="/timesheet/load">Load Timesheet</ListItemLink>
-            <ListItemLink to="/employeeSchedule/load">
-              Load Employee Schedules
-            </ListItemLink>
-            <ListItemLink to="/employee/load">Load Employees</ListItemLink>
+            <MyExpansionPanel>
+              <MyExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                Load
+              </MyExpansionPanelSummary>
+              <MyExpansionPanelDetails>
+                <List>
+                  <ListItemLink to="/timesheet/load">
+                    Load Timesheet
+                  </ListItemLink>
+                  <ListItemLink to="/employeeSchedule/load">
+                    Load Employee Schedules
+                  </ListItemLink>
+                  <ListItemLink to="/employee/load">
+                    Load Employees
+                  </ListItemLink>
+                </List>
+              </MyExpansionPanelDetails>
+            </MyExpansionPanel>
           </React.Fragment>
         )}
 

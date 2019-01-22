@@ -24,9 +24,10 @@ module.exports = {
     splitChunks: {
       cacheGroups: {
         commons: {
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
+          test: /[\\/]node_modules[\\/]/,
+          name: 'commons',
+          chunks: 'all',
+          priority: 1
         }
       }
     }
