@@ -18,20 +18,20 @@ export function TimesheetSchedule() {
         />
         <Route exact path="/timesheetSchedule/employee/:eid" component={List} />
         <Route exact path="/timesheetSchedule/payroll/:pid" component={List} />
-        <Route exact path="/timesheetSchedule/summary" component={Summary} />
+        <Route exact path="/timesheetSummary" component={Summary} />
         <Route
           exact
-          path="/timesheetSchedule/summary/employee/:eid/payroll/:pid"
+          path="/timesheetSummary/employee/:eid/payroll/:pid"
           component={Summary}
         />
         <Route
           exact
-          path="/timesheetSchedule/summary/employee/:eid"
+          path="/timesheetSummary/employee/:eid"
           component={Summary}
         />
         <Route
           exact
-          path="/timesheetSchedule/summary/payroll/:pid"
+          path="/timesheetSummary/payroll/:pid"
           component={Summary}
         />
         <Route component={NoMatch} />

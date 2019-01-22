@@ -42,7 +42,7 @@ function MyNavLink(props: any) {
   return (
     <NavLink
       {...props}
-      exact
+      strict
       activeStyle={{
         fontWeight: 'bold',
         color: 'red'
@@ -79,7 +79,7 @@ export function Menu() {
             <ListItemLink to="/timesheetSchedule">
               Timesheet Schedule
             </ListItemLink>
-            <ListItemLink to="/timesheetSchedule/summary">
+            <ListItemLink to="/timesheetSummary">
               Timesheet Summary
             </ListItemLink>
           </React.Fragment>

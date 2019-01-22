@@ -16,7 +16,6 @@ export function Timesheet() {
         <Route exact path="/timesheet" component={List} />
         <Route exact path="/timesheet/create" component={Create} />
         <Route exact path="/timesheet/load" component={Load} />
-        <Route exact path="/timesheet/employee/:eid" component={List} />
         <Route exact path="/timesheet/:id" component={Edit} />
         <Route component={NoMatch} />
       </Switch>

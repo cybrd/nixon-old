@@ -114,7 +114,9 @@ export function Table(props: any) {
   const [orderBy, setOrderBy] = useState(props.orderBy || '_id');
   const [order, setOrder] = useState(props.order || 'asc');
   const [page, setPage] = useState(0);
-  const rowsPerPage = 10;
+  const [rowsPerPage, setRowsPerPage] = useState(
+    parseInt(localStorage.getItem('rowsPerPage'), 10) || 10
+  );
 
   function handleRequestSort(event: any, property: any) {
     const isDesc = orderBy === property && order === 'desc';
@@ -124,6 +126,11 @@ export function Table(props: any) {
 
   function handleChangePage(event: any, newPage: any) {
     setPage(newPage);
+  }
+
+  function handleChangeRowsPerPage(event: any) {
+    localStorage.setItem('rowsPerPage', event.target.value);
+    setRowsPerPage(event.target.value);
   }
 
   return (
@@ -172,10 +179,11 @@ export function Table(props: any) {
       <TablePagination
         component={MyTablePagination(props.data, props.columns)}
         count={props.data.length}
-        rowsPerPageOptions={[]}
         rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[5, 10, 25, 50, 100]}
         page={page}
         onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
       />
     </MyPaper>
   );

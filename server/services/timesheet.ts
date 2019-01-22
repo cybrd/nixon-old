@@ -1,15 +1,33 @@
 import {
   TimesheetCollection,
-  TimesheetArchiveCollection,
-  ITimesheet
+  TimesheetArchiveCollection
 } from '../models/timesheet';
+import { EmployeeCollection } from '../models/employee';
 import { IUser } from '../models/user';
+import { arrayToObject } from '../helpers/arrayToObject';
 
-export async function list(args = {}, sort = -1) {
-  return await TimesheetCollection.find(args)
+export async function list(args: any = {}, sort = -1, secondary = {}) {
+  let employees = await EmployeeCollection.find(secondary)
+    .lean()
+    .exec();
+  employees = arrayToObject(employees, 'fingerPrintId');
+
+  if (!args.fingerPrintId) {
+    args.fingerPrintId = { $in: Object.keys(employees) };
+  }
+
+  let results = await TimesheetCollection.find(args)
     .sort({ timestamp: sort })
     .limit(2000)
+    .lean()
     .exec();
+
+  results = results.filter((result: any) => employees[result.fingerPrintId]);
+  results.map(
+    (result: any) => (result.employee = employees[result.fingerPrintId])
+  );
+
+  return results;
 }
 
 export function create(user: IUser, data: any) {

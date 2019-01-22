@@ -19,7 +19,8 @@ import {
 const router = Router();
 
 router.post('/list', userGuard, async (req, res) => {
-  res.send(await list(req.body));
+  const { secondary, ...args } = req.body;
+  res.send(await list(args, -1, secondary));
 });
 
 router.post('/create', adminGuard, async (req, res) => {

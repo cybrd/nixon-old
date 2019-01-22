@@ -18,7 +18,8 @@ export function Summary(props: any) {
   const columns = [
     {
       label: 'Finger Print Id',
-      field: 'fingerPrintId'
+      field: 'fingerPrintId',
+      cell: (value: string, rowData: any) => value + ' ' + rowData.employeeName
     },
     {
       label: 'Schedule Name',
@@ -103,7 +104,7 @@ export function Summary(props: any) {
     setData(tmp);
     setLoading(false);
 
-    props.history.push('/timesheetSchedule/summary' + history);
+    props.history.push('/timesheetSummary' + history);
   }
 
   const query = payrollId.value + employeeId.value;

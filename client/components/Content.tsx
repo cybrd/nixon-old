@@ -28,6 +28,10 @@ export function Content() {
           path="/timesheetSchedule"
           component={TimesheetSchedule}
         />
+        <ProtectedRoute
+          path="/timesheetSummary"
+          component={TimesheetSchedule}
+        />
         <ProtectedAdminRoute path="/user" component={User} />
         <Route component={NoMatch} />
       </Switch>

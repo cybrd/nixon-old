@@ -10,6 +10,7 @@ interface ITimestampRange {
 interface ITimesheetSchedule {
   _id: string;
   fingerPrintId: string;
+  employeeName: string;
   scheduleName: string;
   payrollName: string;
   workDay: Date;
@@ -96,6 +97,7 @@ export async function list(args = {}) {
     r.push({
       _id: employeeSchedule[i]._id + employeeSchedule[i].employeeId._id,
       fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
+      employeeName: employeeSchedule[i].employeeId.name,
       scheduleName: employeeSchedule[i].scheduleId.name,
       payrollName: employeeSchedule[i].payrollId.name,
       workDay: workDay,
@@ -184,6 +186,7 @@ export async function summary(args = {}) {
       result[id] = {
         _id: id,
         fingerPrintId: x.fingerPrintId,
+        employeeName: x.employeeName,
         scheduleName: x.scheduleName,
         payrollName: x.payrollName,
         payrollWorkDayTotal: x.workDayTotal,
