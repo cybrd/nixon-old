@@ -22,10 +22,6 @@ export function Summary(props: any) {
       cell: (value: string, rowData: any) => value + ' ' + rowData.employeeName
     },
     {
-      label: 'Schedule Name',
-      field: 'scheduleName'
-    },
-    {
       label: 'Payroll Name',
       field: 'payrollName'
     },

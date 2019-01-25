@@ -173,8 +173,7 @@ export async function summary(args = {}) {
   const result: any = {};
 
   tmp.forEach(x => {
-    const id =
-      'fingerPrintId' + x.fingerPrintId + 'scheduleName' + x.scheduleName;
+    const id = 'fingerPrintId' + x.fingerPrintId;
 
     if (result[id]) {
       result[id].payrollWorkDayTotal += x.workDayTotal;
@@ -187,7 +186,6 @@ export async function summary(args = {}) {
         _id: id,
         fingerPrintId: x.fingerPrintId,
         employeeName: x.employeeName,
-        scheduleName: x.scheduleName,
         payrollName: x.payrollName,
         payrollWorkDayTotal: x.workDayTotal,
         payrollWorkDayWorked: x.workDayWorked,
