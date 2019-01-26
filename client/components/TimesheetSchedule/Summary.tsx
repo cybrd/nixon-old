@@ -18,8 +18,11 @@ export function Summary(props: any) {
   const columns = [
     {
       label: 'Finger Print Id',
-      field: 'fingerPrintId',
-      cell: (value: string, rowData: any) => value + ' ' + rowData.employeeName
+      field: 'fingerPrintId'
+    },
+    {
+      label: 'Employee Name',
+      field: 'employeeName'
     },
     {
       label: 'Payroll Name',
@@ -159,6 +162,16 @@ export function Summary(props: any) {
           columns={columns}
           orderBy="workDay"
           loading={loading}
+          copycolumns={[
+            'fingerPrintId',
+            'employeeName',
+            'payrollName',
+            'payrollWorkDayTotal',
+            'payrollWorkDayWorked',
+            'payrollWorkDayMissing',
+            'payrollLateAllowance',
+            'payrollIsAbsent'
+          ]}
         />
       ) : (
         'Loading...'

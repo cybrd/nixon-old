@@ -22,8 +22,11 @@ export function List(props: any) {
   const columns = [
     {
       label: 'Finger Print Id',
-      field: 'fingerPrintId',
-      cell: (value: string, rowData: any) => value + ' ' + rowData.employeeName
+      field: 'fingerPrintId'
+    },
+    {
+      label: 'Employee Name',
+      field: 'employeeName'
     },
     {
       label: 'Schedule Name',

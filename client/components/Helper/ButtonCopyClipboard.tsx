@@ -3,12 +3,20 @@ import { Button } from '@material-ui/core';
 import styled from 'styled-components';
 
 export function ButtonCopyClipboard(props: any) {
-  async function handleClick() {
+  function handleClick() {
     const result: any = [];
-    props.data.forEach((x: any) => {
+    props.data.forEach((row: any) => {
       const line: any = [];
-      props.columns.forEach((y: any) => {
-        line.push(x[y.field]);
+      props.columns.forEach((column: any) => {
+        if (props.copycolumns.indexOf(column.field) < 0) {
+          return;
+        }
+
+        if (column.cell) {
+          line.push(column.cell(row[column.field], row));
+        } else {
+          line.push(row[column.field]);
+        }
       });
       result.push(line.join('\t'));
     });

@@ -55,10 +55,6 @@ export function Create() {
       label: 'Department',
       field: useFormInput('')
     },
-    employeeNumber: {
-      label: 'Employee Number',
-      field: useFormInput('')
-    },
     hireDate: {
       label: 'Hire Date',
       field: useFormInput('')

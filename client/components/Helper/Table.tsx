@@ -110,6 +110,23 @@ function getSorting(order: any, orderBy: any) {
     : (a: any, b: any) => -desc(a, b, orderBy);
 }
 
+function filterByValue(
+  rawData: any[],
+  searchString: string,
+  columns: string[]
+) {
+  if (searchString != null) {
+    return rawData.filter(
+      (v: any) =>
+        columns.filter((k: any) =>
+          v[k].toLowerCase().includes(searchString.toLowerCase())
+        ).length
+    );
+  } else {
+    return rawData;
+  }
+}
+
 export function Table(props: any) {
   const [orderBy, setOrderBy] = useState(props.orderBy || '_id');
   const [order, setOrder] = useState(props.order || 'asc');
@@ -117,6 +134,7 @@ export function Table(props: any) {
   const [rowsPerPage, setRowsPerPage] = useState(
     parseInt(localStorage.getItem('rowsPerPage'), 10) || 10
   );
+  const data = filterByValue(props.data, props.search, props.searchColumns);
 
   function handleRequestSort(event: any, property: any) {
     const isDesc = orderBy === property && order === 'desc';
@@ -144,7 +162,7 @@ export function Table(props: any) {
           onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {stableSort(props.data, getSorting(order, orderBy))
+          {stableSort(data, getSorting(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row: any, index: number) => {
               return (
@@ -177,8 +195,8 @@ export function Table(props: any) {
       </MTable>
 
       <TablePagination
-        component={MyTablePagination(props.data, props.columns)}
-        count={props.data.length}
+        component={MyTablePagination(data, props.columns, props.copycolumns)}
+        count={data.length}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25, 50, 100]}
         page={page}
@@ -189,7 +207,7 @@ export function Table(props: any) {
   );
 }
 
-function MyTablePagination(data: any, columns: any) {
+function MyTablePagination(data: any, columns: any, copycolumns: string[]) {
   return (props: any) => {
     const MyDiv = styled.div`
       min-width: 100%;
@@ -204,9 +222,15 @@ function MyTablePagination(data: any, columns: any) {
     return (
       <MyDiv>
         <MyDivChild>
-          <ButtonCopyClipboard data={data} columns={columns}>
-            Copy to Clipboard
-          </ButtonCopyClipboard>
+          {copycolumns && copycolumns.length && (
+            <ButtonCopyClipboard
+              data={data}
+              columns={columns}
+              copycolumns={copycolumns}
+            >
+              Copy to Clipboard
+            </ButtonCopyClipboard>
+          )}
         </MyDivChild>
         <div>{props.children}</div>
       </MyDiv>

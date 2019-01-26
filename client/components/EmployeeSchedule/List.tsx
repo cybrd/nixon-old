@@ -20,14 +20,19 @@ export function List(props: any) {
   const [payrollOptions, setPayrollOptions] = useState(null);
   const columns = [
     {
-      label: 'Employee',
+      label: 'Finger Print Id',
+      field: 'employeeId',
+      cell: (value: string, rowData: any) => rowData.employeeId.fingerPrintId
+    },
+    {
+      label: 'Employee Name',
       field: 'employeeId',
       cell: (value: string, rowData: any) => (
         <Update
           view="/employee/{{ _id }}"
           data={{ _id: rowData.employeeId._id }}
         >
-          {rowData.employeeId.fingerPrintId + ' ' + rowData.employeeId.name}
+          {rowData.employeeId.name}
         </Update>
       )
     },

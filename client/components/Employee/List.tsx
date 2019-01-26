@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { FormControl, InputLabel, Input } from '@material-ui/core';
+import styled from 'styled-components';
 
 import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
@@ -10,6 +12,7 @@ import { list } from '../../services/employee';
 export function List() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const search = useFormInput('');
   const columns = [
     {
       label: 'Finger Print Id',
@@ -35,6 +38,19 @@ export function List() {
     }
   ];
 
+  function useFormInput(initialValue: string) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+      setValue(e.target.value);
+    }
+
+    return {
+      value: value,
+      onChange: handleChange
+    };
+  }
+
   async function fetchData() {
     setLoading(true);
     const tmp = await list();
@@ -51,8 +67,20 @@ export function List() {
       <ButtonLink to="/employee/create" color="primary">
         Create New Employee
       </ButtonLink>
+      <form>
+        <FormControl fullWidth>
+          <InputLabel>Search</InputLabel>
+          <Input {...search} />
+        </FormControl>
+      </form>
       {data != null ? (
-        <Table data={data} columns={columns} loading={loading} />
+        <Table
+          data={data}
+          columns={columns}
+          loading={loading}
+          search={search.value}
+          searchColumns={['fingerPrintId', 'name', 'department']}
+        />
       ) : (
         'Loading...'
       )}
