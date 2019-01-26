@@ -282,6 +282,7 @@ export function List(props: any) {
           orderBy="timestamp"
           order="desc"
           loading={loading}
+          copycolumns={['fingerPrintId', 'employeeName', 'timestamp', 'type']}
         />
       ) : (
         'Loading...'

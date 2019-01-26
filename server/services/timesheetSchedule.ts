@@ -18,6 +18,7 @@ interface ITimesheetSchedule {
   workDayWorked: number;
   workDayMissing: number;
   lateAllowance: boolean;
+  isLate: boolean;
   isAbsent: boolean;
 }
 
@@ -79,6 +80,18 @@ export async function list(args = {}) {
       });
     });
 
+    let lateAllowance = null;
+    let isLate = null;
+    if (getLateAmount(timesheet, realStart.getTime())) {
+      const lateAmount = getLateAmount(timesheet, realStart.getTime());
+      if (lateAmount < 15 * 60 * 1000) {
+        lateAllowance = true;
+        workDayWorked += lateAmount;
+      } else {
+        isLate = true;
+      }
+    }
+
     const workDayTotal = realEnd.getTime() - realStart.getTime();
 
     let workDayMissing = 0;
@@ -87,11 +100,6 @@ export async function list(args = {}) {
       workDayMissing = workDayTotal - workDayWorked;
     } else {
       isAbsent = true;
-    }
-
-    let lateAllowance = null;
-    if (getLateAmount(timesheet, realStart.getTime())) {
-      lateAllowance = getLateAmount(timesheet, realStart.getTime()) < 900;
     }
 
     r.push({
@@ -105,6 +113,7 @@ export async function list(args = {}) {
       workDayWorked: workDayWorked,
       workDayMissing: workDayMissing,
       lateAllowance: lateAllowance,
+      isLate: isLate,
       isAbsent: isAbsent
     });
   }
@@ -160,7 +169,7 @@ function getLateAmount(timesheet: ITimesheet[], realStart: number) {
       if (realStart > timesheet[i].timestamp.getTime()) {
         return 0;
       } else {
-        return (timesheet[i].timestamp.getTime() - realStart) / 1000;
+        return timesheet[i].timestamp.getTime() - realStart;
       }
     }
   }
