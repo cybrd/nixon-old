@@ -18,6 +18,7 @@ export function List(props: any) {
   const [departmentOptions, setDepartmentOptions] = useState(null);
   const employeeFilter = useFormSelect('');
   const departmentFilter = useFormSelect('');
+  const typeFilter = useFormSelect('');
   const startDate = useFormInput('');
   const endDate = useFormInput('');
 
@@ -102,6 +103,10 @@ export function List(props: any) {
       departmentFilter.onChange({ target: { value: params.department } });
     }
 
+    if (params.type) {
+      typeFilter.onChange({ target: { value: params.type } });
+    }
+
     if (params.startDate) {
       startDate.onChange({ target: { value: params.startDate } });
     }
@@ -128,6 +133,11 @@ export function List(props: any) {
     if (departmentFilter.value) {
       args.secondary.department = departmentFilter.value;
       locationSearch.department = departmentFilter.value;
+    }
+
+    if (typeFilter.value) {
+      args.type = typeFilter.value;
+      locationSearch.type = typeFilter.value;
     }
 
     if (startDate.value) {
@@ -170,6 +180,8 @@ export function List(props: any) {
     employeeFilter.value +
     'd' +
     departmentFilter.value +
+    't' +
+    typeFilter.value +
     's' +
     startDate.value +
     'd' +
@@ -184,7 +196,13 @@ export function List(props: any) {
     [query]
   );
 
-  const MyForm = styled.form`
+  const MyForm3 = styled.form`
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  `;
+
+  const MyForm2 = styled.form`
     min-width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -195,7 +213,7 @@ export function List(props: any) {
       <ButtonLink to="/timesheet/create" color="primary">
         Create New Time In/Out
       </ButtonLink>
-      <MyForm>
+      <MyForm3>
         <FormControl fullWidth>
           <InputLabel>Select Employee</InputLabel>
           {employeeOptions != null ? (
@@ -227,6 +245,16 @@ export function List(props: any) {
           )}
         </FormControl>
         <FormControl fullWidth>
+          <InputLabel>Select Type</InputLabel>
+          <Select native {...typeFilter}>
+            <option value="" />
+            <option value="IN">IN</option>
+            <option value="OUT">OUT</option>
+          </Select>
+        </FormControl>
+      </MyForm3>
+      <MyForm2>
+        <FormControl fullWidth>
           <TextField
             label="Start Date"
             type="date"
@@ -246,7 +274,7 @@ export function List(props: any) {
             {...endDate}
           />
         </FormControl>
-      </MyForm>
+      </MyForm2>
       {data != null ? (
         <Table
           data={data}
