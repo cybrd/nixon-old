@@ -12,6 +12,7 @@ interface ITimesheetSchedule {
   fingerPrintId: string;
   employeeName: string;
   scheduleName: string;
+  scheduleType: string;
   payrollName: string;
   workDay: Date;
   workDayTotal: number;
@@ -107,6 +108,7 @@ export async function list(args = {}) {
       fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
       employeeName: employeeSchedule[i].employeeId.name,
       scheduleName: employeeSchedule[i].scheduleId.name,
+      scheduleType: employeeSchedule[i].scheduleId.type,
       payrollName: employeeSchedule[i].payrollId.name,
       workDay: workDay,
       workDayTotal: workDayTotal,
@@ -184,24 +186,29 @@ export async function summary(args = {}) {
   tmp.forEach(x => {
     const id = 'fingerPrintId' + x.fingerPrintId;
 
-    if (result[id]) {
-      result[id].payrollWorkDayTotal += x.workDayTotal;
-      result[id].payrollWorkDayWorked += x.workDayWorked;
-      result[id].payrollWorkDayMissing += x.workDayMissing;
-      result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
-      result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
-    } else {
+    if (!result[id]) {
       result[id] = {
         _id: id,
         fingerPrintId: x.fingerPrintId,
         employeeName: x.employeeName,
         payrollName: x.payrollName,
-        payrollWorkDayTotal: x.workDayTotal,
-        payrollWorkDayWorked: x.workDayWorked,
-        payrollWorkDayMissing: x.workDayMissing,
-        payrollLateAllowance: x.lateAllowance ? 1 : 0,
-        payrollIsAbsent: x.isAbsent ? 1 : 0
+        payrollWorkDayTotal: 0,
+        payrollWorkDayWorked: 0,
+        payrollWorkOvertime: 0,
+        payrollWorkDayMissing: 0,
+        payrollLateAllowance: 0,
+        payrollIsAbsent: 0
       };
+    }
+
+    if (x.scheduleType === 'overtime') {
+      result[id].payrollWorkOvertime += x.workDayWorked;
+    } else {
+      result[id].payrollWorkDayTotal += x.workDayTotal;
+      result[id].payrollWorkDayWorked += x.workDayWorked;
+      result[id].payrollWorkDayMissing += x.workDayMissing;
+      result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
+      result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
     }
   });
 

@@ -39,6 +39,11 @@ export function Summary(props: any) {
       cell: readableTime
     },
     {
+      label: 'WorkOvertime',
+      field: 'payrollWorkOvertime',
+      cell: readableTime
+    },
+    {
       label: 'WorkDayMissing',
       field: 'payrollWorkDayMissing',
       cell: readableTime
@@ -168,6 +173,7 @@ export function Summary(props: any) {
             'payrollName',
             'payrollWorkDayTotal',
             'payrollWorkDayWorked',
+            'payrollWorkOvertime',
             'payrollWorkDayMissing',
             'payrollLateAllowance',
             'payrollIsAbsent'

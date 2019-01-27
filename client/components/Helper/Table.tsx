@@ -134,7 +134,8 @@ export function Table(props: any) {
   const [rowsPerPage, setRowsPerPage] = useState(
     parseInt(localStorage.getItem('rowsPerPage'), 10) || 10
   );
-  const data = filterByValue(props.data, props.search, props.searchColumns);
+  let data = filterByValue(props.data, props.search, props.searchColumns);
+  data = stableSort(data, getSorting(order, orderBy));
 
   function handleRequestSort(event: any, property: any) {
     const isDesc = orderBy === property && order === 'desc';
@@ -162,7 +163,7 @@ export function Table(props: any) {
           onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {stableSort(data, getSorting(order, orderBy))
+          {data
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row: any, index: number) => {
               return (
