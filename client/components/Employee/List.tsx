@@ -27,6 +27,10 @@ export function List() {
       field: 'department'
     },
     {
+      label: 'Position',
+      field: 'position'
+    },
+    {
       label: 'Actions',
       field: '_id',
       cell: (value: any) => (
