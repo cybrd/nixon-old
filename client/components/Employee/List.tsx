@@ -83,7 +83,7 @@ export function List() {
           columns={columns}
           loading={loading}
           search={search.value}
-          searchColumns={['fingerPrintId', 'name', 'department']}
+          searchColumns={['fingerPrintId', 'name', 'department', 'position']}
         />
       ) : (
         'Loading...'
