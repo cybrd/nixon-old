@@ -106,17 +106,26 @@ export function Create() {
   }
 
   if (done) {
-    let history = '';
+    const locationSearch: any = {};
 
     if (employeeId.value) {
-      history += '/employee/' + employeeId.value;
+      locationSearch.employeeId = employeeId.value;
     }
 
     if (payrollId.value) {
-      history += '/payroll/' + payrollId.value;
+      locationSearch.payrollId = payrollId.value;
     }
 
-    return <Redirect to={'/employeeSchedule' + history} />;
+    const location = {
+      pathname: '/employeeSchedule',
+      search: Object.keys(locationSearch)
+        .map(key => {
+          return key + '=' + encodeURIComponent(locationSearch[key]);
+        })
+        .join('&')
+    };
+
+    return <Redirect to={location} />;
   }
 
   return (

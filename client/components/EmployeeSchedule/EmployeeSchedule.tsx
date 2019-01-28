@@ -14,13 +14,6 @@ export function EmployeeSchedule() {
       <Switch>
         <Route exact path="/employeeSchedule" component={List} />
         <Route exact path="/employeeSchedule/create" component={Create} />
-        <Route
-          exact
-          path="/employeeSchedule/employee/:eid/payroll/:pid"
-          component={List}
-        />
-        <Route exact path="/employeeSchedule/employee/:eid" component={List} />
-        <Route exact path="/employeeSchedule/payroll/:pid" component={List} />
         <Route exact path="/employeeSchedule/load" component={Load} />
         <Route exact path="/employeeSchedule/:id" component={Edit} />
         <Route component={NoMatch} />

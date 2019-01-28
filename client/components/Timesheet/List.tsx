@@ -145,7 +145,7 @@ export function List(props: any) {
         args.timestamp = {};
       }
 
-      args.timestamp.$gte = startDate.value;
+      args.timestamp.$gte = `${startDate.value} 00:00:00`;
       locationSearch.startDate = startDate.value;
     }
 
@@ -154,7 +154,7 @@ export function List(props: any) {
         args.timestamp = {};
       }
 
-      args.timestamp.$lte = endDate.value;
+      args.timestamp.$lte = `${endDate.value} 23:59:59`;
       locationSearch.endDate = endDate.value;
     }
 

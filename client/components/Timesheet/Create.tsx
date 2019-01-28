@@ -80,13 +80,22 @@ export function Create() {
   }
 
   if (done) {
-    let history = '';
+    const locationSearch: any = {};
 
     if (fingerPrintId.value) {
-      history += '/employee/' + fingerPrintId.value;
+      locationSearch.fingerPrintId = fingerPrintId.value;
     }
 
-    return <Redirect to={'/timesheet' + history} />;
+    const location = {
+      pathname: '/timesheet',
+      search: Object.keys(locationSearch)
+        .map(key => {
+          return key + '=' + encodeURIComponent(locationSearch[key]);
+        })
+        .join('&')
+    };
+
+    return <Redirect to={location} />;
   }
 
   return (

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { FormControl, InputLabel, Select } from '@material-ui/core';
+import { FormControl, InputLabel, Select, TextField } from '@material-ui/core';
 import styled from 'styled-components';
+import { parse } from 'qs';
 
 import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
@@ -16,44 +17,45 @@ export function List(props: any) {
   const [loading, setLoading] = useState(false);
   const employeeId = useFormSelect('');
   const payrollId = useFormSelect('');
+  const startDate = useFormInput('');
+  const endDate = useFormInput('');
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [payrollOptions, setPayrollOptions] = useState(null);
   const columns = [
     {
       label: 'Finger Print Id',
-      field: 'employeeId',
-      cell: (value: string, rowData: any) => rowData.employeeId.fingerPrintId
+      field: 'fingerPrintId'
     },
     {
       label: 'Employee Name',
-      field: 'employeeId',
+      field: 'employeeName',
       cell: (value: string, rowData: any) => (
         <Update
           view="/employee/{{ _id }}"
           data={{ _id: rowData.employeeId._id }}
         >
-          {rowData.employeeId.name}
+          {rowData.employeeName}
         </Update>
       )
     },
     {
       label: 'Schedule Name',
-      field: 'scheduleId',
+      field: 'scheduleName',
       cell: (value: string, rowData: any) => (
         <Update
           view="/schedule/{{ _id }}"
           data={{ _id: rowData.scheduleId._id }}
         >
-          {rowData.scheduleId.name}
+          {rowData.scheduleName}
         </Update>
       )
     },
     {
       label: 'Payroll Name',
-      field: 'payrollId',
+      field: 'payrollName',
       cell: (value: string, rowData: any) => (
         <Update view="/payroll/{{ _id }}" data={{ _id: rowData.payrollId._id }}>
-          {rowData.payrollId.name}
+          {rowData.payrollName}
         </Update>
       )
     },
@@ -77,18 +79,40 @@ export function List(props: any) {
     }
   ];
 
+  function useFormInput(initialValue: string) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e: any) {
+      setValue(e.target.value);
+    }
+
+    return {
+      value: value,
+      onChange: handleChange
+    };
+  }
+
   async function fetchOptions() {
     const tmp = await Promise.all([employeeList(), payrollList()]);
 
     setEmployeeOptions(tmp[0]);
     setPayrollOptions(tmp[1]);
 
-    if (props.match.params.eid) {
-      employeeId.onChange({ target: { value: props.match.params.eid } });
+    const params = parse(props.location.search.substr(1));
+    if (params.employeeId) {
+      employeeId.onChange({ target: { value: params.employeeId } });
     }
 
-    if (props.match.params.pid) {
-      payrollId.onChange({ target: { value: props.match.params.pid } });
+    if (params.payrollId) {
+      payrollId.onChange({ target: { value: params.payrollId } });
+    }
+
+    if (params.startDate) {
+      startDate.onChange({ target: { value: params.startDate } });
+    }
+
+    if (params.endDate) {
+      endDate.onChange({ target: { value: params.endDate } });
     }
   }
 
@@ -98,26 +122,68 @@ export function List(props: any) {
 
   async function fetchData() {
     const args: any = {};
-    let history = '';
+    const locationSearch: any = {};
 
     if (employeeId.value) {
-      history += '/employee/' + employeeId.value;
       args.employeeId = employeeId.value;
+      locationSearch.employeeId = employeeId.value;
     }
+
     if (payrollId.value) {
-      history += '/payroll/' + payrollId.value;
       args.payrollId = payrollId.value;
+      locationSearch.payrollId = payrollId.value;
+    }
+
+    if (startDate.value) {
+      if (!args.date) {
+        args.date = {};
+      }
+
+      args.date.$gte = `${startDate.value} 00:00:00`;
+      locationSearch.startDate = startDate.value;
+    }
+
+    if (endDate.value) {
+      if (!args.date) {
+        args.date = {};
+      }
+
+      args.date.$lte = `${endDate.value} 23:59:59`;
+      locationSearch.endDate = endDate.value;
     }
 
     setLoading(true);
     const tmp = await listPopulated(args);
+    tmp.forEach((x: any) => {
+      x.fingerPrintId = x.employeeId.fingerPrintId;
+      x.employeeName = x.employeeId.name;
+      x.scheduleName = x.scheduleId.name;
+      x.payrollName = x.payrollId.name;
+    });
     setData(tmp);
     setLoading(false);
 
-    props.history.push('/employeeSchedule' + history);
+    const location = {
+      pathname: '/employeeSchedule',
+      search: Object.keys(locationSearch)
+        .map(key => {
+          return key + '=' + encodeURIComponent(locationSearch[key]);
+        })
+        .join('&')
+    };
+
+    props.history.push(location);
   }
 
-  const query = payrollId.value + employeeId.value;
+  const query =
+    'e' +
+    employeeId.value +
+    'p' +
+    payrollId.value +
+    's' +
+    startDate.value +
+    'd' +
+    endDate.value;
   useEffect(
     () => {
       if (employeeOptions) {
@@ -181,6 +247,26 @@ export function List(props: any) {
           ) : (
             'Loading...'
           )}
+        </FormControl>
+        <FormControl fullWidth>
+          <TextField
+            label="Start Date"
+            type="date"
+            InputLabelProps={{
+              shrink: true
+            }}
+            {...startDate}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <TextField
+            label="End Date"
+            type="date"
+            InputLabelProps={{
+              shrink: true
+            }}
+            {...endDate}
+          />
         </FormControl>
       </MyForm>
       {data != null ? (
