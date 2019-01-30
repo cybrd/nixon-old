@@ -41,3 +41,11 @@ export function upload(file: File) {
     body: data
   });
 }
+
+export function removeMany(args: any) {
+  return myFetchJSON('/api/employeeSchedule/removeMany', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(args)
+  });
+}

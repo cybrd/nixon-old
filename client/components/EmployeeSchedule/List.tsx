@@ -8,7 +8,7 @@ import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
-import { listPopulated } from '../../services/employeeSchedule';
+import { listPopulated, removeMany } from '../../services/employeeSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
 
@@ -270,7 +270,13 @@ export function List(props: any) {
         </FormControl>
       </MyForm>
       {data != null ? (
-        <Table data={data} columns={columns} orderBy="date" loading={loading} />
+        <Table
+          data={data}
+          columns={columns}
+          orderBy="date"
+          loading={loading}
+          removeFn={removeMany}
+        />
       ) : (
         'Loading...'
       )}

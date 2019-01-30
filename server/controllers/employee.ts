@@ -10,6 +10,7 @@ import {
   create,
   update,
   remove,
+  removeMany,
   createFromUpload
 } from '../services/employee';
 
@@ -21,6 +22,10 @@ router.post('/list', userGuard, async (req, res) => {
 
 router.post('/create', adminGuard, async (req, res) => {
   res.send(await create(req.user, req.body));
+});
+
+router.post('/removeMany', adminGuard, async (req, res) => {
+  res.send(await removeMany(req.user, req.body.ids));
 });
 
 router.post('/:id/remove', adminGuard, async (req, res) => {

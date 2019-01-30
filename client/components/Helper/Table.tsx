@@ -12,7 +12,9 @@ import {
   TableSortLabel,
   TablePagination,
   Paper,
-  CircularProgress
+  CircularProgress,
+  Checkbox,
+  Button
 } from '@material-ui/core';
 
 import { ButtonCopyClipboard } from './ButtonCopyClipboard';
@@ -52,7 +54,15 @@ const MyTableRow = withStyles({
 })(TableRow);
 
 function EnhancedTableHead(props: any) {
-  const { order, orderBy, onRequestSort } = props;
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+    columns
+  } = props;
 
   const createSortHandler = (property: any) => (event: any) => {
     onRequestSort(event, property);
@@ -61,7 +71,16 @@ function EnhancedTableHead(props: any) {
   return (
     <TableHead>
       <TableRow>
-        {props.columns.map((column: any) => {
+        {props.removeFn && (
+          <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={numSelected && numSelected === rowCount}
+              onChange={onSelectAllClick}
+            />
+          </TableCell>
+        )}
+        {columns.map((column: any) => {
           return (
             <MyTableCell
               key={'th'.concat(column.label)}
@@ -110,23 +129,6 @@ function getSorting(order: any, orderBy: any) {
     : (a: any, b: any) => -desc(a, b, orderBy);
 }
 
-function filterByValue(
-  rawData: any[],
-  searchString: string,
-  columns: string[]
-) {
-  if (searchString != null) {
-    return rawData.filter(
-      (v: any) =>
-        columns.filter((k: any) =>
-          v[k].toLowerCase().includes(searchString.toLowerCase())
-        ).length
-    );
-  } else {
-    return rawData;
-  }
-}
-
 export function Table(props: any) {
   const [orderBy, setOrderBy] = useState(props.orderBy || '_id');
   const [order, setOrder] = useState(props.order || 'asc');
@@ -136,11 +138,29 @@ export function Table(props: any) {
   );
   let data = filterByValue(props.data, props.search, props.searchColumns);
   data = stableSort(data, getSorting(order, orderBy));
+  const [selected, setSelected] = useState([]);
 
   function handleRequestSort(event: any, property: any) {
     const isDesc = orderBy === property && order === 'desc';
     setOrder(isDesc ? 'asc' : 'desc');
     setOrderBy(property);
+  }
+
+  function filterByValue(
+    rawData: any[],
+    searchString: string,
+    columns: string[]
+  ) {
+    if (searchString) {
+      return rawData.filter(
+        (v: any) =>
+          columns.filter((k: any) =>
+            v[k].toLowerCase().includes(searchString.toLowerCase())
+          ).length
+      );
+    } else {
+      return rawData;
+    }
   }
 
   function handleChangePage(event: any, newPage: any) {
@@ -152,26 +172,68 @@ export function Table(props: any) {
     setRowsPerPage(event.target.value);
   }
 
+  function handleClick(event: any, id: string) {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected: string[] = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    setSelected(newSelected);
+  }
+
+  function handleSelectAllClick(event: any) {
+    if (event.target.checked) {
+      const newSelecteds = data.map(row => row._id);
+      setSelected(newSelecteds);
+    } else {
+      setSelected([]);
+    }
+  }
+
+  const isSelected = (id: string) => selected.indexOf(id) !== -1;
+
   return (
     <MyPaper>
       {props.loading && <MyCircularProgress />}
       <MTable>
         <EnhancedTableHead
           columns={props.columns}
+          numSelected={selected.length}
+          rowCount={data.length}
           order={order}
           orderBy={orderBy}
+          onSelectAllClick={handleSelectAllClick}
           onRequestSort={handleRequestSort}
+          removeFn={props.removeFn}
         />
         <TableBody>
           {data
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row: any, index: number) => {
+              const isItemSelected = isSelected(row._id);
               return (
                 <MyTableRow
                   hover
                   key={row._id}
                   selected={index % 2 ? false : true}
+                  onClick={event => handleClick(event, row._id)}
                 >
+                  {props.removeFn && (
+                    <TableCell padding="checkbox">
+                      <Checkbox checked={isItemSelected} />
+                    </TableCell>
+                  )}
                   {props.columns.map((column: any) => {
                     if (column.cell) {
                       return (
@@ -196,7 +258,13 @@ export function Table(props: any) {
       </MTable>
 
       <TablePagination
-        component={MyTablePagination(data, props.columns, props.copycolumns)}
+        component={MyTablePagination({
+          data: data,
+          columns: props.columns,
+          copycolumns: props.copycolumns,
+          selected: selected,
+          removeFn: props.removeFn
+        })}
         count={data.length}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25, 50, 100]}
@@ -208,7 +276,13 @@ export function Table(props: any) {
   );
 }
 
-function MyTablePagination(data: any, columns: any, copycolumns: string[]) {
+function MyTablePagination({
+  data,
+  columns,
+  copycolumns,
+  selected,
+  removeFn
+}: any) {
   return (props: any) => {
     const MyDiv = styled.div`
       min-width: 100%;
@@ -219,6 +293,30 @@ function MyTablePagination(data: any, columns: any, copycolumns: string[]) {
     const MyDivChild = styled.div`
       align-self: center;
     `;
+
+    const ButtonStyled = withStyles({
+      root: {
+        color: 'red',
+        'text-transform': 'none !important'
+      }
+    })(Button);
+
+    async function handleRemoveFn() {
+      const filteredSelected: string[] = [];
+      data.forEach((x: any) => {
+        const isSelected = selected.indexOf(x._id) !== -1;
+        if (isSelected) {
+          filteredSelected.push(x._id);
+        }
+      });
+
+      if (confirm('Remove ' + filteredSelected.length + ' selected items?')) {
+        await removeFn({
+          ids: filteredSelected
+        });
+        window.location.reload();
+      }
+    }
 
     return (
       <MyDiv>
@@ -231,6 +329,13 @@ function MyTablePagination(data: any, columns: any, copycolumns: string[]) {
             >
               Copy to Clipboard
             </ButtonCopyClipboard>
+          )}
+          {removeFn && selected.length ? (
+            <ButtonStyled onClick={handleRemoveFn}>
+              Remove Selected
+            </ButtonStyled>
+          ) : (
+            ''
           )}
         </MyDivChild>
         <div>{props.children}</div>

@@ -54,6 +54,21 @@ export async function remove(user: IUser, id: string) {
   return await EmployeeCollection.deleteOne({ _id: id }).exec();
 }
 
+export async function removeMany(user: IUser, ids: string[] = []) {
+  const records = await EmployeeCollection.find({ _id: ids })
+    .lean()
+    .exec();
+
+  records.forEach((record: any) => {
+    record.oldId = record._id;
+    delete record._id;
+    record.modifiedBy = user.username;
+    new EmployeeArchiveCollection(record).save();
+  });
+
+  return await EmployeeCollection.deleteMany({ _id: ids }).exec();
+}
+
 export async function createFromUpload(user: IUser, raw: any) {
   const records = parse(raw, {
     columns: true,

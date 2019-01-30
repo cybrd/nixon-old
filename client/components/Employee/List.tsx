@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Input } from '@material-ui/core';
-import styled from 'styled-components';
 
 import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
-import { list } from '../../services/employee';
+import { list, removeMany } from '../../services/employee';
 
 export function List() {
   const [data, setData] = useState(null);
@@ -84,6 +83,7 @@ export function List() {
           loading={loading}
           search={search.value}
           searchColumns={['fingerPrintId', 'name', 'department', 'position']}
+          removeFn={removeMany}
         />
       ) : (
         'Loading...'
