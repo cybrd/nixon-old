@@ -82,18 +82,23 @@ export function Menu() {
             <ListItemLink to="/timesheetSummary">
               Timesheet Summary
             </ListItemLink>
-          </React.Fragment>
-        )}
-
-        {authContext.role === 'admin' && (
-          <React.Fragment>
-            <ListItemLink to="/user">Manage User</ListItemLink>
             <ListItemLink to="/employee">Employee</ListItemLink>
             <ListItemLink to="/schedule">Schedule</ListItemLink>
             <ListItemLink to="/payroll">Payroll</ListItemLink>
             <ListItemLink to="/employeeSchedule">
               Employee Schedule
             </ListItemLink>
+          </React.Fragment>
+        )}
+
+        {authContext.role === 'admin' && (
+          <React.Fragment>
+            <ListItemLink to="/user">Manage User</ListItemLink>
+          </React.Fragment>
+        )}
+
+        {authContext.role ? (
+          <React.Fragment>
             <MyExpansionPanel>
               <MyExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 Load
@@ -112,13 +117,10 @@ export function Menu() {
                 </List>
               </MyExpansionPanelDetails>
             </MyExpansionPanel>
+            <ListItem button onClick={handleLogout(authContext.logout)}>
+              Logout
+            </ListItem>
           </React.Fragment>
-        )}
-
-        {authContext.role ? (
-          <ListItem button onClick={handleLogout(authContext.logout)}>
-            Logout
-          </ListItem>
         ) : (
           <ListItemLink to="/login">Login Page</ListItemLink>
         )}

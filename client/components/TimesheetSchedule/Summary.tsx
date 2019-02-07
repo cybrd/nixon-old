@@ -4,6 +4,7 @@ import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
 
 import { Table, readableTime } from '../Helper/Table';
+import { RoleCheck } from '../Helper/RoleCheck';
 import { summary } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
@@ -57,6 +58,20 @@ export function Summary(props: any) {
       field: 'payrollIsAbsent'
     }
   ];
+  let copycolumns: any = [];
+  if (RoleCheck('admin')) {
+    copycolumns = [
+      'fingerPrintId',
+      'employeeName',
+      'payrollName',
+      'payrollWorkDayTotal',
+      'payrollWorkDayWorked',
+      'payrollWorkOvertime',
+      'payrollWorkDayMissing',
+      'payrollLateAllowance',
+      'payrollIsAbsent'
+    ];
+  }
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);
@@ -167,17 +182,7 @@ export function Summary(props: any) {
           columns={columns}
           orderBy="workDay"
           loading={loading}
-          copycolumns={[
-            'fingerPrintId',
-            'employeeName',
-            'payrollName',
-            'payrollWorkDayTotal',
-            'payrollWorkDayWorked',
-            'payrollWorkOvertime',
-            'payrollWorkDayMissing',
-            'payrollLateAllowance',
-            'payrollIsAbsent'
-          ]}
+          copycolumns={copycolumns}
         />
       ) : (
         'Loading...'

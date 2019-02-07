@@ -5,6 +5,7 @@ import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
+import { RoleCheck } from '../Helper/RoleCheck';
 import { list } from '../../services/payroll';
 
 export function List() {
@@ -18,6 +19,7 @@ export function List() {
     {
       label: 'Actions',
       field: '_id',
+      show: RoleCheck('admin'),
       cell: (value: any) => (
         <React.Fragment>
           <Update view="/payroll/{{ _id }}" data={{ _id: value }} />

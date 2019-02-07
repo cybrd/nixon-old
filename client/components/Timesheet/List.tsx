@@ -8,6 +8,7 @@ import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
+import { RoleCheck, RoleCheckX } from '../Helper/RoleCheck';
 import { list } from '../../services/timesheet';
 import { list as employeeList } from '../../services/employee';
 
@@ -44,6 +45,7 @@ export function List(props: any) {
     {
       label: 'Actions',
       field: '_id',
+      show: RoleCheck('admin'),
       cell: (value: any) => (
         <React.Fragment>
           <Update view="/timesheet/{{ _id }}" data={{ _id: value }} />
@@ -210,9 +212,11 @@ export function List(props: any) {
 
   return (
     <React.Fragment>
-      <ButtonLink to="/timesheet/create" color="primary">
-        Create New Time In/Out
-      </ButtonLink>
+      <RoleCheckX>
+        <ButtonLink to="/timesheet/create" color="primary">
+          Create New Time In/Out
+        </ButtonLink>
+      </RoleCheckX>
       <MyForm3>
         <FormControl fullWidth>
           <InputLabel>Select Employee</InputLabel>

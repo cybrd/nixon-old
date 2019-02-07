@@ -140,6 +140,14 @@ export function Table(props: any) {
   data = stableSort(data, getSorting(order, orderBy));
   const [selected, setSelected] = useState([]);
 
+  const columnsFiltered = props.columns.filter((column: any) => {
+    if (typeof column.show !== 'undefined') {
+      return column.show;
+    } else {
+      return true;
+    }
+  });
+
   function handleRequestSort(event: any, property: any) {
     const isDesc = orderBy === property && order === 'desc';
     setOrder(isDesc ? 'asc' : 'desc');
@@ -208,7 +216,7 @@ export function Table(props: any) {
       {props.loading && <MyCircularProgress />}
       <MTable>
         <EnhancedTableHead
-          columns={props.columns}
+          columns={columnsFiltered}
           numSelected={selected.length}
           rowCount={data.length}
           order={order}
@@ -234,7 +242,7 @@ export function Table(props: any) {
                       <Checkbox checked={isItemSelected} />
                     </TableCell>
                   )}
-                  {props.columns.map((column: any) => {
+                  {columnsFiltered.map((column: any) => {
                     if (column.cell) {
                       return (
                         <MyTableCell
@@ -260,7 +268,7 @@ export function Table(props: any) {
       <TablePagination
         component={MyTablePagination({
           data: data,
-          columns: props.columns,
+          columns: columnsFiltered,
           copycolumns: props.copycolumns,
           selected: selected,
           removeFn: props.removeFn
@@ -321,7 +329,7 @@ function MyTablePagination({
     return (
       <MyDiv>
         <MyDivChild>
-          {copycolumns && copycolumns.length && (
+          {copycolumns && copycolumns.length ? (
             <ButtonCopyClipboard
               data={data}
               columns={columns}
@@ -329,6 +337,8 @@ function MyTablePagination({
             >
               Copy to Clipboard
             </ButtonCopyClipboard>
+          ) : (
+            ''
           )}
           {removeFn && selected.length ? (
             <ButtonStyled onClick={handleRemoveFn}>

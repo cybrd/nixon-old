@@ -3,7 +3,7 @@ import { writeFileSync } from 'fs';
 import * as multer from 'multer';
 import * as dateformat from 'dateformat';
 
-import { userGuard, adminGuard } from '../my.guard';
+import { userGuard, supervisorGuard } from '../my.guard';
 
 import {
   list,
@@ -25,7 +25,7 @@ router.post('/listPopulated', userGuard, async (req, res) => {
   res.send(await listPopulated(req.body));
 });
 
-router.post('/create', adminGuard, async (req, res) => {
+router.post('/create', supervisorGuard, async (req, res) => {
   const { dates, ...params } = req.body;
   const results = await Promise.all(
     dates.map((date: any) =>
@@ -35,22 +35,22 @@ router.post('/create', adminGuard, async (req, res) => {
   res.send(results);
 });
 
-router.post('/removeMany', adminGuard, async (req, res) => {
+router.post('/removeMany', supervisorGuard, async (req, res) => {
   res.send(await removeMany(req.user, req.body.ids));
 });
 
-router.post('/:id/remove', adminGuard, async (req, res) => {
+router.post('/:id/remove', supervisorGuard, async (req, res) => {
   res.send(await remove(req.user, req.params.id));
 });
 
-router.post('/:id/update', adminGuard, async (req, res) => {
+router.post('/:id/update', supervisorGuard, async (req, res) => {
   const result = await update(req.user, req.params.id, req.body);
   res.send(result);
 });
 
 router.post(
   '/upload',
-  adminGuard,
+  supervisorGuard,
   multer().single('file'),
   async (req, res) => {
     const filename =

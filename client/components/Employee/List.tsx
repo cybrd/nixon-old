@@ -6,6 +6,7 @@ import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
+import { RoleCheckX } from '../Helper/RoleCheck';
 import { list, removeMany } from '../../services/employee';
 
 export function List() {
@@ -35,7 +36,12 @@ export function List() {
       cell: (value: any) => (
         <React.Fragment>
           <Update view="/employee/{{ _id }}" data={{ _id: value }} />
-          <Remove view="/api/employee/{{ _id }}/remove" data={{ _id: value }} />
+          <RoleCheckX>
+            <Remove
+              view="/api/employee/{{ _id }}/remove"
+              data={{ _id: value }}
+            />
+          </RoleCheckX>
         </React.Fragment>
       )
     }

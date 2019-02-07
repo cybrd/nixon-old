@@ -81,7 +81,6 @@ export function Create() {
         <Select native {...role}>
           <option value="admin">admin</option>
           <option value="supervisor">supervisor</option>
-          <option value="user">user</option>
         </Select>
       </FormControl>
       <Button type="submit" variant="contained" color="primary">

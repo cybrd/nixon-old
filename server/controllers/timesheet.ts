@@ -6,7 +6,7 @@ import * as dateformat from 'dateformat';
 // tslint:disable-next-line:no-var-requires
 const reader = require('anviz-backup-reader');
 
-import { userGuard, adminGuard } from '../my.guard';
+import { userGuard, supervisorGuard, adminGuard } from '../my.guard';
 
 import {
   list,
@@ -29,7 +29,7 @@ router.post('/create', adminGuard, async (req, res) => {
 
 router.post(
   '/upload',
-  adminGuard,
+  supervisorGuard,
   multer().single('file'),
   async (req, res) => {
     const filename =
