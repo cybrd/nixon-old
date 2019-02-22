@@ -30,7 +30,7 @@ export async function listPopulated(args = {}, secondary: any = {}) {
       return false;
     }
     if (secondary) {
-      if (secondary.handler !== result.handler) {
+      if (secondary.handler !== result.employeeId.handler) {
         return false;
       }
     }
