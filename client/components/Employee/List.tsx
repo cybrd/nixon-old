@@ -27,6 +27,10 @@ export function List() {
       field: 'department'
     },
     {
+      label: 'Handler',
+      field: 'handler'
+    },
+    {
       label: 'Position',
       field: 'position'
     },

@@ -55,6 +55,10 @@ export function Create() {
       label: 'Department',
       field: useFormInput('')
     },
+    handler: {
+      label: 'Handler',
+      field: useFormInput('')
+    },
     hireDate: {
       label: 'Hire Date',
       field: useFormInput('')
@@ -163,7 +167,7 @@ export function Create() {
   return (
     <form onSubmit={handleFormSubmit}>
       {Object.keys(inputKeys).map(key => (
-        <MyFormControl fullWidth>
+        <MyFormControl fullWidth key={key}>
           <MyInputLabel>{inputKeys[key].label}</MyInputLabel>
           <MyInput {...inputKeys[key].field} />
         </MyFormControl>

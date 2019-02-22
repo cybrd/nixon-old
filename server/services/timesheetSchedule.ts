@@ -23,7 +23,7 @@ interface ITimesheetSchedule {
   isAbsent: boolean;
 }
 
-export async function list(args = {}) {
+export async function list(args = {}, secondary = {}) {
   let workDay;
   let timesheet;
   let queryStart: Date;
@@ -179,8 +179,8 @@ function getLateAmount(timesheet: ITimesheet[], realStart: number) {
   return 0;
 }
 
-export async function summary(args = {}) {
-  const tmp = await list(args);
+export async function summary(args = {}, secondary = {}) {
+  const tmp = await list(args, secondary);
   const result: any = {};
 
   tmp.forEach(x => {

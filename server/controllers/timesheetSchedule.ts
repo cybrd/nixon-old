@@ -7,11 +7,13 @@ import { list, summary } from '../services/timesheetSchedule';
 const router = Router();
 
 router.post('/list', userGuard, async (req, res) => {
-  res.send(await list(req.body));
+  const { secondary, ...args } = req.body;
+  res.send(await list(args, secondary));
 });
 
 router.post('/summary', userGuard, async (req, res) => {
-  res.send(await summary(req.body));
+  const { secondary, ...args } = req.body;
+  res.send(await summary(args, secondary));
 });
 
 export const TimesheetScheduleCtrl = router;

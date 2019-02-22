@@ -20,6 +20,7 @@ export function List(props: any) {
   const employeeFilter = useFormSelect('');
   const departmentFilter = useFormSelect('');
   const typeFilter = useFormSelect('');
+  const handlerFilter = useFormSelect('');
   const startDate = useFormInput('');
   const endDate = useFormInput('');
 
@@ -109,6 +110,10 @@ export function List(props: any) {
       typeFilter.onChange({ target: { value: params.type } });
     }
 
+    if (params.handler) {
+      handlerFilter.onChange({ target: { value: params.handler } });
+    }
+
     if (params.startDate) {
       startDate.onChange({ target: { value: params.startDate } });
     }
@@ -140,6 +145,11 @@ export function List(props: any) {
     if (typeFilter.value) {
       args.type = typeFilter.value;
       locationSearch.type = typeFilter.value;
+    }
+
+    if (handlerFilter.value) {
+      args.secondary.handler = handlerFilter.value;
+      locationSearch.handler = handlerFilter.value;
     }
 
     if (startDate.value) {
@@ -185,24 +195,17 @@ export function List(props: any) {
     't' +
     typeFilter.value +
     's' +
+    handlerFilter.value +
+    'h' +
     startDate.value +
     'd' +
     endDate.value;
-  useEffect(
-    () => {
-      if (employeeOptions) {
-        const timer = setTimeout(fetchData, 50);
-        return () => clearTimeout(timer);
-      }
-    },
-    [query]
-  );
-
-  const MyForm3 = styled.form`
-    min-width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  `;
+  useEffect(() => {
+    if (employeeOptions) {
+      const timer = setTimeout(fetchData, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [query]);
 
   const MyForm2 = styled.form`
     min-width: 100%;
@@ -217,7 +220,7 @@ export function List(props: any) {
           Create New Time In/Out
         </ButtonLink>
       </RoleCheckX>
-      <MyForm3>
+      <MyForm2>
         <FormControl fullWidth>
           <InputLabel>Select Employee</InputLabel>
           {employeeOptions != null ? (
@@ -248,15 +251,7 @@ export function List(props: any) {
             'Loading...'
           )}
         </FormControl>
-        <FormControl fullWidth>
-          <InputLabel>Select Type</InputLabel>
-          <Select native {...typeFilter}>
-            <option value="" />
-            <option value="IN">IN</option>
-            <option value="OUT">OUT</option>
-          </Select>
-        </FormControl>
-      </MyForm3>
+      </MyForm2>
       <MyForm2>
         <FormControl fullWidth>
           <TextField
@@ -277,6 +272,26 @@ export function List(props: any) {
             }}
             {...endDate}
           />
+        </FormControl>
+      </MyForm2>
+      <MyForm2>
+        <FormControl fullWidth>
+          <InputLabel>Select Type</InputLabel>
+          <Select native {...typeFilter}>
+            <option value="" />
+            <option value="IN">IN</option>
+            <option value="OUT">OUT</option>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Select Handler</InputLabel>
+          <Select native {...handlerFilter}>
+            <option value="" />
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </Select>
         </FormControl>
       </MyForm2>
       {data != null ? (

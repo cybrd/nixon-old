@@ -12,21 +12,6 @@ export function TimesheetSchedule() {
       <Switch>
         <Route exact path="/timesheetSchedule" component={List} />
         <Route exact path="/timesheetSummary" component={Summary} />
-        <Route
-          exact
-          path="/timesheetSummary/employee/:eid/payroll/:pid"
-          component={Summary}
-        />
-        <Route
-          exact
-          path="/timesheetSummary/employee/:eid"
-          component={Summary}
-        />
-        <Route
-          exact
-          path="/timesheetSummary/payroll/:pid"
-          component={Summary}
-        />
         <Route component={NoMatch} />
       </Switch>
     </React.Fragment>

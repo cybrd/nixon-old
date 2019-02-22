@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
+import { parse } from 'qs';
 
 import { Table, readableTime } from '../Helper/Table';
 import { RoleCheck } from '../Helper/RoleCheck';
@@ -12,8 +13,9 @@ import { list as payrollList } from '../../services/payroll';
 export function Summary(props: any) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const employeeId = useFormSelect('');
-  const payrollId = useFormSelect('');
+  const employeeFilter = useFormSelect('');
+  const payrollFilter = useFormSelect('');
+  const handlerFilter = useFormSelect('');
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [payrollOptions, setPayrollOptions] = useState(null);
   const columns = [
@@ -92,12 +94,17 @@ export function Summary(props: any) {
     setEmployeeOptions(tmp[0]);
     setPayrollOptions(tmp[1]);
 
-    if (props.match.params.eid) {
-      employeeId.onChange({ target: { value: props.match.params.eid } });
+    const params = parse(props.location.search.substr(1));
+    if (params.employeeId) {
+      employeeFilter.onChange({ target: { value: params.employeeId } });
     }
 
-    if (props.match.params.pid) {
-      payrollId.onChange({ target: { value: props.match.params.pid } });
+    if (params.payrollId) {
+      payrollFilter.onChange({ target: { value: params.payrollId } });
+    }
+
+    if (params.handler) {
+      handlerFilter.onChange({ target: { value: params.handler } });
     }
   }
 
@@ -107,15 +114,22 @@ export function Summary(props: any) {
 
   async function fetchData() {
     const args: any = {};
-    let history = '';
+    const locationSearch: any = {};
+    args.secondary = {};
 
-    if (employeeId.value) {
-      history += '/employee/' + employeeId.value;
-      args.employeeId = employeeId.value;
+    if (employeeFilter.value) {
+      args.employeeId = employeeFilter.value;
+      locationSearch.employeeId = employeeFilter.value;
     }
-    if (payrollId.value) {
-      history += '/payroll/' + payrollId.value;
-      args.payrollId = payrollId.value;
+
+    if (payrollFilter.value) {
+      args.payrollId = payrollFilter.value;
+      locationSearch.payrollId = payrollFilter.value;
+    }
+
+    if (handlerFilter.value) {
+      args.secondary.handler = handlerFilter.value;
+      locationSearch.handler = handlerFilter.value;
     }
 
     setLoading(true);
@@ -123,23 +137,35 @@ export function Summary(props: any) {
     setData(tmp);
     setLoading(false);
 
-    props.history.push('/timesheetSummary' + history);
+    const location = {
+      pathname: '/timesheetSummary',
+      search: Object.keys(locationSearch)
+        .map(key => {
+          return key + '=' + encodeURIComponent(locationSearch[key]);
+        })
+        .join('&')
+    };
+
+    props.history.push(location);
   }
 
-  const query = payrollId.value + employeeId.value;
-  useEffect(
-    () => {
-      if (employeeOptions) {
-        fetchData();
-      }
-    },
-    [query]
-  );
+  const query =
+    'e' +
+    employeeFilter.value +
+    'p' +
+    payrollFilter.value +
+    'h' +
+    handlerFilter.value;
+  useEffect(() => {
+    if (employeeOptions) {
+      fetchData();
+    }
+  }, [query]);
 
   const MyForm = styled.form`
     min-width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   `;
 
   return (
@@ -148,7 +174,7 @@ export function Summary(props: any) {
         <FormControl fullWidth>
           <InputLabel>Select Employee</InputLabel>
           {employeeOptions != null ? (
-            <Select native {...employeeId}>
+            <Select native {...employeeFilter}>
               <option value="" />
               {employeeOptions.map((x: any) => (
                 <option key={x._id} value={x._id}>
@@ -163,7 +189,7 @@ export function Summary(props: any) {
         <FormControl fullWidth>
           <InputLabel>Select Payroll</InputLabel>
           {payrollOptions != null ? (
-            <Select native {...payrollId}>
+            <Select native {...payrollFilter}>
               <option value="" />
               {payrollOptions.map((x: any) => (
                 <option key={x._id} value={x._id}>
@@ -174,6 +200,16 @@ export function Summary(props: any) {
           ) : (
             'Loading...'
           )}
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Select Handler</InputLabel>
+          <Select native {...handlerFilter}>
+            <option value="" />
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </Select>
         </FormControl>
       </MyForm>
       {data != null ? (

@@ -12,14 +12,14 @@ export async function list(args = {}) {
   return await EmployeeScheduleCollection.find(args).exec();
 }
 
-export async function listPopulated(args = {}) {
+export async function listPopulated(args = {}, secondary: any = {}) {
   const results = await EmployeeScheduleCollection.find(args)
     .populate('employeeId')
     .populate('scheduleId')
     .populate('payrollId')
     .exec();
 
-  return results.filter(result => {
+  return results.filter((result: any) => {
     if (!result.employeeId) {
       return false;
     }
@@ -28,6 +28,11 @@ export async function listPopulated(args = {}) {
     }
     if (!result.payrollId) {
       return false;
+    }
+    if (secondary) {
+      if (secondary.handler !== result.handler) {
+        return false;
+      }
     }
     return true;
   });

@@ -16,6 +16,7 @@ export function List(props: any) {
   const employeeFilter = useFormSelect('');
   const payrollFilter = useFormSelect('');
   const scheduleFilter = useFormSelect('');
+  const handlerFilter = useFormSelect('');
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [payrollOptions, setPayrollOptions] = useState(null);
   const [scheduleOptions, setScheduleOptions] = useState(null);
@@ -104,6 +105,10 @@ export function List(props: any) {
     if (params.scheduleId) {
       scheduleFilter.onChange({ target: { value: params.scheduleId } });
     }
+
+    if (params.handler) {
+      handlerFilter.onChange({ target: { value: params.handler } });
+    }
   }
 
   useEffect(() => {
@@ -113,6 +118,7 @@ export function List(props: any) {
   async function fetchData() {
     const args: any = {};
     const locationSearch: any = {};
+    args.secondary = {};
 
     if (employeeFilter.value) {
       args.employeeId = employeeFilter.value;
@@ -127,6 +133,11 @@ export function List(props: any) {
     if (scheduleFilter.value) {
       args.scheduleId = scheduleFilter.value;
       locationSearch.scheduleId = scheduleFilter.value;
+    }
+
+    if (handlerFilter.value) {
+      args.secondary.handler = handlerFilter.value;
+      locationSearch.handler = handlerFilter.value;
     }
 
     setLoading(true);
@@ -152,25 +163,24 @@ export function List(props: any) {
     'p' +
     payrollFilter.value +
     's' +
-    scheduleFilter.value;
-  useEffect(
-    () => {
-      if (employeeOptions) {
-        fetchData();
-      }
-    },
-    [query]
-  );
+    scheduleFilter.value +
+    'h' +
+    handlerFilter.value;
+  useEffect(() => {
+    if (employeeOptions) {
+      fetchData();
+    }
+  }, [query]);
 
-  const MyForm = styled.form`
+  const MyForm2 = styled.form`
     min-width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   `;
 
   return (
     <React.Fragment>
-      <MyForm>
+      <MyForm2>
         <FormControl fullWidth>
           <InputLabel>Select Employee</InputLabel>
           {employeeOptions != null ? (
@@ -201,6 +211,8 @@ export function List(props: any) {
             'Loading...'
           )}
         </FormControl>
+      </MyForm2>
+      <MyForm2>
         <FormControl fullWidth>
           <InputLabel>Select Schedule</InputLabel>
           {scheduleOptions != null ? (
@@ -216,7 +228,17 @@ export function List(props: any) {
             'Loading...'
           )}
         </FormControl>
-      </MyForm>
+        <FormControl fullWidth>
+          <InputLabel>Select Handler</InputLabel>
+          <Select native {...handlerFilter}>
+            <option value="" />
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </Select>
+        </FormControl>
+      </MyForm2>
       {data != null ? (
         <Table
           data={data}
