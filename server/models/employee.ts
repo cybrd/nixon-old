@@ -14,6 +14,7 @@ const EmployeeSchema = new Schema(
     fingerPrintId: String,
     name: String,
     department: String,
+    handler: String,
     employeeNumber: String,
     hireDate: Date,
     position: String,
@@ -47,6 +48,7 @@ const EmployeeArchiveSchema = new Schema(
     fingerPrintId: String,
     name: String,
     department: String,
+    handler: String,
     employeeNumber: String,
     hireDate: Date,
     position: String,
@@ -89,6 +91,7 @@ export interface IEmployee extends Document {
   fingerPrintId: string;
   name: string;
   department?: string;
+  handler?: string;
   employeeNumber?: string;
   hireDate?: Date;
   position?: string;
