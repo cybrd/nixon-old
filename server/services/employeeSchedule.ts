@@ -7,6 +7,7 @@ import { IUser } from '../models/user';
 import { EmployeeCollection } from '../models/employee';
 import { ScheduleCollection } from '../models/schedule';
 import { PayrollCollection } from '../models/payroll';
+import console = require('console');
 
 export async function list(args = {}) {
   return await EmployeeScheduleCollection.find(args).exec();
@@ -29,11 +30,18 @@ export async function listPopulated(args = {}, secondary: any = {}) {
     if (!result.payrollId) {
       return false;
     }
-    if (secondary) {
-      if (secondary.handler !== result.employeeId.handler) {
-        return false;
-      }
+
+    if (secondary.handler && secondary.handler !== result.employeeId.handler) {
+      return false;
     }
+
+    if (
+      secondary.department &&
+      secondary.department !== result.employeeId.department
+    ) {
+      return false;
+    }
+
     return true;
   });
 }

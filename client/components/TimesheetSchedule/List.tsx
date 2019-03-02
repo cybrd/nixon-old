@@ -16,10 +16,13 @@ export function List(props: any) {
   const employeeFilter = useFormSelect('');
   const payrollFilter = useFormSelect('');
   const scheduleFilter = useFormSelect('');
+  const departmentFilter = useFormSelect('');
   const handlerFilter = useFormSelect('');
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [payrollOptions, setPayrollOptions] = useState(null);
   const [scheduleOptions, setScheduleOptions] = useState(null);
+  const [departmentOptions, setDepartmentOptions] = useState(null);
+  const [handlerOptions, setHandlerOptions] = useState(null);
   const columns = [
     {
       label: 'Finger Print Id',
@@ -89,9 +92,28 @@ export function List(props: any) {
       scheduleList()
     ]);
 
+    const departments: string[] = [];
+    const handlers: string[] = [];
+
+    tmp[0].forEach((x: any) => {
+      if (departments.indexOf(x.department) < 0) {
+        departments.push(x.department);
+      }
+    });
+    departments.sort();
+
+    tmp[0].forEach((x: any) => {
+      if (handlers.indexOf(x.handler) < 0) {
+        handlers.push(x.handler);
+      }
+    });
+    handlers.sort();
+
     setEmployeeOptions(tmp[0]);
     setPayrollOptions(tmp[1]);
     setScheduleOptions(tmp[2]);
+    setDepartmentOptions(departments);
+    setHandlerOptions(handlers);
 
     const params = parse(props.location.search.substr(1));
     if (params.employeeId) {
@@ -135,6 +157,11 @@ export function List(props: any) {
       locationSearch.scheduleId = scheduleFilter.value;
     }
 
+    if (departmentFilter.value) {
+      args.secondary.department = departmentFilter.value;
+      locationSearch.department = departmentFilter.value;
+    }
+
     if (handlerFilter.value) {
       args.secondary.handler = handlerFilter.value;
       locationSearch.handler = handlerFilter.value;
@@ -164,6 +191,8 @@ export function List(props: any) {
     payrollFilter.value +
     's' +
     scheduleFilter.value +
+    'd' +
+    departmentFilter.value +
     'h' +
     handlerFilter.value;
   useEffect(() => {
@@ -176,6 +205,12 @@ export function List(props: any) {
     min-width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
+  `;
+
+  const MyForm3 = styled.form`
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
   `;
 
   return (
@@ -212,7 +247,7 @@ export function List(props: any) {
           )}
         </FormControl>
       </MyForm2>
-      <MyForm2>
+      <MyForm3>
         <FormControl fullWidth>
           <InputLabel>Select Schedule</InputLabel>
           {scheduleOptions != null ? (
@@ -229,16 +264,36 @@ export function List(props: any) {
           )}
         </FormControl>
         <FormControl fullWidth>
-          <InputLabel>Select Handler</InputLabel>
-          <Select native {...handlerFilter}>
-            <option value="" />
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-          </Select>
+          <InputLabel>Select Department</InputLabel>
+          {departmentOptions != null ? (
+            <Select native {...departmentFilter}>
+              <option value="" />
+              {departmentOptions.map((x: any) => (
+                <option key={x} value={x}>
+                  {x}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
         </FormControl>
-      </MyForm2>
+        <FormControl fullWidth>
+          <InputLabel>Select Handler</InputLabel>
+          {handlerOptions != null ? (
+            <Select native {...handlerFilter}>
+              <option value="" />
+              {handlerOptions.map((x: any) => (
+                <option key={x} value={x}>
+                  {x}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
+        </FormControl>
+      </MyForm3>
       {data != null ? (
         <Table
           data={data}

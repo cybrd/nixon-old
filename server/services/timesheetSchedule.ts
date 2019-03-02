@@ -32,7 +32,7 @@ export async function list(args = {}, secondary = {}) {
   let realEnd: Date;
   const r: ITimesheetSchedule[] = [];
 
-  const employeeSchedule = await listPopulated(args);
+  const employeeSchedule = await listPopulated(args, secondary);
   for (let i = 0; i < employeeSchedule.length; i++) {
     workDay = new Date(employeeSchedule[i].date);
     queryStart = new Date(

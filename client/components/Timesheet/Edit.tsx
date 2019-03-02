@@ -141,7 +141,7 @@ export function Edit(props: any) {
         />
       </FormControl>
       <FormControl fullWidth required>
-        <InputLabel>Start Hour</InputLabel>
+        <InputLabel>Hour</InputLabel>
         <Select native {...hour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
             <option key={i.toString().concat('hour')} value={i.toString()}>
@@ -151,7 +151,7 @@ export function Edit(props: any) {
         </Select>
       </FormControl>
       <FormControl fullWidth required>
-        <InputLabel>Start Minute</InputLabel>
+        <InputLabel>Minute</InputLabel>
         <Select native {...minute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
             <option

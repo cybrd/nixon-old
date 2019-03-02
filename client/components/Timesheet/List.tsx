@@ -17,6 +17,7 @@ export function List(props: any) {
   const [loading, setLoading] = useState(false);
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [departmentOptions, setDepartmentOptions] = useState(null);
+  const [handlerOptions, setHandlerOptions] = useState(null);
   const employeeFilter = useFormSelect('');
   const departmentFilter = useFormSelect('');
   const typeFilter = useFormSelect('');
@@ -88,14 +89,25 @@ export function List(props: any) {
   async function fetchOptions() {
     const tmp = await employeeList();
     const departments: string[] = [];
+    const handlers: string[] = [];
+
     tmp.forEach((x: any) => {
       if (departments.indexOf(x.department) < 0) {
         departments.push(x.department);
       }
     });
+    departments.sort();
+
+    tmp.forEach((x: any) => {
+      if (handlers.indexOf(x.handler) < 0) {
+        handlers.push(x.handler);
+      }
+    });
+    handlers.sort();
 
     setEmployeeOptions(tmp);
     setDepartmentOptions(departments);
+    setHandlerOptions(handlers);
 
     const params = parse(props.location.search.substr(1));
     if (params.fingerPrintId) {
@@ -285,13 +297,18 @@ export function List(props: any) {
         </FormControl>
         <FormControl fullWidth>
           <InputLabel>Select Handler</InputLabel>
-          <Select native {...handlerFilter}>
-            <option value="" />
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-          </Select>
+          {handlerOptions != null ? (
+            <Select native {...handlerFilter}>
+              <option value="" />
+              {handlerOptions.map((x: any) => (
+                <option key={x} value={x}>
+                  {x}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
         </FormControl>
       </MyForm2>
       {data != null ? (

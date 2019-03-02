@@ -15,9 +15,12 @@ export function Summary(props: any) {
   const [loading, setLoading] = useState(false);
   const employeeFilter = useFormSelect('');
   const payrollFilter = useFormSelect('');
+  const departmentFilter = useFormSelect('');
   const handlerFilter = useFormSelect('');
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [payrollOptions, setPayrollOptions] = useState(null);
+  const [departmentOptions, setDepartmentOptions] = useState(null);
+  const [handlerOptions, setHandlerOptions] = useState(null);
   const columns = [
     {
       label: 'Finger Print Id',
@@ -91,8 +94,27 @@ export function Summary(props: any) {
   async function fetchOptions() {
     const tmp = await Promise.all([employeeList(), payrollList()]);
 
+    const departments: string[] = [];
+    const handlers: string[] = [];
+
+    tmp[0].forEach((x: any) => {
+      if (departments.indexOf(x.department) < 0) {
+        departments.push(x.department);
+      }
+    });
+    departments.sort();
+
+    tmp[0].forEach((x: any) => {
+      if (handlers.indexOf(x.handler) < 0) {
+        handlers.push(x.handler);
+      }
+    });
+    handlers.sort();
+
     setEmployeeOptions(tmp[0]);
     setPayrollOptions(tmp[1]);
+    setDepartmentOptions(departments);
+    setHandlerOptions(handlers);
 
     const params = parse(props.location.search.substr(1));
     if (params.employeeId) {
@@ -127,6 +149,11 @@ export function Summary(props: any) {
       locationSearch.payrollId = payrollFilter.value;
     }
 
+    if (departmentFilter.value) {
+      args.secondary.department = departmentFilter.value;
+      locationSearch.department = departmentFilter.value;
+    }
+
     if (handlerFilter.value) {
       args.secondary.handler = handlerFilter.value;
       locationSearch.handler = handlerFilter.value;
@@ -154,6 +181,8 @@ export function Summary(props: any) {
     employeeFilter.value +
     'p' +
     payrollFilter.value +
+    'd' +
+    departmentFilter.value +
     'h' +
     handlerFilter.value;
   useEffect(() => {
@@ -165,7 +194,7 @@ export function Summary(props: any) {
   const MyForm = styled.form`
     min-width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   `;
 
   return (
@@ -201,15 +230,37 @@ export function Summary(props: any) {
             'Loading...'
           )}
         </FormControl>
+      </MyForm>
+      <MyForm>
+        <FormControl fullWidth>
+          <InputLabel>Select Department</InputLabel>
+          {departmentOptions != null ? (
+            <Select native {...departmentFilter}>
+              <option value="" />
+              {departmentOptions.map((x: any) => (
+                <option key={x} value={x}>
+                  {x}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
+        </FormControl>
         <FormControl fullWidth>
           <InputLabel>Select Handler</InputLabel>
-          <Select native {...handlerFilter}>
-            <option value="" />
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-          </Select>
+          {handlerOptions != null ? (
+            <Select native {...handlerFilter}>
+              <option value="" />
+              {handlerOptions.map((x: any) => (
+                <option key={x} value={x}>
+                  {x}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            'Loading...'
+          )}
         </FormControl>
       </MyForm>
       {data != null ? (
