@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
+import styled from 'styled-components';
 
 import {
   FormControl,
@@ -23,6 +24,7 @@ export function Create() {
   const [done, setDone] = useState(false);
   const [dates, setDates] = useState([new Date().toISOString().substr(0, 10)]);
   const [error, setError] = useState(false);
+  const [rerender, setRerender] = useState(new Date().getTime());
 
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [scheduleOptions, setScheduleOptions] = useState(null);
@@ -32,6 +34,7 @@ export function Create() {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
       dates[i] = e.target.value;
       setDates(dates);
+      setRerender(new Date().getTime());
     };
   }
 
@@ -59,12 +62,14 @@ export function Create() {
     }
 
     setDates(dates);
+    setRerender(new Date().getTime());
   }
 
   function removeDate(i: number) {
     return () => {
       dates.splice(i, 1);
       setDates(dates);
+      setRerender(new Date().getTime());
     };
   }
 
@@ -127,6 +132,10 @@ export function Create() {
 
     return <Redirect to={location} />;
   }
+
+  const HiddenStyled = styled('div')`
+    display: none;
+  `;
 
   return (
     <form onSubmit={handleFormSubmit}>
@@ -206,6 +215,7 @@ export function Create() {
         </Button>
       </p>
       {error && <p>Create error: {error}</p>}
+      <HiddenStyled>{rerender}</HiddenStyled>
     </form>
   );
 }
