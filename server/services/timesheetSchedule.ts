@@ -1,6 +1,7 @@
 import { list as timesheetList } from './timesheet';
 import { listPopulated } from './employeeSchedule';
 import { ITimesheet } from '../models/timesheet';
+import console = require('console');
 
 interface ITimestampRange {
   start?: {
@@ -176,11 +177,13 @@ function sumTimeIntersect(
   rangeSchedule: ITimestampRange
 ) {
   const rangeMin =
-    rangeTimesheet.start < rangeSchedule.start ? rangeTimesheet : rangeSchedule;
+    rangeTimesheet.start.value < rangeSchedule.start.value
+      ? rangeTimesheet
+      : rangeSchedule;
 
   const rangeMax = rangeMin === rangeTimesheet ? rangeSchedule : rangeTimesheet;
 
-  if (rangeMin.end < rangeMax.start) {
+  if (rangeMin.end.value < rangeMax.start.value) {
     return 0;
   } else {
     return (
