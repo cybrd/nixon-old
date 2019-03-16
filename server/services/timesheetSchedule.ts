@@ -101,8 +101,8 @@ export async function list(args = {}, secondary = {}) {
 
     let lateAllowance = null;
     let isLate = null;
-    if (getLateAmount(timesheet, realStart.getTime())) {
-      const lateAmount = getLateAmount(timesheet, realStart.getTime());
+    const lateAmount = getLateAmount(timesheet, used, realStart.getTime());
+    if (lateAmount) {
       if (lateAmount < 15 * 60 * 1000) {
         lateAllowance = true;
         workDayWorked += lateAmount;
@@ -194,13 +194,19 @@ function sumTimeIntersect(
   }
 }
 
-function getLateAmount(timesheet: ITimesheet[], realStart: number) {
+function getLateAmount(
+  timesheet: ITimesheet[],
+  used: string[],
+  realStart: number
+) {
   for (let i = 0; i < timesheet.length; i++) {
-    if (timesheet[i].type === 'IN') {
-      if (realStart > timesheet[i].timestamp.getTime()) {
-        return 0;
-      } else {
-        return timesheet[i].timestamp.getTime() - realStart;
+    if (used.indexOf(timesheet[i]._id) !== -1) {
+      if (timesheet[i].type === 'IN') {
+        if (realStart > timesheet[i].timestamp.getTime()) {
+          return 0;
+        } else {
+          return timesheet[i].timestamp.getTime() - realStart;
+        }
       }
     }
   }
