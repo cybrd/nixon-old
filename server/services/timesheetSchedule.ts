@@ -3,8 +3,14 @@ import { listPopulated } from './employeeSchedule';
 import { ITimesheet } from '../models/timesheet';
 
 interface ITimestampRange {
-  start?: number;
-  end?: number;
+  start?: {
+    _id?: string;
+    value: number;
+  };
+  end?: {
+    _id?: string;
+    value: number;
+  };
 }
 
 interface ITimesheetSchedule {
@@ -31,6 +37,7 @@ export async function list(args = {}, secondary = {}) {
   let realStart: Date;
   let realEnd: Date;
   const r: ITimesheetSchedule[] = [];
+  const used: string[] = [];
 
   const employeeSchedule = await listPopulated(args, secondary);
   for (let i = 0; i < employeeSchedule.length; i++) {
@@ -73,12 +80,22 @@ export async function list(args = {}, secondary = {}) {
     );
 
     let workDayWorked = 0;
-    const pairs = getTimesheetPairs(timesheet);
+    const pairs = getTimesheetPairs(timesheet, used);
     pairs.forEach(p => {
-      workDayWorked += sumTimeIntersect(p, {
-        start: realStart.getTime(),
-        end: realEnd.getTime()
+      const tmpSum = sumTimeIntersect(p, {
+        start: {
+          value: realStart.getTime()
+        },
+        end: {
+          value: realEnd.getTime()
+        }
       });
+
+      if (tmpSum) {
+        used.push(p.start._id);
+        used.push(p.end._id);
+        workDayWorked += tmpSum;
+      }
     });
 
     let lateAllowance = null;
@@ -123,22 +140,30 @@ export async function list(args = {}, secondary = {}) {
   return r;
 }
 
-function getTimesheetPairs(timesheet: ITimesheet[]) {
+function getTimesheetPairs(timesheet: ITimesheet[], used: string[]) {
   const pairs: ITimestampRange[] = [];
   let tmpPair: ITimestampRange = {};
 
   for (let i = 0; i < timesheet.length; i++) {
-    if (!tmpPair.start) {
-      if (timesheet[i].type === 'IN') {
-        tmpPair.start = timesheet[i].timestamp.getTime();
+    if (used.indexOf(timesheet[i]._id) === -1) {
+      if (!tmpPair.start) {
+        if (timesheet[i].type === 'IN') {
+          tmpPair.start = {
+            _id: timesheet[i]._id,
+            value: timesheet[i].timestamp.getTime()
+          };
+        }
       }
-    }
 
-    if (tmpPair.start && !tmpPair.end) {
-      if (timesheet[i].type === 'OUT') {
-        tmpPair.end = timesheet[i].timestamp.getTime();
-        pairs.push(tmpPair);
-        tmpPair = {};
+      if (tmpPair.start && !tmpPair.end) {
+        if (timesheet[i].type === 'OUT') {
+          tmpPair.end = {
+            _id: timesheet[i]._id,
+            value: timesheet[i].timestamp.getTime()
+          };
+          pairs.push(tmpPair);
+          tmpPair = {};
+        }
       }
     }
   }
@@ -159,8 +184,9 @@ function sumTimeIntersect(
     return 0;
   } else {
     return (
-      (rangeMin.end < rangeMax.end ? rangeMin.end : rangeMax.end) -
-      rangeMax.start
+      (rangeMin.end.value < rangeMax.end.value
+        ? rangeMin.end.value
+        : rangeMax.end.value) - rangeMax.start.value
     );
   }
 }
