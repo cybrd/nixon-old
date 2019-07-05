@@ -8,9 +8,7 @@ export function setMongoDb() {
   const options = {
     user: 'admin',
     pass: '123qwe',
-    auth: {
-      authdb: 'admin'
-    },
+    authdb: 'admin',
     dbName: 'nixon',
     useNewUrlParser: true
   };
