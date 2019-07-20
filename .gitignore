@@ -1,4 +1,5 @@
 /node_modules
 /dist
-/logs
+/logs/*
+!/logs/.gitkeep 
 package-lock.json
