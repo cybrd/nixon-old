@@ -144,9 +144,9 @@ export async function createFromUpload(user: IUser, raw: any) {
     let i = 3;
     while (tmp[i]) {
       data.push({
-        employeeId: employeesObj[tmp[0]],
-        scheduleId: schedulesObj[tmp[1]],
-        payrollId: payrollsObj[tmp[2]],
+        payrollId: payrollsObj[tmp[0]],
+        employeeId: employeesObj[tmp[1]],
+        scheduleId: schedulesObj[tmp[2]],
         date: new Date(tmp[i]),
         modifiedBy: user.username
       });

@@ -35,24 +35,24 @@ export function Load() {
 
       <div>
         <p>CSV Format:</p>
-        <p>Finger Print, Schedule Name, Payroll Name,Date1,Date2,Date3...</p>
+        <p>Payroll Name,Finger Print, Schedule Name, Date1,Date2,Date3...</p>
         <p>Example:</p>
         <p>
-          2,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,2,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          3,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,3,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          4,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,4,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          5,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,5,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          6,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,6,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          7,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,7,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          8,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,8,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
           <br />
-          9,OfficeMorning,janA,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,9,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
         </p>
       </div>
     </React.Fragment>
