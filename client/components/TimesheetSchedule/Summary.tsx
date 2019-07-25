@@ -55,8 +55,8 @@ export function Summary(props: any) {
       cell: readableTime
     },
     {
-      label: '# Late Allowance',
-      field: 'payrollLateAllowance'
+      label: '# Late',
+      field: 'payrollIsLate'
     },
     {
       label: '# Is Absent',
@@ -73,7 +73,7 @@ export function Summary(props: any) {
       'payrollWorkDayWorked',
       'payrollWorkOvertime',
       'payrollWorkDayMissing',
-      'payrollLateAllowance',
+      'payrollIsLate',
       'payrollIsAbsent'
     ];
   }

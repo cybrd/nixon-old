@@ -106,9 +106,8 @@ export async function list(args = {}, secondary = {}) {
       if (lateAmount < 15 * 60 * 1000) {
         lateAllowance = true;
         workDayWorked += lateAmount;
-      } else {
-        isLate = true;
       }
+      isLate = true;
     }
 
     const workDayTotal = realEnd.getTime() - realStart.getTime();
@@ -232,6 +231,7 @@ export async function summary(args = {}, secondary = {}) {
         payrollWorkOvertime: 0,
         payrollWorkDayMissing: 0,
         payrollLateAllowance: 0,
+        payrollIsLate: 0,
         payrollIsAbsent: 0
       };
     }
@@ -243,6 +243,7 @@ export async function summary(args = {}, secondary = {}) {
       result[id].payrollWorkDayWorked += x.workDayWorked;
       result[id].payrollWorkDayMissing += x.workDayMissing;
       result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
+      result[id].payrollIsLate += x.isLate ? 1 : 0;
       result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
     }
   });
