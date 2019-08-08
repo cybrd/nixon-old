@@ -229,6 +229,7 @@ export async function summary(args = {}, secondary = {}) {
         payrollWorkDayTotal: 0,
         payrollWorkDayWorked: 0,
         payrollWorkOvertime: 0,
+        payrollWorkSunday: 0,
         payrollWorkDayMissing: 0,
         payrollLateAllowance: 0,
         payrollIsLate: 0,
@@ -238,6 +239,8 @@ export async function summary(args = {}, secondary = {}) {
 
     if (x.scheduleType === 'overtime') {
       result[id].payrollWorkOvertime += x.workDayWorked;
+    } else if (x.scheduleType === 'sunday') {
+      result[id].payrollWorkSunday += x.workDayWorked;
     } else {
       result[id].payrollWorkDayTotal += x.workDayTotal;
       result[id].payrollWorkDayWorked += x.workDayWorked;

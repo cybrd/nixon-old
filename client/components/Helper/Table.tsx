@@ -268,7 +268,7 @@ export function Table(props: any) {
       <TablePagination
         component={MyTablePagination({
           data: data,
-          columns: columnsFiltered,
+          columns: props.columns,
           copycolumns: props.copycolumns,
           selected: selected,
           removeFn: props.removeFn
@@ -377,4 +377,11 @@ export function readableTime(value: number) {
   }
 
   return result.join(' ');
+}
+
+export function readableTimeDecimal(value: number) {
+  value /= 1000;
+  const hours = Math.round((value / 60 / 60) * 100) / 100;
+
+  return hours;
 }

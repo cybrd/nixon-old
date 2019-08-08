@@ -46,7 +46,7 @@ router.post(
       './logs/employee' + dateformat(new Date(), 'yyyymmddhhMMss');
     writeFileSync(filename, req.file.buffer);
 
-    res.send(await createFromUpload(req.user, req.file.buffer.toString()));
+    res.send(await createFromUpload(req.file.buffer.toString()));
   }
 );
 

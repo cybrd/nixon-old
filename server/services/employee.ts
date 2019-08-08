@@ -69,7 +69,7 @@ export async function removeMany(user: IUser, ids: string[] = []) {
   return await EmployeeCollection.deleteMany({ _id: ids }).exec();
 }
 
-export async function createFromUpload(user: IUser, raw: any) {
+export async function createFromUpload(raw: any) {
   const records = parse(raw, {
     columns: true,
     skip_empty_lines: true,

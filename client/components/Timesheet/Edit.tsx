@@ -60,7 +60,7 @@ export function Edit(props: any) {
     fingerPrintId.onChange({ target: { value: tmp[1][0].fingerPrintId } });
     date.onChange({
       target: {
-        value: new Date(tmp[1][0].timestamp).toISOString().substr(0, 10)
+        value: new Date(tmp[1][0].timestamp).toLocaleDateString('en-CA')
       }
     });
     hour.onChange({

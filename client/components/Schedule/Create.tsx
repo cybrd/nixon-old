@@ -136,6 +136,7 @@ export function Create() {
         <Select native {...type}>
           <option value="regular">regular</option>
           <option value="overtime">overtime</option>
+          <option value="sunday">sunday</option>
         </Select>
       </FormControl>
       <Button type="submit" variant="contained" color="primary">

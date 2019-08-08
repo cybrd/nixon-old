@@ -7,8 +7,10 @@ export function ButtonCopyClipboard(props: any) {
     const result: any = [];
     props.data.forEach((row: any) => {
       const line: any = [];
-      props.columns.forEach((column: any) => {
-        if (props.copycolumns.indexOf(column.field) < 0) {
+      props.copycolumns.forEach((field: any) => {
+        const column = props.columns.find((x: any) => x.field === field);
+
+        if (!column) {
           return;
         }
 

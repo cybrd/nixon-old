@@ -4,7 +4,7 @@ import { FormControl, InputLabel, Select } from '@material-ui/core';
 import styled from 'styled-components';
 import { parse } from 'qs';
 
-import { Table, readableTime } from '../Helper/Table';
+import { Table, readableTime, readableTimeDecimal } from '../Helper/Table';
 import { RoleCheck } from '../Helper/RoleCheck';
 import { summary } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
@@ -50,6 +50,11 @@ export function Summary(props: any) {
       cell: readableTime
     },
     {
+      label: 'WorkSunday',
+      field: 'payrollWorkSunday',
+      cell: readableTime
+    },
+    {
       label: 'WorkDayMissing',
       field: 'payrollWorkDayMissing',
       cell: readableTime
@@ -61,6 +66,30 @@ export function Summary(props: any) {
     {
       label: '# Is Absent',
       field: 'payrollIsAbsent'
+    },
+    {
+      field: 'payrollWorkDayTotalDecimal',
+      cell: (value: string, rowData: any) =>
+        readableTimeDecimal(rowData.payrollWorkDayTotal),
+      show: false
+    },
+    {
+      field: 'payrollWorkDayWorkedDecimal',
+      cell: (value: string, rowData: any) =>
+        readableTimeDecimal(rowData.payrollWorkDayWorked),
+      show: false
+    },
+    {
+      field: 'payrollWorkOvertimeDecimal',
+      cell: (value: string, rowData: any) =>
+        readableTimeDecimal(rowData.payrollWorkOvertime),
+      show: false
+    },
+    {
+      field: 'payrollWorkSundayDecimal',
+      cell: (value: string, rowData: any) =>
+        readableTimeDecimal(rowData.payrollWorkSunday),
+      show: false
     }
   ];
   let copycolumns: any = [];
@@ -70,8 +99,13 @@ export function Summary(props: any) {
       'employeeName',
       'payrollName',
       'payrollWorkDayTotal',
+      'payrollWorkDayTotalDecimal',
       'payrollWorkDayWorked',
+      'payrollWorkDayWorkedDecimal',
       'payrollWorkOvertime',
+      'payrollWorkOvertimeDecimal',
+      'payrollWorkSunday',
+      'payrollWorkSundayDecimal',
       'payrollWorkDayMissing',
       'payrollIsLate',
       'payrollIsAbsent'
