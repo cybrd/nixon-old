@@ -26,4 +26,4 @@ mongodb://admin:123qwe@localhost:27017/admin?3t.uriVersion=3&3t.connectTimeout=1
 
 
 mongodump -o <path>
-mongorestore --db nixon -dir C:\GitHub\nixonDb\nixondump\nixon
+mongorestore --db nixon C:\GitHub\nixonDb\nixondump2\nixon

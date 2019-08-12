@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { parse } from 'qs';
 
 import { Table, readableTime } from '../Helper/Table';
+import { RoleCheck } from '../Helper/RoleCheck';
 import { list } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
@@ -37,10 +38,6 @@ export function List(props: any) {
       field: 'scheduleName'
     },
     {
-      label: 'Payroll Name',
-      field: 'payrollName'
-    },
-    {
       label: 'Work Day',
       field: 'workDay',
       cell: (value: string) => new Date(value).toLocaleDateString()
@@ -71,6 +68,20 @@ export function List(props: any) {
       cell: (value: string) => value && value.toString()
     }
   ];
+  let copycolumns: any = [];
+  if (RoleCheck('admin')) {
+    copycolumns = [
+      'fingerPrintId',
+      'employeeName',
+      'scheduleName',
+      'workDay',
+      'workDayTotal',
+      'workDayWorked',
+      'workDayMissing',
+      'isAbsent',
+      'lateAllowance'
+    ];
+  }
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);
@@ -300,6 +311,7 @@ export function List(props: any) {
           columns={columns}
           orderBy="workDay"
           loading={loading}
+          copycolumns={copycolumns}
         />
       ) : (
         'Loading...'

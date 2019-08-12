@@ -55,8 +55,8 @@ export function Summary(props: any) {
       cell: readableTime
     },
     {
-      label: 'WorkDayMissing',
-      field: 'payrollWorkDayMissing',
+      label: 'WorkHoliday',
+      field: 'payrollWorkHoliday',
       cell: readableTime
     },
     {
@@ -90,6 +90,12 @@ export function Summary(props: any) {
       cell: (value: string, rowData: any) =>
         readableTimeDecimal(rowData.payrollWorkSunday),
       show: false
+    },
+    {
+      field: 'payrollWorkHolidayDecimal',
+      cell: (value: string, rowData: any) =>
+        readableTimeDecimal(rowData.payrollWorkHoliday),
+      show: false
     }
   ];
   let copycolumns: any = [];
@@ -106,7 +112,8 @@ export function Summary(props: any) {
       'payrollWorkOvertimeDecimal',
       'payrollWorkSunday',
       'payrollWorkSundayDecimal',
-      'payrollWorkDayMissing',
+      'payrollWorkHoliday',
+      'payrollWorkHolidayDecimal',
       'payrollIsLate',
       'payrollIsAbsent'
     ];

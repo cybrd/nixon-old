@@ -275,7 +275,7 @@ export function Table(props: any) {
         })}
         count={data.length}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25, 50, 100]}
+        rowsPerPageOptions={[5, 10, 25, 50, 100, 500]}
         page={page}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
