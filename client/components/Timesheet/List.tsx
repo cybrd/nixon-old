@@ -32,7 +32,7 @@ export function List(props: any) {
     },
     {
       label: 'Employee Name',
-      field: 'fingerPrintId',
+      field: 'employeeName',
       cell: (value: string, rowData: any) => rowData.employee.name
     },
     {
@@ -57,7 +57,27 @@ export function List(props: any) {
           />
         </React.Fragment>
       )
+    },
+    {
+      field: 'timestampDate',
+      cell: (value: any, rowData: any) =>
+        new Date(rowData.timestamp).toLocaleDateString(),
+      show: false
+    },
+    {
+      field: 'timestampTime',
+      cell: (value: any, rowData: any) =>
+        new Date(rowData.timestamp).toLocaleTimeString(),
+      show: false
     }
+  ];
+
+  const copyColumns = [
+    'fingerPrintId',
+    'employeeName',
+    'timestampDate',
+    'timestampTime',
+    'type'
   ];
 
   function useFormSelect(initialValue: string) {
@@ -212,6 +232,7 @@ export function List(props: any) {
     startDate.value +
     'd' +
     endDate.value;
+
   useEffect(() => {
     if (employeeOptions) {
       const timer = setTimeout(fetchData, 50);
@@ -219,7 +240,7 @@ export function List(props: any) {
     }
   }, [query]);
 
-  const MyForm2 = styled.form`
+  const MyForm = styled.form`
     min-width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -232,7 +253,7 @@ export function List(props: any) {
           Create New Time In/Out
         </ButtonLink>
       </RoleCheckX>
-      <MyForm2>
+      <MyForm>
         <FormControl fullWidth>
           <InputLabel>Select Employee</InputLabel>
           {employeeOptions != null ? (
@@ -263,8 +284,8 @@ export function List(props: any) {
             'Loading...'
           )}
         </FormControl>
-      </MyForm2>
-      <MyForm2>
+      </MyForm>
+      <MyForm>
         <FormControl fullWidth>
           <TextField
             label="Start Date"
@@ -285,8 +306,8 @@ export function List(props: any) {
             {...endDate}
           />
         </FormControl>
-      </MyForm2>
-      <MyForm2>
+      </MyForm>
+      <MyForm>
         <FormControl fullWidth>
           <InputLabel>Select Type</InputLabel>
           <Select native {...typeFilter}>
@@ -310,7 +331,7 @@ export function List(props: any) {
             'Loading...'
           )}
         </FormControl>
-      </MyForm2>
+      </MyForm>
       {data != null ? (
         <Table
           data={data}
@@ -318,7 +339,7 @@ export function List(props: any) {
           orderBy="timestamp"
           order="desc"
           loading={loading}
-          copycolumns={['fingerPrintId', 'employeeName', 'timestamp', 'type']}
+          copycolumns={copyColumns}
         />
       ) : (
         'Loading...'

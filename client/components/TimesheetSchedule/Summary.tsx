@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { FormControl, InputLabel, Select } from '@material-ui/core';
+import { FormControl, InputLabel, Select, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 import { parse } from 'qs';
 
@@ -21,6 +21,9 @@ export function Summary(props: any) {
   const [payrollOptions, setPayrollOptions] = useState(null);
   const [departmentOptions, setDepartmentOptions] = useState(null);
   const [handlerOptions, setHandlerOptions] = useState(null);
+  const startDate = useFormInput('');
+  const endDate = useFormInput('');
+
   const columns = [
     {
       label: 'Finger Print Id',
@@ -132,6 +135,19 @@ export function Summary(props: any) {
     };
   }
 
+  function useFormInput(initialValue: string) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e: any) {
+      setValue(e.target.value);
+    }
+
+    return {
+      value: value,
+      onChange: handleChange
+    };
+  }
+
   async function fetchOptions() {
     const tmp = await Promise.all([employeeList(), payrollList()]);
 
@@ -169,6 +185,14 @@ export function Summary(props: any) {
     if (params.handler) {
       handlerFilter.onChange({ target: { value: params.handler } });
     }
+
+    if (params.startDate) {
+      startDate.onChange({ target: { value: params.startDate } });
+    }
+
+    if (params.endDate) {
+      endDate.onChange({ target: { value: params.endDate } });
+    }
   }
 
   useEffect(() => {
@@ -200,6 +224,24 @@ export function Summary(props: any) {
       locationSearch.handler = handlerFilter.value;
     }
 
+    if (startDate.value) {
+      if (!args.timestamp) {
+        args.timestamp = {};
+      }
+
+      args.timestamp.$gte = `${startDate.value} 00:00:00`;
+      locationSearch.startDate = startDate.value;
+    }
+
+    if (endDate.value) {
+      if (!args.timestamp) {
+        args.timestamp = {};
+      }
+
+      args.timestamp.$lte = `${endDate.value} 23:59:59`;
+      locationSearch.endDate = endDate.value;
+    }
+
     setLoading(true);
     const tmp = await summary(args);
     setData(tmp);
@@ -225,10 +267,16 @@ export function Summary(props: any) {
     'd' +
     departmentFilter.value +
     'h' +
-    handlerFilter.value;
+    handlerFilter.value +
+    'h' +
+    startDate.value +
+    'd' +
+    endDate.value;
+
   useEffect(() => {
     if (employeeOptions) {
-      fetchData();
+      const timer = setTimeout(fetchData, 50);
+      return () => clearTimeout(timer);
     }
   }, [query]);
 
@@ -302,6 +350,28 @@ export function Summary(props: any) {
           ) : (
             'Loading...'
           )}
+        </FormControl>
+      </MyForm>
+      <MyForm>
+        <FormControl fullWidth>
+          <TextField
+            label="Start Date"
+            type="date"
+            InputLabelProps={{
+              shrink: true
+            }}
+            {...startDate}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <TextField
+            label="End Date"
+            type="date"
+            InputLabelProps={{
+              shrink: true
+            }}
+            {...endDate}
+          />
         </FormControl>
       </MyForm>
       {data != null ? (
