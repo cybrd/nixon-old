@@ -14,7 +14,8 @@ import {
   createFromUpload,
   createFromUploadCSV,
   update,
-  remove
+  remove,
+  removeMany
 } from '../services/timesheet';
 
 const router = Router();
@@ -58,6 +59,10 @@ router.post(
 
 router.post('/:id/remove', adminGuard, async (req, res) => {
   res.send(await remove(req.user, req.params.id));
+});
+
+router.post('/removeMany', adminGuard, async (req, res) => {
+  res.send(await removeMany(req.user, req.body.ids));
 });
 
 router.post('/:id/update', adminGuard, async (req, res) => {

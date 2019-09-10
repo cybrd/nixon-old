@@ -9,7 +9,7 @@ import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
 import { RoleCheck, RoleCheckX } from '../Helper/RoleCheck';
-import { list } from '../../services/timesheet';
+import { list, removeMany } from '../../services/timesheet';
 import { list as employeeList } from '../../services/employee';
 
 export function List(props: any) {
@@ -340,6 +340,7 @@ export function List(props: any) {
           order="desc"
           loading={loading}
           copycolumns={copyColumns}
+          removeFn={removeMany}
         />
       ) : (
         'Loading...'

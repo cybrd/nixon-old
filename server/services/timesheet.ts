@@ -162,3 +162,18 @@ export async function remove(user: IUser, id: String) {
 
   return await TimesheetCollection.deleteOne({ _id: id }).exec();
 }
+
+export async function removeMany(user: IUser, ids: string[] = []) {
+  const records = await TimesheetCollection.find({ _id: ids })
+    .lean()
+    .exec();
+
+  records.forEach((record: any) => {
+    record.oldId = record._id;
+    delete record._id;
+    record.modifiedBy = user.username;
+    new TimesheetArchiveCollection(record).save();
+  });
+
+  return await TimesheetCollection.deleteMany({ _id: ids }).exec();
+}
