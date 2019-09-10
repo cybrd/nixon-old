@@ -1,7 +1,6 @@
 import { list as timesheetList } from './timesheet';
 import { listPopulated } from './employeeSchedule';
 import { ITimesheet } from '../models/timesheet';
-import console = require('console');
 
 interface ITimestampRange {
   start?: {

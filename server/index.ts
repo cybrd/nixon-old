@@ -8,6 +8,15 @@ import { setSession } from './my.session';
 import { setPassport } from './my.passport';
 import { router } from './router';
 
+import { IUser } from './models/user';
+
+declare global {
+  namespace Express {
+    // tslint:disable-next-line
+    interface User extends IUser {}
+  }
+}
+
 const app = express();
 const port = 3000;
 

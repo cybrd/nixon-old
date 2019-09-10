@@ -225,20 +225,20 @@ export function Summary(props: any) {
     }
 
     if (startDate.value) {
-      if (!args.timestamp) {
-        args.timestamp = {};
+      if (!args.date) {
+        args.date = {};
       }
 
-      args.timestamp.$gte = `${startDate.value} 00:00:00`;
+      args.date.$gte = `${startDate.value} 00:00:00`;
       locationSearch.startDate = startDate.value;
     }
 
     if (endDate.value) {
-      if (!args.timestamp) {
-        args.timestamp = {};
+      if (!args.date) {
+        args.date = {};
       }
 
-      args.timestamp.$lte = `${endDate.value} 23:59:59`;
+      args.date.$lte = `${endDate.value} 23:59:59`;
       locationSearch.endDate = endDate.value;
     }
 

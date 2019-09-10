@@ -33,3 +33,13 @@ export function upload(file: File) {
     body: data
   });
 }
+
+export function uploadCSV(file: File) {
+  const data = new FormData();
+  data.append('file', file);
+
+  return myFetch('/api/timesheet/uploadCSV', {
+    method: 'POST',
+    body: data
+  });
+}

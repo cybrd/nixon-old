@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { writeFileSync } from 'fs';
+import { writeFileSync, readFileSync } from 'fs';
 import * as multer from 'multer';
 import * as dateformat from 'dateformat';
 
@@ -12,6 +12,7 @@ import {
   list,
   create,
   createFromUpload,
+  createFromUploadCSV,
   update,
   remove
 } from '../services/timesheet';
@@ -38,6 +39,20 @@ router.post(
 
     const records = reader.readFileSync(filename);
     res.send(await createFromUpload(req.user, records));
+  }
+);
+
+router.post(
+  '/uploadCSV',
+  supervisorGuard,
+  multer().single('file'),
+  async (req, res) => {
+    const filename =
+      './logs/timesheet' + dateformat(new Date(), 'yyyymmddhhMMss');
+    writeFileSync(filename, req.file.buffer);
+
+    const records = readFileSync(filename, 'utf8');
+    res.send(await createFromUploadCSV(req.user, records));
   }
 );
 

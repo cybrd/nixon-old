@@ -85,6 +85,48 @@ export function createFromUpload(user: IUser, records: any) {
   });
 }
 
+export function createFromUploadCSV(user: IUser, records: string) {
+  const data: any = [];
+  let counter = 0;
+  records.split('\n\r').forEach(line => {
+    if (!line || !counter) {
+      counter++;
+      return;
+    }
+
+    const lineData = line.split(',');
+
+    data.push({
+      fingerPrintId: lineData[0],
+      timestamp: new Date(lineData[1] + ' ' + lineData[2]),
+      type: lineData[3],
+      modifiedBy: user.username
+    });
+
+    counter++;
+  });
+
+  return new Promise(resolve => {
+    TimesheetCollection.insertMany(
+      data,
+      { ordered: false },
+      (err, docs: any) => {
+        if (err) {
+          return resolve({
+            errors: err.writeErrors.length,
+            inserted: err.result.result.nInserted
+          });
+        }
+
+        resolve({
+          errors: 0,
+          inserted: docs.length
+        });
+      }
+    );
+  });
+}
+
 export function update(user: IUser, id: string, data: any) {
   data.timestamp = new Date(data.date);
   data.timestamp.setHours(data.hour);
