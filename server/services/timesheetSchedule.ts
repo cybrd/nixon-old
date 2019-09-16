@@ -244,17 +244,25 @@ export async function summary(args = {}, secondary = {}) {
       result[id].payrollWorkOvertime += x.workDayWorked;
     } else if (x.scheduleType === 'sunday') {
       result[id].payrollWorkSunday += x.workDayWorked;
+
+      result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
+      result[id].payrollIsLate += x.isLate ? 1 : 0;
+      result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
     } else if (x.scheduleType === 'holiday') {
       result[id].payrollWorkHoliday += x.workDayWorked;
+
+      result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
+      result[id].payrollIsLate += x.isLate ? 1 : 0;
+      result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
     } else {
       result[id].payrollWorkDayTotal += x.workDayTotal;
       result[id].payrollWorkDayWorked += x.workDayWorked;
       result[id].payrollWorkDayMissing += x.workDayMissing;
-    }
 
-    result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
-    result[id].payrollIsLate += x.isLate ? 1 : 0;
-    result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
+      result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
+      result[id].payrollIsLate += x.isLate ? 1 : 0;
+      result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
+    }
   });
 
   return (Object as any).values(result);
