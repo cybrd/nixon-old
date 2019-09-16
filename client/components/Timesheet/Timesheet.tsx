@@ -21,7 +21,7 @@ export function Timesheet() {
           component={Create}
         />
         <Route exact path="/timesheet/load" component={Load} />
-        <ProtectedAdminRoute exact path="/timesheet/:id" component={Edit} />
+        <Route exact path="/timesheet/:id" component={Edit} />
         <Route component={NoMatch} />
       </Switch>
     </React.Fragment>

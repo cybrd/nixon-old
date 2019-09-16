@@ -47,14 +47,18 @@ export function List(props: any) {
     {
       label: 'Actions',
       field: '_id',
-      show: RoleCheck('admin'),
       cell: (value: any) => (
         <React.Fragment>
           <Update view="/timesheet/{{ _id }}" data={{ _id: value }} />
-          <Remove
-            view="/api/timesheet/{{ _id }}/remove"
-            data={{ _id: value }}
-          />
+
+          {RoleCheck('admin') ? (
+            <Remove
+              view="/api/timesheet/{{ _id }}/remove"
+              data={{ _id: value }}
+            />
+          ) : (
+            ''
+          )}
         </React.Fragment>
       )
     },
@@ -333,15 +337,26 @@ export function List(props: any) {
         </FormControl>
       </MyForm>
       {data != null ? (
-        <Table
-          data={data}
-          columns={columns}
-          orderBy="timestamp"
-          order="desc"
-          loading={loading}
-          copycolumns={copyColumns}
-          removeFn={removeMany}
-        />
+        RoleCheck('admin') ? (
+          <Table
+            data={data}
+            columns={columns}
+            orderBy="timestamp"
+            order="desc"
+            loading={loading}
+            copycolumns={copyColumns}
+            removeFn={removeMany}
+          />
+        ) : (
+          <Table
+            data={data}
+            columns={columns}
+            orderBy="timestamp"
+            order="desc"
+            loading={loading}
+            copycolumns={copyColumns}
+          />
+        )
       ) : (
         'Loading...'
       )}

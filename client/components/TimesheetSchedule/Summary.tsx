@@ -99,6 +99,11 @@ export function Summary(props: any) {
       cell: (value: string, rowData: any) =>
         readableTimeDecimal(rowData.payrollWorkHoliday),
       show: false
+    },
+    {
+      label: 'Department',
+      field: 'department',
+      show: false
     }
   ];
   let copycolumns: any = [];
@@ -118,7 +123,8 @@ export function Summary(props: any) {
       'payrollWorkHoliday',
       'payrollWorkHolidayDecimal',
       'payrollIsLate',
-      'payrollIsAbsent'
+      'payrollIsAbsent',
+      'department'
     ];
   }
 

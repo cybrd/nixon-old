@@ -17,6 +17,7 @@ interface ITimesheetSchedule {
   _id: string;
   fingerPrintId: string;
   employeeName: string;
+  department: string;
   scheduleName: string;
   scheduleType: string;
   payrollName: string;
@@ -123,6 +124,7 @@ export async function list(args = {}, secondary = {}) {
       _id: employeeSchedule[i]._id + employeeSchedule[i].employeeId._id,
       fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
       employeeName: employeeSchedule[i].employeeId.name,
+      department: employeeSchedule[i].employeeId.department,
       scheduleName: employeeSchedule[i].scheduleId.name,
       scheduleType: employeeSchedule[i].scheduleId.type,
       payrollName: employeeSchedule[i].payrollId.name,
@@ -224,6 +226,7 @@ export async function summary(args = {}, secondary = {}) {
         _id: id,
         fingerPrintId: x.fingerPrintId,
         employeeName: x.employeeName,
+        department: x.department,
         payrollName: x.payrollName,
         payrollWorkDayTotal: 0,
         payrollWorkDayWorked: 0,
@@ -247,10 +250,11 @@ export async function summary(args = {}, secondary = {}) {
       result[id].payrollWorkDayTotal += x.workDayTotal;
       result[id].payrollWorkDayWorked += x.workDayWorked;
       result[id].payrollWorkDayMissing += x.workDayMissing;
-      result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
-      result[id].payrollIsLate += x.isLate ? 1 : 0;
-      result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
     }
+
+    result[id].payrollLateAllowance += x.lateAllowance ? 1 : 0;
+    result[id].payrollIsLate += x.isLate ? 1 : 0;
+    result[id].payrollIsAbsent += x.isAbsent ? 1 : 0;
   });
 
   return (Object as any).values(result);

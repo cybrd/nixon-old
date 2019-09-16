@@ -65,7 +65,7 @@ router.post('/removeMany', adminGuard, async (req, res) => {
   res.send(await removeMany(req.user, req.body.ids));
 });
 
-router.post('/:id/update', adminGuard, async (req, res) => {
+router.post('/:id/update', userGuard, async (req, res) => {
   const result = await update(req.user, req.params.id, req.body);
   res.send(result);
 });

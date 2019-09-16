@@ -12,6 +12,7 @@ import {
 
 import { list as employeeList } from '../../services/employee';
 import { list, update } from '../../services/timesheet';
+import { RoleCheck } from '../Helper/RoleCheck';
 
 export function Edit(props: any) {
   const fingerPrintId = useFormSelect('');
@@ -116,7 +117,7 @@ export function Edit(props: any) {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <FormControl fullWidth required>
+      <FormControl fullWidth required disabled={!RoleCheck('admin')}>
         <InputLabel>Finger Print Id</InputLabel>
         {employeeOptions != null ? (
           <Select native {...fingerPrintId}>
@@ -130,7 +131,7 @@ export function Edit(props: any) {
           'Loading...'
         )}
       </FormControl>
-      <FormControl fullWidth required>
+      <FormControl fullWidth required disabled={!RoleCheck('admin')}>
         <TextField
           label="Date"
           type="date"
@@ -138,9 +139,10 @@ export function Edit(props: any) {
             shrink: true
           }}
           {...date}
+          disabled={!RoleCheck('admin')}
         />
       </FormControl>
-      <FormControl fullWidth required>
+      <FormControl fullWidth required disabled={!RoleCheck('admin')}>
         <InputLabel>Hour</InputLabel>
         <Select native {...hour}>
           {Array.apply(0, Array(24)).map((x: any, i: number) => (
@@ -150,7 +152,7 @@ export function Edit(props: any) {
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth required>
+      <FormControl fullWidth required disabled={!RoleCheck('admin')}>
         <InputLabel>Minute</InputLabel>
         <Select native {...minute}>
           {Array.apply(0, Array(60)).map((x: any, i: number) => (
