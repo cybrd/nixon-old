@@ -47,14 +47,14 @@ export async function list(args = {}, secondary = {}) {
       workDay.getFullYear(),
       workDay.getMonth(),
       workDay.getDate(),
-      parseInt(employeeSchedule[i].scheduleId.startHour, 10) - 24,
+      parseInt(employeeSchedule[i].scheduleId.startHour, 10) - 18,
       parseInt(employeeSchedule[i].scheduleId.startMinute, 10)
     );
     queryEnd = new Date(
       workDay.getFullYear(),
       workDay.getMonth(),
       workDay.getDate(),
-      parseInt(employeeSchedule[i].scheduleId.endHour, 10) + 24,
+      parseInt(employeeSchedule[i].scheduleId.endHour, 10) + 18,
       parseInt(employeeSchedule[i].scheduleId.endMinute, 10)
     );
     realStart = new Date(
