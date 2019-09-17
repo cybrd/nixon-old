@@ -384,7 +384,8 @@ export function Summary(props: any) {
         <Table
           data={data}
           columns={columns}
-          orderBy="workDay"
+          orderBy="payrollIsAbsent"
+          order="desc"
           loading={loading}
           copycolumns={copycolumns}
         />

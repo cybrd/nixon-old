@@ -310,6 +310,7 @@ export function List(props: any) {
           data={data}
           columns={columns}
           orderBy="workDay"
+          order="desc"
           loading={loading}
           copycolumns={copycolumns}
         />

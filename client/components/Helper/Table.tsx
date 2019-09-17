@@ -213,6 +213,22 @@ export function Table(props: any) {
 
   return (
     <MyPaper>
+      <TablePagination
+        component={MyTablePagination({
+          data: data,
+          columns: props.columns,
+          copycolumns: props.copycolumns,
+          selected: selected,
+          removeFn: props.removeFn
+        })}
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[5, 10, 25, 50, 100, 500]}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+
       {props.loading && <MyCircularProgress />}
       <MTable>
         <EnhancedTableHead
@@ -264,22 +280,6 @@ export function Table(props: any) {
             })}
         </TableBody>
       </MTable>
-
-      <TablePagination
-        component={MyTablePagination({
-          data: data,
-          columns: props.columns,
-          copycolumns: props.copycolumns,
-          selected: selected,
-          removeFn: props.removeFn
-        })}
-        count={data.length}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25, 50, 100, 500]}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
     </MyPaper>
   );
 }
