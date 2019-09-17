@@ -68,7 +68,7 @@ export function Edit(props: any) {
     scheduleId.onChange({ target: { value: tmp[3][0].scheduleId } });
     payrollId.onChange({ target: { value: tmp[3][0].payrollId } });
     date.onChange({
-      target: { value: new Date(tmp[3][0].date).toISOString().substr(0, 10) }
+      target: { value: new Date(tmp[3][0].date).toLocaleDateString('en-CA') }
     });
   }
 

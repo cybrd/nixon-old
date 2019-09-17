@@ -22,7 +22,7 @@ export function Create() {
   const scheduleId = useFormSelect('');
   const payrollId = useFormSelect('');
   const [done, setDone] = useState(false);
-  const [dates, setDates] = useState([new Date().toISOString().substr(0, 10)]);
+  const [dates, setDates] = useState([new Date().toLocaleDateString('en-CA')]);
   const [error, setError] = useState(false);
   const [rerender, setRerender] = useState(new Date().getTime());
 
@@ -56,9 +56,9 @@ export function Create() {
       const newDate = new Date(dates[dates.length - 1]);
       newDate.setDate(newDate.getDate() + 1);
 
-      dates.push(newDate.toISOString().substr(0, 10));
+      dates.push(newDate.toLocaleDateString('en-CA'));
     } else {
-      dates.push(new Date().toISOString().substr(0, 10));
+      dates.push(new Date().toLocaleDateString('en-CA'));
     }
 
     setDates(dates);
