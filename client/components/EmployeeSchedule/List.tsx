@@ -184,14 +184,11 @@ export function List(props: any) {
     startDate.value +
     'd' +
     endDate.value;
-  useEffect(
-    () => {
-      if (employeeOptions) {
-        fetchData();
-      }
-    },
-    [query]
-  );
+  useEffect(() => {
+    if (employeeOptions) {
+      fetchData();
+    }
+  }, [query]);
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);
@@ -274,6 +271,7 @@ export function List(props: any) {
           data={data}
           columns={columns}
           orderBy="date"
+          order="desc"
           loading={loading}
           removeFn={removeMany}
         />
