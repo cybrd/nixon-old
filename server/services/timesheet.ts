@@ -1,6 +1,7 @@
 import {
   TimesheetCollection,
-  TimesheetArchiveCollection
+  TimesheetArchiveCollection,
+  ITimesheet
 } from '../models/timesheet';
 import { EmployeeCollection } from '../models/employee';
 import { IUser } from '../models/user';
@@ -64,25 +65,7 @@ export function createFromUpload(user: IUser, records: any) {
     });
   });
 
-  return new Promise(resolve => {
-    TimesheetCollection.insertMany(
-      data,
-      { ordered: false },
-      (err, docs: any) => {
-        if (err) {
-          return resolve({
-            errors: err.writeErrors.length,
-            inserted: err.result.result.nInserted
-          });
-        }
-
-        resolve({
-          errors: 0,
-          inserted: docs.length
-        });
-      }
-    );
-  });
+  return customInsertMany(data);
 }
 
 export function createFromUploadCSV(user: IUser, records: string) {
@@ -106,25 +89,40 @@ export function createFromUploadCSV(user: IUser, records: string) {
     counter++;
   });
 
-  return new Promise(resolve => {
-    TimesheetCollection.insertMany(
-      data,
-      { ordered: false },
-      (err, docs: any) => {
-        if (err) {
-          return resolve({
-            errors: err.writeErrors.length,
-            inserted: err.result.result.nInserted
-          });
-        }
+  return customInsertMany(data);
+}
 
-        resolve({
-          errors: 0,
-          inserted: docs.length
-        });
+async function customInsertMany(data: ITimesheet[]) {
+  const result = {
+    errors: 0,
+    inserted: 0
+  };
+
+  for (const d of data) {
+    const upperTimeLimit = new Date(d.timestamp.getTime());
+    upperTimeLimit.setSeconds(upperTimeLimit.getSeconds() + 120);
+
+    const lowerTimeLimit = new Date(d.timestamp.getTime());
+    lowerTimeLimit.setSeconds(lowerTimeLimit.getSeconds() - 120);
+
+    const findNear = await TimesheetCollection.find({
+      fingerPrintId: d.fingerPrintId,
+      type: d.type,
+      timestamp: {
+        $gte: lowerTimeLimit,
+        $lte: upperTimeLimit
       }
-    );
-  });
+    });
+
+    if (!findNear.length) {
+      await TimesheetCollection.create(d);
+      result.inserted++;
+    } else {
+      result.errors++;
+    }
+  }
+
+  return result;
 }
 
 export function update(user: IUser, id: string, data: any) {
