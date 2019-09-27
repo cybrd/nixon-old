@@ -68,20 +68,17 @@ export function List(props: any) {
       cell: (value: string) => value && value.toString()
     }
   ];
-  let copycolumns: any = [];
-  if (RoleCheck('admin')) {
-    copycolumns = [
-      'fingerPrintId',
-      'employeeName',
-      'scheduleName',
-      'workDay',
-      'workDayTotal',
-      'workDayWorked',
-      'workDayMissing',
-      'isAbsent',
-      'lateAllowance'
-    ];
-  }
+  const copycolumns = [
+    'fingerPrintId',
+    'employeeName',
+    'scheduleName',
+    'workDay',
+    'workDayTotal',
+    'workDayWorked',
+    'workDayMissing',
+    'isAbsent',
+    'lateAllowance'
+  ];
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);

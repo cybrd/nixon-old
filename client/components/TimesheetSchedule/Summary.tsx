@@ -106,27 +106,24 @@ export function Summary(props: any) {
       show: false
     }
   ];
-  let copycolumns: any = [];
-  if (RoleCheck('admin')) {
-    copycolumns = [
-      'fingerPrintId',
-      'employeeName',
-      'payrollName',
-      'payrollWorkDayTotal',
-      'payrollWorkDayTotalDecimal',
-      'payrollWorkDayWorked',
-      'payrollWorkDayWorkedDecimal',
-      'payrollWorkOvertime',
-      'payrollWorkOvertimeDecimal',
-      'payrollWorkSunday',
-      'payrollWorkSundayDecimal',
-      'payrollWorkHoliday',
-      'payrollWorkHolidayDecimal',
-      'payrollIsLate',
-      'payrollIsAbsent',
-      'department'
-    ];
-  }
+  const copycolumns = [
+    'fingerPrintId',
+    'employeeName',
+    'payrollName',
+    'payrollWorkDayTotal',
+    'payrollWorkDayTotalDecimal',
+    'payrollWorkDayWorked',
+    'payrollWorkDayWorkedDecimal',
+    'payrollWorkOvertime',
+    'payrollWorkOvertimeDecimal',
+    'payrollWorkSunday',
+    'payrollWorkSundayDecimal',
+    'payrollWorkHoliday',
+    'payrollWorkHolidayDecimal',
+    'payrollIsLate',
+    'payrollIsAbsent',
+    'department'
+  ];
 
   function useFormSelect(initialValue: string) {
     const [value, setValue] = useState(initialValue);

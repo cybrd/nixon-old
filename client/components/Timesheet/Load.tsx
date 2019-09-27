@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { upload, uploadCSV } from '../../services/timesheet';
+import { RoleCheck } from '../Helper/RoleCheck';
 
 export function Load() {
   const [file, setFile] = useState(null);
@@ -46,11 +47,15 @@ export function Load() {
           value="Submit KQ file"
           onClick={handleFormSubmit}
         />
-        <input
-          type="button"
-          value="Submit CSV file"
-          onClick={handleFormSubmitCSV}
-        />
+        {RoleCheck('admin') ? (
+          <input
+            type="button"
+            value="Submit CSV file"
+            onClick={handleFormSubmitCSV}
+          />
+        ) : (
+          ''
+        )}
 
         {uploading && <p>Uploading...</p>}
         {errors > 0 && <p># errors/duplicates: {errors}</p>}

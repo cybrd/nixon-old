@@ -45,7 +45,7 @@ router.post(
 
 router.post(
   '/uploadCSV',
-  supervisorGuard,
+  adminGuard,
   multer().single('file'),
   async (req, res) => {
     const filename =
