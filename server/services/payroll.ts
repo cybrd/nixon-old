@@ -3,7 +3,7 @@ import { IUser } from '../models/user';
 
 export async function list(args = {}) {
   return await PayrollCollection.find(args)
-    .sort({ name: 1 })
+    .sort({ name: -1 })
     .exec();
 }
 

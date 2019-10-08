@@ -57,11 +57,11 @@ router.post(
   }
 );
 
-router.post('/:id/remove', adminGuard, async (req, res) => {
+router.post('/:id/remove', userGuard, async (req, res) => {
   res.send(await remove(req.user, req.params.id));
 });
 
-router.post('/removeMany', adminGuard, async (req, res) => {
+router.post('/removeMany', userGuard, async (req, res) => {
   res.send(await removeMany(req.user, req.body.ids));
 });
 

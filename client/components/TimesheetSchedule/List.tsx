@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { parse } from 'qs';
 
 import { Table, readableTime } from '../Helper/Table';
-import { RoleCheck } from '../Helper/RoleCheck';
 import { list } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';

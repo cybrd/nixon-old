@@ -8,7 +8,7 @@ import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
-import { RoleCheck, RoleCheckX } from '../Helper/RoleCheck';
+import { RoleCheckX } from '../Helper/RoleCheck';
 import { list, removeMany } from '../../services/timesheet';
 import { list as employeeList } from '../../services/employee';
 
@@ -51,14 +51,10 @@ export function List(props: any) {
         <React.Fragment>
           <Update view="/timesheet/{{ _id }}" data={{ _id: value }} />
 
-          {RoleCheck('admin') ? (
-            <Remove
-              view="/api/timesheet/{{ _id }}/remove"
-              data={{ _id: value }}
-            />
-          ) : (
-            ''
-          )}
+          <Remove
+            view="/api/timesheet/{{ _id }}/remove"
+            data={{ _id: value }}
+          />
         </React.Fragment>
       )
     },
@@ -337,26 +333,15 @@ export function List(props: any) {
         </FormControl>
       </MyForm>
       {data != null ? (
-        RoleCheck('admin') ? (
-          <Table
-            data={data}
-            columns={columns}
-            orderBy="timestamp"
-            order="desc"
-            loading={loading}
-            copycolumns={copyColumns}
-            removeFn={removeMany}
-          />
-        ) : (
-          <Table
-            data={data}
-            columns={columns}
-            orderBy="timestamp"
-            order="desc"
-            loading={loading}
-            copycolumns={copyColumns}
-          />
-        )
+        <Table
+          data={data}
+          columns={columns}
+          orderBy="timestamp"
+          order="desc"
+          loading={loading}
+          copycolumns={copyColumns}
+          removeFn={removeMany}
+        />
       ) : (
         'Loading...'
       )}
