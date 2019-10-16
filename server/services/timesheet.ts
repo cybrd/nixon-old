@@ -71,7 +71,7 @@ export function createFromUpload(user: IUser, records: any) {
 export function createFromUploadCSV(user: IUser, records: string) {
   const data: any = [];
   let counter = 0;
-  records.split('\n\r').forEach(line => {
+  records.split('\n').forEach(line => {
     if (!line || !counter) {
       counter++;
       return;

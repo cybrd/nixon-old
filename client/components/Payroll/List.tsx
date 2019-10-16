@@ -46,7 +46,13 @@ export function List() {
         Create New Payroll
       </ButtonLink>
       {data != null ? (
-        <Table data={data} columns={columns} loading={loading} />
+        <Table
+          data={data}
+          columns={columns}
+          orderBy="name"
+          order="desc"
+          loading={loading}
+        />
       ) : (
         'Loading...'
       )}
