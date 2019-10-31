@@ -7,7 +7,6 @@ import { IUser } from '../models/user';
 import { EmployeeCollection } from '../models/employee';
 import { ScheduleCollection } from '../models/schedule';
 import { PayrollCollection } from '../models/payroll';
-import console = require('console');
 
 export async function list(args = {}) {
   return await EmployeeScheduleCollection.find(args).exec();

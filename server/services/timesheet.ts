@@ -24,7 +24,7 @@ export async function list(args: any = {}, sort = -1, secondary = {}) {
     .exec();
 
   results = results.filter((result: any) => employees[result.fingerPrintId]);
-  results.map(
+  results.forEach(
     (result: any) => (result.employee = employees[result.fingerPrintId])
   );
 
@@ -77,7 +77,7 @@ export function createFromUploadCSV(user: IUser, records: string) {
       return;
     }
 
-    const lineData = line.split(',');
+    const lineData = line.split(',').map(x => x.trim());
 
     data.push({
       fingerPrintId: lineData[0],

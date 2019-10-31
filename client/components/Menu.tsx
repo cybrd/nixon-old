@@ -82,6 +82,7 @@ export function Menu() {
             <ListItemLink to="/timesheetSummary">
               Timesheet Summary
             </ListItemLink>
+            <ListItemLink to="/latesAbsents">Lates Absents</ListItemLink>
             <ListItemLink to="/employee">Employee</ListItemLink>
             <ListItemLink to="/schedule">Schedule</ListItemLink>
             <ListItemLink to="/payroll">Payroll</ListItemLink>

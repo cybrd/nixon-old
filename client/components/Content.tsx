@@ -32,6 +32,7 @@ export function Content() {
           path="/timesheetSummary"
           component={TimesheetSchedule}
         />
+        <ProtectedRoute path="/latesAbsents" component={TimesheetSchedule} />
         <ProtectedAdminRoute path="/user" component={User} />
         <Route component={NoMatch} />
       </Switch>

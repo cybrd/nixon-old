@@ -226,9 +226,9 @@ export function List(props: any) {
     departmentFilter.value +
     't' +
     typeFilter.value +
-    's' +
-    handlerFilter.value +
     'h' +
+    handlerFilter.value +
+    's' +
     startDate.value +
     'd' +
     endDate.value;
