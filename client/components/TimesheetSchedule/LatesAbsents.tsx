@@ -10,6 +10,7 @@ import { list as employeeList } from '../../services/employee';
 
 export function LatesAbsents(props: any) {
   const [totalLates, setTotalLates] = useState(0);
+  const [totalLateMins, setTotalLateMins] = useState(0);
   const [totalAbsents, setTotalAbsents] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -154,19 +155,24 @@ export function LatesAbsents(props: any) {
     let tmp: any[] = await list(args);
     tmp = tmp.filter(x => x.isLate || x.isAbsent);
 
-    let lates = 0;
     let absents = 0;
+    let lates = 0;
+    let lateMins = 0;
     tmp.forEach(x => {
-      if (x.isLate) {
-        lates += x.workDayMissing;
+      if (x.isLate || x.lateAllowanceMissing) {
+        lates += 1;
       }
+
+      lateMins += x.workDayMissing + x.lateAllowanceMissing;
+
       if (x.isAbsent) {
         absents += 1;
       }
     });
 
-    setTotalLates(lates);
     setTotalAbsents(absents / 2);
+    setTotalLates(lates);
+    setTotalLateMins(lateMins);
     setData(tmp);
     setLoading(false);
 
@@ -260,7 +266,8 @@ export function LatesAbsents(props: any) {
       {data != null ? (
         <div>
           <p>Total Absents: {totalAbsents}</p>
-          <p>Total Lates: {msToTime(totalLates)}</p>
+          <p>Total Lates: {totalLates}</p>
+          <p>Total Lates Mins: {msToTime(totalLateMins)}</p>
           <Table
             data={data}
             columns={columns}
