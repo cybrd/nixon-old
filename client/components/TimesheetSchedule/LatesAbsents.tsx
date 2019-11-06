@@ -10,8 +10,12 @@ import { list as employeeList } from '../../services/employee';
 
 export function LatesAbsents(props: any) {
   const [totalLates, setTotalLates] = useState(0);
+  const [totalLates1, setTotalLates1] = useState(0);
+  const [totalLates2, setTotalLates2] = useState(0);
   const [totalLateMins, setTotalLateMins] = useState(0);
   const [totalAbsents, setTotalAbsents] = useState(0);
+  const [totalAbsentsWhole, setTotalAbsentsWhole] = useState(0);
+  const [totalAbsentsHalf, setTotalAbsentsHalf] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const employeeFilter = useFormSelect('');
@@ -155,23 +159,52 @@ export function LatesAbsents(props: any) {
     let tmp: any[] = await list(args);
     tmp = tmp.filter(x => x.isLate || x.isAbsent);
 
+    const workDayAbsents: any = {};
     let absents = 0;
     let lates = 0;
+    let lates1 = 0;
+    let lates2 = 0;
     let lateMins = 0;
     tmp.forEach(x => {
       if (x.isLate || x.lateAllowanceMissing) {
-        lates += 1;
+        lates++;
+
+        if (x.lateAllowanceMissing) {
+          lates1++;
+        } else {
+          lates2++;
+        }
       }
 
       lateMins += x.workDayMissing + x.lateAllowanceMissing;
 
       if (x.isAbsent) {
-        absents += 1;
+        absents++;
+
+        if (!workDayAbsents[x.workDay]) {
+          workDayAbsents[x.workDay] = 0;
+        }
+
+        workDayAbsents[x.workDay]++;
+      }
+    });
+
+    let absentsWhole = 0;
+    let absentsHalf = 0;
+    Object.keys(workDayAbsents).forEach(key => {
+      if (workDayAbsents[key] > 1) {
+        absentsWhole++;
+      } else {
+        absentsHalf++;
       }
     });
 
     setTotalAbsents(absents / 2);
+    setTotalAbsentsWhole(absentsWhole);
+    setTotalAbsentsHalf(absentsHalf);
     setTotalLates(lates);
+    setTotalLates1(lates1);
+    setTotalLates2(lates2);
     setTotalLateMins(lateMins);
     setData(tmp);
     setLoading(false);
@@ -263,20 +296,28 @@ export function LatesAbsents(props: any) {
           />
         </FormControl>
       </MyForm3>
-      {data != null ? (
+      {data.length ? (
         <div>
           <p>Total Absents: {totalAbsents}</p>
+          <p>Total Absents Whole Day: {totalAbsentsWhole}</p>
+          <p>Total Absents Half Day: {totalAbsentsHalf}</p>
           <p>Total Lates: {totalLates}</p>
-          <p>Total Lates Mins: {msToTime(totalLateMins)}</p>
-          <Table
-            data={data}
-            columns={columns}
-            orderBy="workDay"
-            order="desc"
-            loading={loading}
-            copycolumns={copycolumns}
-          />
+          <p>Total Lates w/ Allowance: {totalLates1}</p>
+          <p>Total Lates w/o Allowance: {totalLates2}</p>
+          <p>Total Lates Mins: {totalLateMins}</p>
         </div>
+      ) : (
+        ''
+      )}
+      {data != null ? (
+        <Table
+          data={data}
+          columns={columns}
+          orderBy="workDay"
+          order="desc"
+          loading={loading}
+          copycolumns={copycolumns}
+        />
       ) : (
         'Loading...'
       )}
