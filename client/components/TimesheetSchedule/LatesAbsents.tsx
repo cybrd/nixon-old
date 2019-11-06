@@ -304,7 +304,7 @@ export function LatesAbsents(props: any) {
           <p>Total Lates: {totalLates}</p>
           <p>Total Lates w/ Allowance: {totalLates1}</p>
           <p>Total Lates w/o Allowance: {totalLates2}</p>
-          <p>Total Lates Mins: {totalLateMins}</p>
+          <p>Total Lates Mins: {msToTime(totalLateMins)}</p>
         </div>
       ) : (
         ''
