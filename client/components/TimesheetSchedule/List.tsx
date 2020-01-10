@@ -39,7 +39,12 @@ export function List(props: any) {
     {
       label: 'Work Day',
       field: 'workDay',
-      cell: (value: string) => new Date(value).toLocaleDateString()
+      cell: (value: any) => {
+        const date = new Date(value);
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        return days[date.getDay()] + ' ' + date.toLocaleDateString();
+      }
     },
     {
       label: 'WorkDayTotal',

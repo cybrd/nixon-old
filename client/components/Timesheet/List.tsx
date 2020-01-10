@@ -38,7 +38,12 @@ export function List(props: any) {
     {
       label: 'Timestamp',
       field: 'timestamp',
-      cell: (value: any) => new Date(value).toLocaleString()
+      cell: (value: any) => {
+        const date = new Date(value);
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        return days[date.getDay()] + ' ' + date.toLocaleString();
+      }
     },
     {
       label: 'Type',

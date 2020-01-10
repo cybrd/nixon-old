@@ -62,7 +62,12 @@ export function List(props: any) {
     {
       label: 'Date',
       field: 'date',
-      cell: (value: string) => new Date(value).toLocaleDateString()
+      cell: (value: any) => {
+        const date = new Date(value);
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        return days[date.getDay()] + ' ' + date.toLocaleDateString();
+      }
     },
     {
       label: 'Actions',
