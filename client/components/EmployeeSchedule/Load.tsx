@@ -38,21 +38,21 @@ export function Load() {
         <p>Payroll Name,Finger Print, Schedule Name, Date1,Date2,Date3...</p>
         <p>Example:</p>
         <p>
-          janA,2,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,2,OfficeMorning,1/1/2019,notes
           <br />
-          janA,3,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,3,OfficeMorning,1/1/2019,notes
           <br />
-          janA,4,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,4,OfficeMorning,1/1/2019,notes
           <br />
-          janA,5,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,5,OfficeMorning,1/1/2019,notes
           <br />
-          janA,6,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,6,OfficeMorning,1/1/2019,notes
           <br />
-          janA,7,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,7,OfficeMorning,1/1/2019,notes
           <br />
-          janA,8,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,8,OfficeMorning,1/1/2019,notes
           <br />
-          janA,9,OfficeMorning,1/1/2019,1/2/2019,1/3/2019,1/4/2019
+          janA,9,OfficeMorning,1/1/2019,notes
         </p>
       </div>
     </React.Fragment>
