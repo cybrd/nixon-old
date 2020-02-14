@@ -62,9 +62,8 @@ export function LatesAbsents(props: any) {
       cell: (value: string) => value && value.toString()
     },
     {
-      label: 'Late Allowance',
-      field: 'lateAllowance',
-      cell: (value: string) => value && value.toString()
+      label: 'Notes',
+      field: 'notes'
     }
   ];
   const copycolumns = [
@@ -183,7 +182,7 @@ export function LatesAbsents(props: any) {
       if (x.isAbsent) {
         absents++;
 
-        if (x.notes === 'No Excuse') {
+        if (!x.notes) {
           absentsNoExcuse++;
         }
 
