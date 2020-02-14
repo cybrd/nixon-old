@@ -140,12 +140,13 @@ export async function createFromUpload(user: IUser, raw: any) {
   raw.split('\n').forEach((line: string) => {
     const tmp = line.split(',');
 
-    let i = 3;
+    let i = 4;
     while (tmp[i]) {
       data.push({
         payrollId: payrollsObj[tmp[0]],
         employeeId: employeesObj[tmp[1]],
         scheduleId: schedulesObj[tmp[2]],
+        notes: tmp[3],
         date: new Date(tmp[i]),
         modifiedBy: user.username
       });
