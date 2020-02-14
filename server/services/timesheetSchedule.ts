@@ -122,7 +122,7 @@ export async function list(args = {}, secondary = {}) {
     }
 
     let isLate = null;
-    if (workDayMissing) {
+    if (workDayMissing || lateAllowanceMissing) {
       if (employeeSchedule[i].scheduleId.type !== 'overtime') {
         isLate = true;
       }
