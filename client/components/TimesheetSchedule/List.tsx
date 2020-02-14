@@ -67,9 +67,8 @@ export function List(props: any) {
       cell: (value: string) => value && value.toString()
     },
     {
-      label: 'Late Allowance',
-      field: 'lateAllowance',
-      cell: (value: string) => value && value.toString()
+      label: 'Notes',
+      field: 'notes'
     }
   ];
   const copycolumns = [

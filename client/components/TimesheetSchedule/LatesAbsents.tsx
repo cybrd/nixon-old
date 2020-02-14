@@ -16,6 +16,7 @@ export function LatesAbsents(props: any) {
   const [totalAbsents, setTotalAbsents] = useState(0);
   const [totalAbsentsWhole, setTotalAbsentsWhole] = useState(0);
   const [totalAbsentsHalf, setTotalAbsentsHalf] = useState(0);
+  const [totalAbsentsNoExcuse, setTotalAbsentsNoExcuse] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const employeeFilter = useFormSelect('');
@@ -161,6 +162,7 @@ export function LatesAbsents(props: any) {
 
     const workDayAbsents: any = {};
     let absents = 0;
+    let absentsNoExcuse = 0;
     let lates = 0;
     let lates1 = 0;
     let lates2 = 0;
@@ -181,6 +183,10 @@ export function LatesAbsents(props: any) {
       if (x.isAbsent) {
         absents++;
 
+        if (x.notes === 'No Excuse') {
+          absentsNoExcuse++;
+        }
+
         if (!workDayAbsents[x.workDay]) {
           workDayAbsents[x.workDay] = 0;
         }
@@ -200,6 +206,7 @@ export function LatesAbsents(props: any) {
     });
 
     setTotalAbsents(absents / 2);
+    setTotalAbsentsNoExcuse(absentsNoExcuse / 2);
     setTotalAbsentsWhole(absentsWhole);
     setTotalAbsentsHalf(absentsHalf);
     setTotalLates(lates);
@@ -301,6 +308,7 @@ export function LatesAbsents(props: any) {
           <p>Total Absents: {totalAbsents}</p>
           <p>Total Absents Whole Day: {totalAbsentsWhole}</p>
           <p>Total Absents Half Day: {totalAbsentsHalf}</p>
+          <p>Total Absents No Excuse: {totalAbsentsNoExcuse}</p>
           <p>Total Lates: {totalLates}</p>
           <p>Total Lates w/ Allowance: {totalLates1}</p>
           <p>Total Lates w/o Allowance: {totalLates2}</p>

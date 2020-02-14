@@ -21,6 +21,7 @@ interface ITimesheetSchedule {
   scheduleName: string;
   scheduleType: string;
   payrollName: string;
+  notes: string;
   workDay: Date;
   workDayTotal: number;
   workDayWorked: number;
@@ -136,6 +137,7 @@ export async function list(args = {}, secondary = {}) {
       scheduleName: employeeSchedule[i].scheduleId.name,
       scheduleType: employeeSchedule[i].scheduleId.type,
       payrollName: employeeSchedule[i].payrollId.name,
+      notes: employeeSchedule[i].notes,
       workDay: workDay,
       workDayTotal: workDayTotal,
       workDayWorked: workDayWorked,
