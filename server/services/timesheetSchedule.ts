@@ -123,7 +123,9 @@ export async function list(args = {}, secondary = {}) {
 
     let isLate = null;
     if (workDayMissing) {
-      isLate = true;
+      if (employeeSchedule[i].scheduleId.type !== 'overtime') {
+        isLate = true;
+      }
     }
 
     r.push({
