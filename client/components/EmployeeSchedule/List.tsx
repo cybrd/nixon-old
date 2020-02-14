@@ -1,14 +1,25 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { FormControl, InputLabel, Select, TextField } from '@material-ui/core';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  TextField,
+  Button
+} from '@material-ui/core';
 import styled from 'styled-components';
 import { parse } from 'qs';
+import Popup from 'reactjs-popup';
 
 import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
-import { listPopulated, removeMany } from '../../services/employeeSchedule';
+import {
+  listPopulated,
+  removeMany,
+  update
+} from '../../services/employeeSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
 
@@ -19,6 +30,7 @@ export function List(props: any) {
   const payrollId = useFormSelect('');
   const startDate = useFormInput('');
   const endDate = useFormInput('');
+  const [notes, setNotes] = useState(null);
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [payrollOptions, setPayrollOptions] = useState(null);
   const columns = [
@@ -70,19 +82,61 @@ export function List(props: any) {
       }
     },
     {
+      label: 'Notes',
+      field: 'notes'
+    },
+    {
       label: 'Actions',
       field: '_id',
-      cell: (value: string) => (
-        <React.Fragment>
-          <Update view="/employeeSchedule/{{ _id }}" data={{ _id: value }} />
-          <Remove
-            view="/api/employeeSchedule/{{ _id }}/remove"
-            data={{ _id: value }}
-          />
-        </React.Fragment>
-      )
+      cell: (value: string, rowData: any) => {
+        return (
+          <React.Fragment>
+            <Update view="/employeeSchedule/{{ _id }}" data={{ _id: value }} />
+            <Remove
+              view="/api/employeeSchedule/{{ _id }}/remove"
+              data={{ _id: value }}
+            />
+            <Popup
+              trigger={<button>Edit Notes</button>}
+              modal
+              onOpen={() => setNotes(rowData.notes)}
+            >
+              {close => (
+                <div>
+                  <FormControl fullWidth>
+                    <TextField
+                      rows="4"
+                      multiline
+                      value={notes}
+                      onChange={e => setNotes(e.target.value)}
+                    />
+                  </FormControl>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNotesSubmit(value)}
+                  >
+                    Submit
+                  </Button>
+                  <Button type="button" variant="contained" onClick={close}>
+                    Cancel
+                  </Button>
+                </div>
+              )}
+            </Popup>
+          </React.Fragment>
+        );
+      }
     }
   ];
+
+  function handleNotesSubmit(value: string) {
+    return async () => {
+      await update(value, { notes });
+      window.location.reload();
+    };
+  }
 
   function useFormInput(initialValue: string) {
     const [value, setValue] = useState(initialValue);

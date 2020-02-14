@@ -9,6 +9,7 @@ const EmployeeScheduleSchema = new Schema(
     scheduleId: { type: Schema.Types.ObjectId, ref: 'schedule' },
     payrollId: { type: Schema.Types.ObjectId, ref: 'payroll' },
     date: Date,
+    notes: String,
     modifiedBy: String
   },
   {
@@ -24,6 +25,7 @@ const EmployeeScheduleArchiveSchema = new Schema(
     scheduleId: { type: Schema.Types.ObjectId, ref: 'schedule' },
     payrollId: { type: Schema.Types.ObjectId, ref: 'payroll' },
     date: Date,
+    notes: String,
     modifiedBy: String
   },
   {
@@ -51,6 +53,7 @@ export interface IEmployeeSchedule extends Document {
   scheduleId: ISchedule;
   payrollId: IPayroll;
   date: Date;
+  notes: string;
   modifiedBy: string;
 }
 
