@@ -101,7 +101,6 @@ export async function list(args = {}, secondary = {}) {
     });
 
     let lateAllowance = null;
-    let isLate = null;
     let lateAllowanceMissing = 0;
     const lateAmount = getLateAmount(timesheet, used, realStart.getTime());
     if (lateAmount) {
@@ -110,7 +109,6 @@ export async function list(args = {}, secondary = {}) {
         workDayWorked += lateAmount;
         lateAllowanceMissing += lateAmount;
       }
-      isLate = true;
     }
 
     const workDayTotal = realEnd.getTime() - realStart.getTime();
@@ -121,6 +119,11 @@ export async function list(args = {}, secondary = {}) {
       workDayMissing = workDayTotal - workDayWorked;
     } else {
       isAbsent = true;
+    }
+
+    let isLate = null;
+    if (workDayMissing) {
+      isLate = true;
     }
 
     r.push({
