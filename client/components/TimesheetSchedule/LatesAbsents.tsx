@@ -182,7 +182,7 @@ export function LatesAbsents(props: any) {
       if (x.isAbsent) {
         absents++;
 
-        if (!x.notes) {
+        if (!x.notes || !x.notes.trim()) {
           absentsNoExcuse++;
         }
 
