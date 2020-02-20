@@ -47,14 +47,14 @@ export function LatesAbsents(props: any) {
       cell: readableTime
     },
     {
-      label: 'WorkDayWorked',
-      field: 'workDayWorked',
-      cell: readableTime
-    },
-    {
       label: 'WorkDayMissing',
       field: 'workDayMissing',
       cell: readableTime
+    },
+    {
+      label: 'Is Allowance',
+      field: 'lateAllowance',
+      cell: (value: string) => value && value.toString()
     },
     {
       label: 'Is Absent',
@@ -72,10 +72,10 @@ export function LatesAbsents(props: any) {
     'scheduleName',
     'workDay',
     'workDayTotal',
-    'workDayWorked',
     'workDayMissing',
+    'lateAllowance',
     'isAbsent',
-    'lateAllowance'
+    'notes'
   ];
 
   function useFormSelect(initialValue: string) {
