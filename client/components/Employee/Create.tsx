@@ -146,19 +146,6 @@ export function Create() {
     };
   }
 
-  function useFormFile(initialValue: string) {
-    const [value, setValue] = useState(initialValue);
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-      setValue(e.target.value);
-    }
-
-    return {
-      value: value,
-      onChange: handleChange
-    };
-  }
-
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
