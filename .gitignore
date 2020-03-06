@@ -3,3 +3,4 @@
 /logs/*
 !/logs/.gitkeep 
 package-lock.json
+/server/photo

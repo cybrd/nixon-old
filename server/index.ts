@@ -23,6 +23,7 @@ const port = 3000;
 app.use(urlencoded({ extended: false }));
 app.use(json());
 app.use(express.static(join(__dirname, '../dist')));
+app.use('/photo', express.static(join(__dirname, './photo')));
 
 morgan.token('myDate', () => {
   return new Date().toLocaleString();

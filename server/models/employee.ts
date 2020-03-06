@@ -34,6 +34,8 @@ const EmployeeSchema = new Schema(
     contactRelationship: String,
     contactAddress: String,
     contactContactNumber: String,
+    photo: String,
+    photoType: String,
     modifiedBy: String
   },
   {
@@ -68,6 +70,8 @@ const EmployeeArchiveSchema = new Schema(
     contactRelationship: String,
     contactAddress: String,
     contactContactNumber: String,
+    photo: String,
+    photoType: String,
     modifiedBy: String
   },
   {
@@ -111,6 +115,8 @@ export interface IEmployee extends Document {
   contactRelationship?: string;
   contactAddress?: string;
   contactContactNumber?: string;
+  photo?: string;
+  photoType?: string;
   modifiedBy: string;
 }
 

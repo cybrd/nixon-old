@@ -17,10 +17,9 @@ export function create(data: any) {
 }
 
 export function update(id: string, data: any) {
-  return myFetchJSON('/api/employee/' + id + '/update', {
+  return myFetch('/api/employee/' + id + '/update', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: data
   });
 }
 

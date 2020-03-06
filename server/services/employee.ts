@@ -1,4 +1,5 @@
 import * as parse from 'csv-parse/lib/sync';
+import { unlinkSync } from 'fs';
 
 import {
   EmployeeCollection,
@@ -25,6 +26,11 @@ export function create(user: IUser, data: any) {
 
 export function update(user: IUser, id: string, data: any) {
   return new Promise(resolve => {
+    for (const x in data) {
+      if (data[x] === 'null') {
+        data[x] = '';
+      }
+    }
     EmployeeCollection.findOneAndUpdate({ _id: id }, data, (err, record) => {
       if (err) {
         return resolve(err);
@@ -39,6 +45,20 @@ export function update(user: IUser, id: string, data: any) {
       resolve(true);
     });
   });
+}
+
+export async function changePhoto(id: string, data: any) {
+  const old = await EmployeeCollection.findOneAndUpdate(
+    { _id: id },
+    {
+      photo: data.filename,
+      photoType: data.mimetype
+    }
+  );
+
+  if (old && old.photo) {
+    unlinkSync(data.destination + '/' + old.photo);
+  }
 }
 
 export async function remove(user: IUser, id: string) {

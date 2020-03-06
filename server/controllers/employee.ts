@@ -11,7 +11,8 @@ import {
   update,
   remove,
   removeMany,
-  createFromUpload
+  createFromUpload,
+  changePhoto
 } from '../services/employee';
 
 const router = Router();
@@ -32,10 +33,20 @@ router.post('/:id/remove', adminGuard, async (req, res) => {
   res.send(await remove(req.user, req.params.id));
 });
 
-router.post('/:id/update', supervisorGuard, async (req, res) => {
-  const result = await update(req.user, req.params.id, req.body);
-  res.send(result);
-});
+router.post(
+  '/:id/update',
+  supervisorGuard,
+  multer({ dest: 'server/photo/' }).single('file'),
+  async (req, res) => {
+    const data = JSON.parse(JSON.stringify(req.body));
+    delete data.file;
+    if (req.file) {
+      await changePhoto(req.params.id, req.file);
+    }
+    const result = await update(req.user, req.params.id, data);
+    res.send(result);
+  }
+);
 
 router.post(
   '/upload',

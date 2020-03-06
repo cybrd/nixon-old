@@ -41,6 +41,9 @@ const MyInputLabel = withStyles({
 export function Edit(props: any) {
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
+  const [file, setFile] = useState(null);
+  const [photo, setPhoto] = useState('');
+  const [photoType, setPhotoType] = useState('');
 
   const inputKeys: any = {
     fingerPrintId: {
@@ -146,12 +149,21 @@ export function Edit(props: any) {
     };
   }
 
+  function handleUploadFile(e: React.ChangeEvent<HTMLInputElement>) {
+    setFile(e.target.files[0]);
+  }
+
   async function fetchData() {
     const tmp = await list({ _id: props.match.params.id });
 
     Object.keys(inputKeys).map(key =>
       inputKeys[key].field.onChange({ target: { value: tmp[0][key] } })
     );
+
+    if (tmp[0].photo) {
+      setPhoto('/photo/' + tmp[0].photo);
+      setPhotoType(tmp[0].photoType);
+    }
   }
 
   useEffect(() => {
@@ -161,10 +173,14 @@ export function Edit(props: any) {
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const tmp: any = {};
-    Object.keys(inputKeys).map(key => (tmp[key] = inputKeys[key].field.value));
+    const data = new FormData();
+    data.append('file', file);
 
-    const result = await update(props.match.params.id, tmp);
+    Object.keys(inputKeys).map(key => {
+      data.append(key, inputKeys[key].field.value);
+    });
+
+    const result = await update(props.match.params.id, data);
     if (result.errmsg) {
       setError(result.errmsg);
     } else {
@@ -178,12 +194,25 @@ export function Edit(props: any) {
 
   return (
     <form onSubmit={handleFormSubmit}>
+      <div>
+        {photo && (
+          <p style={{ textAlign: 'center' }}>
+            <img src={photo} style={{ maxWidth: 200, maxHeight: 200 }} />
+          </p>
+        )}
+        <p style={{ textAlign: 'center' }}>
+          Change photo:
+          <input type="file" onChange={handleUploadFile} />
+        </p>
+      </div>
+
       {Object.keys(inputKeys).map(key => (
         <MyFormControl fullWidth key={key}>
           <MyInputLabel>{inputKeys[key].label}</MyInputLabel>
           <MyInput {...inputKeys[key].field} />
         </MyFormControl>
       ))}
+
       <Button type="submit" variant="contained" color="primary">
         Submit
       </Button>

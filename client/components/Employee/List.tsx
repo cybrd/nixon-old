@@ -27,12 +27,42 @@ export function List() {
       field: 'department'
     },
     {
-      label: 'Handler',
-      field: 'handler'
-    },
-    {
       label: 'Position',
       field: 'position'
+    },
+    {
+      label: 'Hire Date',
+      field: 'hireDate'
+    },
+    {
+      label: 'SSS',
+      field: 'SSS'
+    },
+    {
+      label: 'Phil Health',
+      field: 'philHealth'
+    },
+    {
+      label: 'Pag-Ibig',
+      field: 'pagIbig'
+    },
+    {
+      label: 'Address',
+      field: 'address'
+    },
+    {
+      label: 'Photo',
+      field: 'photo',
+      cell: (value: any) => {
+        if (value) {
+          const photo = '/photo/' + value;
+          return (
+            <React.Fragment>
+              <img src={photo} style={{ maxWidth: 100, maxHeight: 100 }} />
+            </React.Fragment>
+          );
+        }
+      }
     },
     {
       label: 'Actions',
