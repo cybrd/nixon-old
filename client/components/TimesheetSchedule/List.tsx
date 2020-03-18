@@ -62,6 +62,11 @@ export function List(props: any) {
       cell: readableTime
     },
     {
+      label: 'Late Allowance',
+      field: 'lateAllowance',
+      cell: (value: string) => value && value.toString()
+    },
+    {
       label: 'Is Absent',
       field: 'isAbsent',
       cell: (value: string) => value && value.toString()
@@ -79,8 +84,9 @@ export function List(props: any) {
     'workDayTotal',
     'workDayWorked',
     'workDayMissing',
+    'lateAllowance',
     'isAbsent',
-    'lateAllowance'
+    'notes'
   ];
 
   function useFormSelect(initialValue: string) {

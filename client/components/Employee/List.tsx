@@ -32,19 +32,19 @@ export function List() {
     },
     {
       label: 'Hire Date',
-      field: 'hireDate'
+      field: 'hireDate',
+      cell: (value: any) => value && value.substr(0, 10)
     },
     {
-      label: 'SSS',
-      field: 'SSS'
-    },
-    {
-      label: 'Phil Health',
-      field: 'philHealth'
-    },
-    {
-      label: 'Pag-Ibig',
-      field: 'pagIbig'
+      label: 'SSS / Phil Health / Pag-Ibig',
+      field: 'SSSphilHealthpagIbig',
+      cell: (value: any, row: any) => (
+        <React.Fragment>
+          <p>SSS: {row.SSS}</p>
+          <p>Phil Health: {row.philHealth}</p>
+          <p>Pag-Ibig: {row.pagIbig}</p>
+        </React.Fragment>
+      )
     },
     {
       label: 'Address',
@@ -56,11 +56,7 @@ export function List() {
       cell: (value: any) => {
         if (value) {
           const photo = '/photo/' + value;
-          return (
-            <React.Fragment>
-              <img src={photo} style={{ maxWidth: 100, maxHeight: 100 }} />
-            </React.Fragment>
-          );
+          return <img src={photo} style={{ maxWidth: 100, maxHeight: 100 }} />;
         }
       }
     },
@@ -78,7 +74,30 @@ export function List() {
           </RoleCheckX>
         </React.Fragment>
       )
+    },
+    {
+      field: 'SSS',
+      show: false
+    },
+    {
+      field: 'philHealth',
+      show: false
+    },
+    {
+      field: 'pagIbig',
+      show: false
     }
+  ];
+  const copycolumns = [
+    'fingerPrintId',
+    'name',
+    'department',
+    'position',
+    'hireDate',
+    'SSS',
+    'philHealth',
+    'pagIbig',
+    'address'
   ];
 
   function useFormInput(initialValue: string) {
@@ -124,6 +143,7 @@ export function List() {
           search={search.value}
           searchColumns={['fingerPrintId', 'name', 'department', 'position']}
           removeFn={removeMany}
+          copycolumns={copycolumns}
         />
       ) : (
         'Loading...'
