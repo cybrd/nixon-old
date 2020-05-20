@@ -8,7 +8,7 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  withStyles
+  withStyles,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -18,24 +18,24 @@ import { AuthContext } from '../context/auth';
 
 const MyExpansionPanel = withStyles({
   root: {
-    margin: 'auto'
-  }
+    margin: 'auto',
+  },
 })(ExpansionPanel);
 
 const MyExpansionPanelSummary = withStyles({
   expanded: {
     'min-height': '40px !important',
-    'align-items': 'center'
+    'align-items': 'center',
   },
   content: {
-    margin: '0 !important'
-  }
+    margin: '0 !important',
+  },
 })(ExpansionPanelSummary);
 
 const MyExpansionPanelDetails = withStyles({
   root: {
-    padding: '0 22px'
-  }
+    padding: '0 22px',
+  },
 })(ExpansionPanelDetails);
 
 function MyNavLink(props: any) {
@@ -45,7 +45,7 @@ function MyNavLink(props: any) {
       strict
       activeStyle={{
         fontWeight: 'bold',
-        color: 'red'
+        color: 'red',
       }}
     >
       {props.children}
@@ -83,6 +83,7 @@ export function Menu() {
               Timesheet Summary
             </ListItemLink>
             <ListItemLink to="/latesAbsents">Lates Absents</ListItemLink>
+            <ListItemLink to="/dailyAbsent">Daily Absent</ListItemLink>
             <ListItemLink to="/employee">Employee</ListItemLink>
             <ListItemLink to="/schedule">Schedule</ListItemLink>
             <ListItemLink to="/payroll">Payroll</ListItemLink>

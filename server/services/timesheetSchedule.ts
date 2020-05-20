@@ -77,21 +77,21 @@ export async function list(args = {}, secondary = {}) {
     timesheet = await timesheetList(
       {
         fingerPrintId: employeeSchedule[i].employeeId.fingerPrintId,
-        timestamp: { $gt: queryStart, $lt: queryEnd }
+        timestamp: { $gt: queryStart, $lt: queryEnd },
       },
       1
     );
 
     let workDayWorked = 0;
     const pairs = getTimesheetPairs(timesheet, used);
-    pairs.forEach(p => {
+    pairs.forEach((p) => {
       const tmpSum = sumTimeIntersect(p, {
         start: {
-          value: realStart.getTime()
+          value: realStart.getTime(),
         },
         end: {
-          value: realEnd.getTime()
-        }
+          value: realEnd.getTime(),
+        },
       });
 
       if (tmpSum) {
@@ -119,7 +119,9 @@ export async function list(args = {}, secondary = {}) {
     if (workDayWorked) {
       workDayMissing = workDayTotal - workDayWorked;
     } else {
-      isAbsent = true;
+      if (employeeSchedule[i].scheduleId.type !== 'overtime') {
+        isAbsent = true;
+      }
     }
 
     let isLate = null;
@@ -145,7 +147,7 @@ export async function list(args = {}, secondary = {}) {
       lateAllowance: lateAllowance,
       lateAllowanceMissing: lateAllowanceMissing,
       isLate: isLate,
-      isAbsent: isAbsent
+      isAbsent: isAbsent,
     });
   }
 
@@ -162,7 +164,7 @@ function getTimesheetPairs(timesheet: ITimesheet[], used: string[]) {
         if (timesheet[i].type === 'IN') {
           tmpPair.start = {
             _id: timesheet[i]._id,
-            value: timesheet[i].timestamp.getTime()
+            value: timesheet[i].timestamp.getTime(),
           };
         }
       }
@@ -171,7 +173,7 @@ function getTimesheetPairs(timesheet: ITimesheet[], used: string[]) {
         if (timesheet[i].type === 'OUT') {
           tmpPair.end = {
             _id: timesheet[i]._id,
-            value: timesheet[i].timestamp.getTime()
+            value: timesheet[i].timestamp.getTime(),
           };
           pairs.push(tmpPair);
           tmpPair = {};
@@ -229,7 +231,7 @@ export async function summary(args = {}, secondary = {}) {
   const tmp = await list(args, secondary);
   const result: any = {};
 
-  tmp.forEach(x => {
+  tmp.forEach((x) => {
     const id = 'fingerPrintId' + x.fingerPrintId;
 
     if (!result[id]) {
@@ -247,7 +249,7 @@ export async function summary(args = {}, secondary = {}) {
         payrollWorkDayMissing: 0,
         payrollLateAllowance: 0,
         payrollIsLate: 0,
-        payrollIsAbsent: 0
+        payrollIsAbsent: 0,
       };
     }
 
