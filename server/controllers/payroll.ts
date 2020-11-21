@@ -10,7 +10,7 @@ router.post('/list', userGuard, async (req, res) => {
   res.send(await list(req.body));
 });
 
-router.post('/create', adminGuard, async (req, res) => {
+router.post('/create', userGuard, async (req, res) => {
   res.send(await create(req.user, req.body));
 });
 

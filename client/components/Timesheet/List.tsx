@@ -8,7 +8,7 @@ import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
 import { Remove } from '../Helper/Remove';
 import { Update } from '../Helper/Update';
-import { RoleCheckX } from '../Helper/RoleCheck';
+import { RoleCheckX, RoleCheck } from '../Helper/RoleCheck';
 import { list, removeMany } from '../../services/timesheet';
 import { list as employeeList } from '../../services/employee';
 
@@ -28,12 +28,12 @@ export function List(props: any) {
   const columns = [
     {
       label: 'Finger Print Id',
-      field: 'fingerPrintId'
+      field: 'fingerPrintId',
     },
     {
       label: 'Employee Name',
       field: 'employeeName',
-      cell: (value: string, rowData: any) => rowData.employee.name
+      cell: (value: string, rowData: any) => rowData.employee.name,
     },
     {
       label: 'Timestamp',
@@ -43,11 +43,11 @@ export function List(props: any) {
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
         return days[date.getDay()] + ' ' + date.toLocaleString();
-      }
+      },
     },
     {
       label: 'Type',
-      field: 'type'
+      field: 'type',
     },
     {
       label: 'Actions',
@@ -61,20 +61,20 @@ export function List(props: any) {
             data={{ _id: value }}
           />
         </React.Fragment>
-      )
+      ),
     },
     {
       field: 'timestampDate',
       cell: (value: any, rowData: any) =>
         new Date(rowData.timestamp).toLocaleDateString(),
-      show: false
+      show: false,
     },
     {
       field: 'timestampTime',
       cell: (value: any, rowData: any) =>
         new Date(rowData.timestamp).toLocaleTimeString(),
-      show: false
-    }
+      show: false,
+    },
   ];
 
   const copyColumns = [
@@ -82,7 +82,7 @@ export function List(props: any) {
     'employeeName',
     'timestampDate',
     'timestampTime',
-    'type'
+    'type',
   ];
 
   function useFormSelect(initialValue: string) {
@@ -94,7 +94,7 @@ export function List(props: any) {
 
     return {
       value: value,
-      onChange: handleChange
+      onChange: handleChange,
     };
   }
 
@@ -107,7 +107,7 @@ export function List(props: any) {
 
     return {
       value: value,
-      onChange: handleChange
+      onChange: handleChange,
     };
   }
 
@@ -215,10 +215,10 @@ export function List(props: any) {
     const location = {
       pathname: '/timesheet',
       search: Object.keys(locationSearch)
-        .map(key => {
+        .map((key) => {
           return key + '=' + encodeURIComponent(locationSearch[key]);
         })
-        .join('&')
+        .join('&'),
     };
 
     props.history.push(location);
@@ -296,7 +296,7 @@ export function List(props: any) {
             label="Start Date"
             type="date"
             InputLabelProps={{
-              shrink: true
+              shrink: true,
             }}
             {...startDate}
           />
@@ -306,7 +306,7 @@ export function List(props: any) {
             label="End Date"
             type="date"
             InputLabelProps={{
-              shrink: true
+              shrink: true,
             }}
             {...endDate}
           />
@@ -345,7 +345,7 @@ export function List(props: any) {
           order="desc"
           loading={loading}
           copycolumns={copyColumns}
-          removeFn={removeMany}
+          removeFn={RoleCheck('admin') && removeMany}
         />
       ) : (
         'Loading...'

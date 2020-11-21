@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Input } from '@material-ui/core';
+import * as moment from 'moment';
 
 import { ButtonLink } from '../Helper/ButtonLink';
 import { Table } from '../Helper/Table';
@@ -16,24 +17,58 @@ export function List() {
   const columns = [
     {
       label: 'Finger Print Id',
-      field: 'fingerPrintId'
+      field: 'fingerPrintId',
     },
     {
       label: 'Name',
-      field: 'name'
+      field: 'name',
+    },
+    {
+      label: 'Age',
+      field: 'age',
+      cell: (value: any, row: any) => {
+        if (row.birthDate) {
+          const ageDifMs =
+            Date.now() - new Date(row.birthDate.substr(0, 10)).getTime();
+          const ageDate = new Date(ageDifMs);
+          return Math.abs(ageDate.getUTCFullYear() - 1970);
+        } else {
+          return '';
+        }
+      },
     },
     {
       label: 'Department',
-      field: 'department'
+      field: 'department',
     },
     {
       label: 'Position',
-      field: 'position'
+      field: 'position',
     },
     {
       label: 'Hire Date',
       field: 'hireDate',
-      cell: (value: any) => value && value.substr(0, 10)
+      cell: (value: any) => {
+        if (value) {
+          const ends = moment();
+          const starts = moment(value.substr(0, 10));
+          const years = ends.diff(starts, 'years');
+          const months = ends.diff(starts, 'months');
+
+          let returnString = '';
+          if (years) {
+            returnString += `${years} years `;
+          }
+          const modMonths = months % 12;
+          if (modMonths) {
+            returnString += `${modMonths} months `;
+          }
+
+          return returnString || '0 month';
+        } else {
+          return '';
+        }
+      },
     },
     {
       label: 'SSS / Phil Health / Pag-Ibig',
@@ -44,11 +79,11 @@ export function List() {
           <p>Phil Health: {row.philHealth}</p>
           <p>Pag-Ibig: {row.pagIbig}</p>
         </React.Fragment>
-      )
+      ),
     },
     {
       label: 'Address',
-      field: 'address'
+      field: 'address',
     },
     {
       label: 'Photo',
@@ -58,7 +93,7 @@ export function List() {
           const photo = '/photo/' + value;
           return <img src={photo} style={{ maxWidth: 100, maxHeight: 100 }} />;
         }
-      }
+      },
     },
     {
       label: 'Actions',
@@ -73,20 +108,20 @@ export function List() {
             />
           </RoleCheckX>
         </React.Fragment>
-      )
+      ),
     },
     {
       field: 'SSS',
-      show: false
+      show: false,
     },
     {
       field: 'philHealth',
-      show: false
+      show: false,
     },
     {
       field: 'pagIbig',
-      show: false
-    }
+      show: false,
+    },
   ];
   const copycolumns = [
     'fingerPrintId',
@@ -97,7 +132,7 @@ export function List() {
     'SSS',
     'philHealth',
     'pagIbig',
-    'address'
+    'address',
   ];
 
   function useFormInput(initialValue: string) {
@@ -109,7 +144,7 @@ export function List() {
 
     return {
       value: value,
-      onChange: handleChange
+      onChange: handleChange,
     };
   }
 
