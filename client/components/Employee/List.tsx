@@ -31,7 +31,7 @@ export function List() {
           const ageDifMs =
             Date.now() - new Date(row.birthDate.substr(0, 10)).getTime();
           const ageDate = new Date(ageDifMs);
-          return Math.abs(ageDate.getUTCFullYear() - 1970);
+          return Math.abs(ageDate.getUTCFullYear() - 1970).toString();
         } else {
           return '';
         }
@@ -46,7 +46,7 @@ export function List() {
       field: 'position',
     },
     {
-      label: 'Hire Date',
+      label: 'Term',
       field: 'hireDate',
       cell: (value: any) => {
         if (value) {
