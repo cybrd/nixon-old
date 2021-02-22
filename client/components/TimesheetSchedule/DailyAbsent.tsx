@@ -9,10 +9,6 @@ import { list } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 
 export function DailyAbsent(props: any) {
-  const [totalLates, setTotalLates] = useState(0);
-  const [totalLates1, setTotalLates1] = useState(0);
-  const [totalLates2, setTotalLates2] = useState(0);
-  const [totalLateMins, setTotalLateMins] = useState(0);
   const [totalAbsents, setTotalAbsents] = useState(0);
   const [totalAbsentsWhole, setTotalAbsentsWhole] = useState(0);
   const [totalAbsentsHalf, setTotalAbsentsHalf] = useState(0);
@@ -49,11 +45,6 @@ export function DailyAbsent(props: any) {
       label: 'WorkDayMissing',
       field: 'workDayMissing',
       cell: readableTime,
-    },
-    {
-      label: 'Is Allowance',
-      field: 'lateAllowance',
-      cell: (value: string) => value && value.toString(),
     },
     {
       label: 'Is Absent',
@@ -197,10 +188,6 @@ export function DailyAbsent(props: any) {
     setTotalAbsentsNoExcuse(absentsNoExcuse / 2);
     setTotalAbsentsWhole(absentsWhole);
     setTotalAbsentsHalf(absentsHalf);
-    setTotalLates(lates);
-    setTotalLates1(lates1);
-    setTotalLates2(lates2);
-    setTotalLateMins(lateMins);
     setData(tmp);
     setLoading(false);
 
@@ -281,10 +268,6 @@ export function DailyAbsent(props: any) {
           <p>Total Absents Whole Day: {totalAbsentsWhole}</p>
           <p>Total Absents Half Day: {totalAbsentsHalf}</p>
           <p>Total Absents No Excuse: {totalAbsentsNoExcuse}</p>
-          <p>Total Lates: {totalLates}</p>
-          <p>Total Lates w/ Allowance: {totalLates1}</p>
-          <p>Total Lates w/o Allowance: {totalLates2}</p>
-          <p>Total Workday Missing Mins: {msToTime(totalLateMins)}</p>
         </div>
       ) : (
         ''
