@@ -4,7 +4,7 @@ import { FormControl, InputLabel, Select, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 import { parse } from 'qs';
 
-import { Table, readableTime } from '../Helper/Table';
+import { Table } from '../Helper/Table';
 import { list } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 
@@ -35,16 +35,6 @@ export function DailyAbsent(props: any) {
       label: 'Work Day',
       field: 'workDay',
       cell: (value: string) => new Date(value).toLocaleDateString(),
-    },
-    {
-      label: 'WorkDayTotal',
-      field: 'workDayTotal',
-      cell: readableTime,
-    },
-    {
-      label: 'WorkDayMissing',
-      field: 'workDayMissing',
-      cell: readableTime,
     },
     {
       label: 'Is Absent',
@@ -137,28 +127,12 @@ export function DailyAbsent(props: any) {
 
     setLoading(true);
     let tmp: any[] = await list(args);
-    tmp = tmp.filter((x) => x.isLate || x.isAbsent);
+    tmp = tmp.filter((x) => x.isAbsent);
 
     const workDayAbsents: any = {};
     let absents = 0;
     let absentsNoExcuse = 0;
-    let lates = 0;
-    let lates1 = 0;
-    let lates2 = 0;
-    let lateMins = 0;
     tmp.forEach((x) => {
-      if (x.isLate || x.lateAllowanceMissing) {
-        lates++;
-
-        if (x.lateAllowanceMissing) {
-          lates1++;
-        } else {
-          lates2++;
-        }
-      }
-
-      lateMins += x.workDayMissing + x.lateAllowanceMissing;
-
       if (x.isAbsent) {
         absents++;
 
