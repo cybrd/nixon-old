@@ -37,16 +37,6 @@ export function DailyAbsent(props: any) {
       cell: (value: string) => new Date(value).toLocaleDateString(),
     },
     {
-      label: 'WorkDayTotal',
-      field: 'workDayTotal',
-      cell: readableTime,
-    },
-    {
-      label: 'WorkDayMissing',
-      field: 'workDayMissing',
-      cell: readableTime,
-    },
-    {
       label: 'Is Absent',
       field: 'isAbsent',
       cell: (value: string) => value && value.toString(),
@@ -61,9 +51,6 @@ export function DailyAbsent(props: any) {
     'employeeName',
     'scheduleName',
     'workDay',
-    'workDayTotal',
-    'workDayMissing',
-    'lateAllowance',
     'isAbsent',
     'notes',
   ];
@@ -137,7 +124,7 @@ export function DailyAbsent(props: any) {
 
     setLoading(true);
     let tmp: any[] = await list(args);
-    tmp = tmp.filter((x) => x.isLate || x.isAbsent);
+    tmp = tmp.filter((x) => x.isAbsent);
 
     const workDayAbsents: any = {};
     let absents = 0;
