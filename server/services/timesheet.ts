@@ -1,20 +1,24 @@
 import {
   TimesheetCollection,
   TimesheetArchiveCollection,
-  ITimesheet
+  ITimesheet,
 } from '../models/timesheet';
 import { EmployeeCollection } from '../models/employee';
 import { IUser } from '../models/user';
 import { arrayToObject } from '../helpers/arrayToObject';
 
 export async function list(args: any = {}, sort = -1, secondary = {}) {
-  let employees = await EmployeeCollection.find(secondary)
-    .lean()
-    .exec();
+  let employees = await EmployeeCollection.find(secondary).lean().exec();
   employees = arrayToObject(employees, 'fingerPrintId');
 
   if (!args.fingerPrintId) {
     args.fingerPrintId = { $in: Object.keys(employees) };
+  }
+
+  let hourFilter;
+  if (!args.hourFilter) {
+    hourFilter = args.hourFilter;
+    delete args.hourFilter;
   }
 
   let results = await TimesheetCollection.find(args)
@@ -28,6 +32,27 @@ export async function list(args: any = {}, sort = -1, secondary = {}) {
     (result: any) => (result.employee = employees[result.fingerPrintId])
   );
 
+  if (hourFilter) {
+    results = results.filter((result) => {
+      const date = new Date(result.timestamp);
+      const hours = date.getHours();
+
+      if (hourFilter === 'AM') {
+        if (hours < 12) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (hours >= 12) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+  }
+
   return results;
 }
 
@@ -35,10 +60,10 @@ export function create(user: IUser, data: any) {
   const record = new TimesheetCollection(data);
   record.modifiedBy = user.username;
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     if (!data.date) {
       return resolve({
-        errmsg: 'Error'
+        errmsg: 'Error',
       });
     }
 
@@ -49,8 +74,8 @@ export function create(user: IUser, data: any) {
 
     record
       .save()
-      .then(tmp => resolve(tmp))
-      .catch(err => resolve(err));
+      .then((tmp) => resolve(tmp))
+      .catch((err) => resolve(err));
   });
 }
 
@@ -61,7 +86,7 @@ export function createFromUpload(user: IUser, records: any) {
       fingerPrintId: record.userId,
       timestamp: record.time,
       type: record.code,
-      modifiedBy: user.username
+      modifiedBy: user.username,
     });
   });
 
@@ -71,19 +96,19 @@ export function createFromUpload(user: IUser, records: any) {
 export function createFromUploadCSV(user: IUser, records: string) {
   const data: any = [];
   let counter = 0;
-  records.split('\n').forEach(line => {
+  records.split('\n').forEach((line) => {
     if (!line || !counter) {
       counter++;
       return;
     }
 
-    const lineData = line.split(',').map(x => x.trim());
+    const lineData = line.split(',').map((x) => x.trim());
 
     data.push({
       fingerPrintId: lineData[0],
       timestamp: new Date(lineData[1] + ' ' + lineData[2]),
       type: lineData[3],
-      modifiedBy: user.username
+      modifiedBy: user.username,
     });
 
     counter++;
@@ -95,7 +120,7 @@ export function createFromUploadCSV(user: IUser, records: string) {
 async function customInsertMany(data: ITimesheet[]) {
   const result = {
     errors: 0,
-    inserted: 0
+    inserted: 0,
   };
 
   for (const d of data) {
@@ -110,8 +135,8 @@ async function customInsertMany(data: ITimesheet[]) {
       type: d.type,
       timestamp: {
         $gte: lowerTimeLimit,
-        $lte: upperTimeLimit
-      }
+        $lte: upperTimeLimit,
+      },
     });
 
     if (!findNear.length) {
@@ -131,7 +156,7 @@ export function update(user: IUser, id: string, data: any) {
   data.timestamp.setMinutes(data.minute);
   data.timestamp.setSeconds(0);
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     TimesheetCollection.findOneAndUpdate({ _id: id }, data, (err, record) => {
       if (err) {
         return resolve(err);
@@ -149,9 +174,7 @@ export function update(user: IUser, id: string, data: any) {
 }
 
 export async function remove(user: IUser, id: String) {
-  const record = await TimesheetCollection.findOne({ _id: id })
-    .lean()
-    .exec();
+  const record = await TimesheetCollection.findOne({ _id: id }).lean().exec();
 
   record.oldId = record._id;
   delete record._id;
@@ -162,9 +185,7 @@ export async function remove(user: IUser, id: String) {
 }
 
 export async function removeMany(user: IUser, ids: string[] = []) {
-  const records = await TimesheetCollection.find({ _id: ids })
-    .lean()
-    .exec();
+  const records = await TimesheetCollection.find({ _id: ids }).lean().exec();
 
   records.forEach((record: any) => {
     record.oldId = record._id;

@@ -17,11 +17,10 @@ export function List(props: any) {
   const [loading, setLoading] = useState(false);
   const [employeeOptions, setEmployeeOptions] = useState(null);
   const [departmentOptions, setDepartmentOptions] = useState(null);
-  const [handlerOptions, setHandlerOptions] = useState(null);
   const employeeFilter = useFormSelect('');
   const departmentFilter = useFormSelect('');
   const typeFilter = useFormSelect('');
-  const handlerFilter = useFormSelect('');
+  const hourFilter = useFormSelect('');
   const startDate = useFormInput('');
   const endDate = useFormInput('');
 
@@ -114,7 +113,6 @@ export function List(props: any) {
   async function fetchOptions() {
     const tmp = await employeeList();
     const departments: string[] = [];
-    const handlers: string[] = [];
 
     tmp.forEach((x: any) => {
       if (departments.indexOf(x.department) < 0) {
@@ -123,16 +121,8 @@ export function List(props: any) {
     });
     departments.sort();
 
-    tmp.forEach((x: any) => {
-      if (handlers.indexOf(x.handler) < 0) {
-        handlers.push(x.handler);
-      }
-    });
-    handlers.sort();
-
     setEmployeeOptions(tmp);
     setDepartmentOptions(departments);
-    setHandlerOptions(handlers);
 
     const params = parse(props.location.search.substr(1));
     if (params.fingerPrintId) {
@@ -147,8 +137,8 @@ export function List(props: any) {
       typeFilter.onChange({ target: { value: params.type } });
     }
 
-    if (params.handler) {
-      handlerFilter.onChange({ target: { value: params.handler } });
+    if (params.hourFilter) {
+      hourFilter.onChange({ target: { value: params.hourFilter } });
     }
 
     if (params.startDate) {
@@ -184,9 +174,9 @@ export function List(props: any) {
       locationSearch.type = typeFilter.value;
     }
 
-    if (handlerFilter.value) {
-      args.secondary.handler = handlerFilter.value;
-      locationSearch.handler = handlerFilter.value;
+    if (hourFilter.value) {
+      args.hourFilter = hourFilter.value;
+      locationSearch.hourFilter = hourFilter.value;
     }
 
     if (startDate.value) {
@@ -232,7 +222,7 @@ export function List(props: any) {
     't' +
     typeFilter.value +
     'h' +
-    handlerFilter.value +
+    hourFilter.value +
     's' +
     startDate.value +
     'd' +
@@ -322,19 +312,12 @@ export function List(props: any) {
           </Select>
         </FormControl>
         <FormControl fullWidth>
-          <InputLabel>Select Handler</InputLabel>
-          {handlerOptions != null ? (
-            <Select native {...handlerFilter}>
-              <option value="" />
-              {handlerOptions.map((x: any) => (
-                <option key={x} value={x}>
-                  {x}
-                </option>
-              ))}
-            </Select>
-          ) : (
-            'Loading...'
-          )}
+          <InputLabel>Select AM/PM</InputLabel>
+          <Select native {...hourFilter}>
+            <option value="" />
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+          </Select>
         </FormControl>
       </MyForm>
       {data != null ? (
