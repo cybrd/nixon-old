@@ -15,7 +15,7 @@ export async function list(args: any = {}, sort = -1, secondary = {}) {
     args.fingerPrintId = { $in: Object.keys(employees) };
   }
 
-  let hourFilter;
+  let hourFilter: string;
   if (!args.hourFilter) {
     hourFilter = args.hourFilter;
     delete args.hourFilter;
