@@ -4,7 +4,7 @@ import { unlinkSync } from 'fs';
 import {
   EmployeeCollection,
   EmployeeArchiveCollection,
-  EmployeeNotStrictCollection
+  EmployeeNotStrictCollection,
 } from '../models/employee';
 import { IUser } from '../models/user';
 
@@ -12,20 +12,24 @@ export async function list(args = {}) {
   return await EmployeeCollection.find(args).exec();
 }
 
+export async function listArchive(args = {}) {
+  return await EmployeeArchiveCollection.find(args).exec();
+}
+
 export function create(user: IUser, data: any) {
   const record = new EmployeeCollection(data);
   record.modifiedBy = user.username;
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     record
       .save()
-      .then(tmp => resolve(tmp))
-      .catch(err => resolve(err));
+      .then((tmp) => resolve(tmp))
+      .catch((err) => resolve(err));
   });
 }
 
 export function update(user: IUser, id: string, data: any) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     for (const x in data) {
       if (data[x] === 'null') {
         data[x] = '';
@@ -52,7 +56,7 @@ export async function changePhoto(id: string, data: any) {
     { _id: id },
     {
       photo: data.filename,
-      photoType: data.mimetype
+      photoType: data.mimetype,
     }
   );
 
@@ -62,9 +66,7 @@ export async function changePhoto(id: string, data: any) {
 }
 
 export async function remove(user: IUser, id: string) {
-  const record = await EmployeeCollection.findOne({ _id: id })
-    .lean()
-    .exec();
+  const record = await EmployeeCollection.findOne({ _id: id }).lean().exec();
 
   record.oldId = record._id;
   delete record._id;
@@ -75,9 +77,7 @@ export async function remove(user: IUser, id: string) {
 }
 
 export async function removeMany(user: IUser, ids: string[] = []) {
-  const records = await EmployeeCollection.find({ _id: ids })
-    .lean()
-    .exec();
+  const records = await EmployeeCollection.find({ _id: ids }).lean().exec();
 
   records.forEach((record: any) => {
     record.oldId = record._id;
@@ -93,10 +93,10 @@ export async function createFromUpload(raw: any) {
   const records = parse(raw, {
     columns: true,
     skip_empty_lines: true,
-    trim: true
+    trim: true,
   });
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     EmployeeNotStrictCollection.insertMany(
       records,
       { ordered: false },
@@ -104,13 +104,13 @@ export async function createFromUpload(raw: any) {
         if (err) {
           return resolve({
             errors: err.writeErrors.length,
-            inserted: err.result.result.nInserted
+            inserted: err.result.result.nInserted,
           });
         }
 
         resolve({
           errors: 0,
-          inserted: docs.length
+          inserted: docs.length,
         });
       }
     );

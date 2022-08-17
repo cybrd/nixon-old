@@ -8,6 +8,7 @@ import { NoMatch } from './NoMatch';
 import { User } from './User/User';
 import { Timesheet } from './Timesheet/Timesheet';
 import { Employee } from './Employee/Employee';
+import { EmployeeArchive } from './EmployeeArchive/EmployeeArchive';
 import { Schedule } from './Schedule/Schedule';
 import { Payroll } from './Payroll/Payroll';
 import { EmployeeSchedule } from './EmployeeSchedule/EmployeeSchedule';
@@ -21,6 +22,7 @@ export function Content() {
         <ProtectedRoute exact path="/" component={Timesheet} />
         <ProtectedRoute path="/timesheet" component={Timesheet} />
         <ProtectedRoute path="/employee" component={Employee} />
+        <ProtectedRoute path="/employeeArchive" component={EmployeeArchive} />
         <ProtectedRoute path="/schedule" component={Schedule} />
         <ProtectedRoute path="/payroll" component={Payroll} />
         <ProtectedRoute path="/employeeSchedule" component={EmployeeSchedule} />

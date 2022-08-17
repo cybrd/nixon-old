@@ -7,18 +7,23 @@ import { userGuard, supervisorGuard, adminGuard } from '../my.guard';
 
 import {
   list,
+  listArchive,
   create,
   update,
   remove,
   removeMany,
   createFromUpload,
-  changePhoto
+  changePhoto,
 } from '../services/employee';
 
 const router = Router();
 
 router.post('/list', userGuard, async (req, res) => {
   res.send(await list(req.body));
+});
+
+router.post('/listArchive', userGuard, async (req, res) => {
+  res.send(await listArchive(req.body));
 });
 
 router.post('/create', supervisorGuard, async (req, res) => {

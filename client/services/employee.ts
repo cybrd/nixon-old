@@ -4,7 +4,15 @@ export function list(args = {}) {
   return myFetchJSON('/api/employee/list', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(args)
+    body: JSON.stringify(args),
+  });
+}
+
+export function listArchive(args = {}) {
+  return myFetchJSON('/api/employee/listArchive', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(args),
   });
 }
 
@@ -12,14 +20,14 @@ export function create(data: any) {
   return myFetchJSON('/api/employee/create', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 }
 
 export function update(id: string, data: any) {
   return myFetch('/api/employee/' + id + '/update', {
     method: 'POST',
-    body: data
+    body: data,
   });
 }
 
@@ -29,7 +37,7 @@ export function upload(file: File) {
 
   return myFetch('/api/employee/upload', {
     method: 'POST',
-    body: data
+    body: data,
   });
 }
 
@@ -37,6 +45,6 @@ export function removeMany(args: any) {
   return myFetchJSON('/api/employee/removeMany', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(args)
+    body: JSON.stringify(args),
   });
 }
