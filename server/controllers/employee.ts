@@ -11,7 +11,9 @@ import {
   create,
   update,
   remove,
+  removeArchive,
   removeMany,
+  removeManyArchive,
   createFromUpload,
   changePhoto,
 } from '../services/employee';
@@ -20,10 +22,6 @@ const router = Router();
 
 router.post('/list', userGuard, async (req, res) => {
   res.send(await list(req.body));
-});
-
-router.post('/listArchive', userGuard, async (req, res) => {
-  res.send(await listArchive(req.body));
 });
 
 router.post('/create', supervisorGuard, async (req, res) => {
@@ -36,6 +34,18 @@ router.post('/removeMany', adminGuard, async (req, res) => {
 
 router.post('/:id/remove', adminGuard, async (req, res) => {
   res.send(await remove(req.user, req.params.id));
+});
+
+router.post('/listArchive', userGuard, async (req, res) => {
+  res.send(await listArchive(req.body));
+});
+
+router.post('/removeManyArchive', adminGuard, async (req, res) => {
+  res.send(await removeManyArchive(req.body.ids));
+});
+
+router.post('/:id/removeArchive', adminGuard, async (req, res) => {
+  res.send(await removeArchive(req.params.id));
 });
 
 router.post(

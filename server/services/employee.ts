@@ -76,6 +76,10 @@ export async function remove(user: IUser, id: string) {
   return await EmployeeCollection.deleteOne({ _id: id }).exec();
 }
 
+export async function removeArchive(id: string) {
+  return await EmployeeArchiveCollection.deleteOne({ _id: id }).exec();
+}
+
 export async function removeMany(user: IUser, ids: string[] = []) {
   const records = await EmployeeCollection.find({ _id: ids }).lean().exec();
 
@@ -87,6 +91,10 @@ export async function removeMany(user: IUser, ids: string[] = []) {
   });
 
   return await EmployeeCollection.deleteMany({ _id: ids }).exec();
+}
+
+export async function removeManyArchive(ids: string[] = []) {
+  return await EmployeeArchiveCollection.deleteMany({ _id: ids }).exec();
 }
 
 export async function createFromUpload(raw: any) {

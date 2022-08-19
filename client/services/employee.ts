@@ -48,3 +48,11 @@ export function removeMany(args: any) {
     body: JSON.stringify(args),
   });
 }
+
+export function removeManyArchive(args: any) {
+  return myFetchJSON('/api/employee/removeManyArchive', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(args),
+  });
+}

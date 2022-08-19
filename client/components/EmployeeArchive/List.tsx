@@ -4,6 +4,8 @@ import { FormControl, InputLabel, Input } from '@material-ui/core';
 import * as moment from 'moment';
 
 import { Table } from '../Helper/Table';
+import { Remove } from '../Helper/Remove';
+import { RoleCheckX } from '../Helper/RoleCheck';
 import { listArchive, removeMany } from '../../services/employee';
 
 export function List() {
@@ -90,6 +92,20 @@ export function List() {
           return <img src={photo} style={{ maxWidth: 100, maxHeight: 100 }} />;
         }
       },
+    },
+    {
+      label: 'Actions',
+      field: '_id',
+      cell: (value: any) => (
+        <React.Fragment>
+          <RoleCheckX>
+            <Remove
+              view="/api/employee/{{ _id }}/removeArchive"
+              data={{ _id: value }}
+            />
+          </RoleCheckX>
+        </React.Fragment>
+      ),
     },
     {
       field: 'SSS',
