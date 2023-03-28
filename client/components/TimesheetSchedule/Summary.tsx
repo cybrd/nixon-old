@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { parse } from 'qs';
 
 import { Table, readableTime, readableTimeDecimal } from '../Helper/Table';
-import { RoleCheck } from '../Helper/RoleCheck';
 import { summary } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 import { list as payrollList } from '../../services/payroll';
@@ -27,84 +26,88 @@ export function Summary(props: any) {
   const columns = [
     {
       label: 'Finger Print Id',
-      field: 'fingerPrintId'
+      field: 'fingerPrintId',
     },
     {
       label: 'Employee Name',
-      field: 'employeeName'
+      field: 'employeeName',
     },
     {
       label: 'Payroll Name',
-      field: 'payrollName'
+      field: 'payrollName',
     },
     {
       label: 'WorkDayTotal',
       field: 'payrollWorkDayTotal',
-      cell: readableTime
+      cell: readableTime,
     },
     {
       label: 'WorkDayWorked',
       field: 'payrollWorkDayWorked',
-      cell: readableTime
+      cell: readableTime,
     },
     {
       label: 'WorkOvertime',
       field: 'payrollWorkOvertime',
-      cell: readableTime
+      cell: readableTime,
     },
     {
       label: 'WorkSunday',
       field: 'payrollWorkSunday',
-      cell: readableTime
+      cell: readableTime,
     },
     {
       label: 'WorkHoliday',
       field: 'payrollWorkHoliday',
-      cell: readableTime
+      cell: readableTime,
     },
     {
       label: '# Late',
-      field: 'payrollIsLate'
+      field: 'payrollIsLate',
+    },
+    {
+      label: '# Is Allowance',
+      field: 'payrollLateAllowance',
     },
     {
       label: '# Is Absent',
-      field: 'payrollIsAbsent'
+      field: 'payrollIsAbsent',
     },
     {
       field: 'payrollWorkDayTotalDecimal',
       cell: (value: string, rowData: any) =>
         readableTimeDecimal(rowData.payrollWorkDayTotal),
-      show: false
+      show: false,
     },
     {
       field: 'payrollWorkDayWorkedDecimal',
       cell: (value: string, rowData: any) =>
         readableTimeDecimal(rowData.payrollWorkDayWorked),
-      show: false
+      show: false,
     },
     {
       field: 'payrollWorkOvertimeDecimal',
       cell: (value: string, rowData: any) =>
         readableTimeDecimal(rowData.payrollWorkOvertime),
-      show: false
+      show: false,
     },
     {
       field: 'payrollWorkSundayDecimal',
       cell: (value: string, rowData: any) =>
         readableTimeDecimal(rowData.payrollWorkSunday),
-      show: false
+      show: false,
     },
     {
       field: 'payrollWorkHolidayDecimal',
       cell: (value: string, rowData: any) =>
         readableTimeDecimal(rowData.payrollWorkHoliday),
-      show: false
+      show: false,
     },
     {
       label: 'Department',
       field: 'department',
-      show: false
-    }
+      show: false,
+    },
   ];
   const copycolumns = [
     'fingerPrintId',
@@ -121,8 +124,9 @@ export function Summary(props: any) {
     'payrollWorkHoliday',
     'payrollWorkHolidayDecimal',
     'payrollIsLate',
+    'payrollLateAllowance',
     'payrollIsAbsent',
-    'department'
+    'department',
   ];
 
   function useFormSelect(initialValue: string) {
@@ -134,7 +138,7 @@ export function Summary(props: any) {
 
     return {
       value: value,
-      onChange: handleChange
+      onChange: handleChange,
     };
   }
 
@@ -147,7 +151,7 @@ export function Summary(props: any) {
 
     return {
       value: value,
-      onChange: handleChange
+      onChange: handleChange,
     };
   }
 
@@ -253,10 +257,10 @@ export function Summary(props: any) {
     const location = {
       pathname: '/timesheetSummary',
       search: Object.keys(locationSearch)
-        .map(key => {
+        .map((key) => {
           return key + '=' + encodeURIComponent(locationSearch[key]);
         })
-        .join('&')
+        .join('&'),
     };
 
     props.history.push(location);
@@ -361,7 +365,7 @@ export function Summary(props: any) {
             label="Start Date"
             type="date"
             InputLabelProps={{
-              shrink: true
+              shrink: true,
             }}
             {...startDate}
           />
@@ -371,7 +375,7 @@ export function Summary(props: any) {
             label="End Date"
             type="date"
             InputLabelProps={{
-              shrink: true
+              shrink: true,
             }}
             {...endDate}
           />
