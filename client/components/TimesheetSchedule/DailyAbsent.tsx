@@ -4,7 +4,7 @@ import { FormControl, InputLabel, Select, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 import { parse } from 'qs';
 
-import { Table, readableTime } from '../Helper/Table';
+import { Table } from '../Helper/Table';
 import { list } from '../../services/timesheetSchedule';
 import { list as employeeList } from '../../services/employee';
 
@@ -13,6 +13,8 @@ export function DailyAbsent(props: any) {
   const [totalAbsentsWhole, setTotalAbsentsWhole] = useState(0);
   const [totalAbsentsHalf, setTotalAbsentsHalf] = useState(0);
   const [totalAbsentsNoExcuse, setTotalAbsentsNoExcuse] = useState(0);
+  const [totalLatesWithoutAllowance, setTotalLatesWithoutAllowance] =
+    useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const employeeFilter = useFormSelect('');
@@ -35,6 +37,11 @@ export function DailyAbsent(props: any) {
       label: 'Work Day',
       field: 'workDay',
       cell: (value: string) => new Date(value).toLocaleDateString(),
+    },
+    {
+      label: 'Is Late Without Allowance',
+      field: 'lateWithoutAllowance',
+      cell: (value: string) => value && value.toString(),
     },
     {
       label: 'Is Absent',
@@ -133,6 +140,7 @@ export function DailyAbsent(props: any) {
     let lates1 = 0;
     let lates2 = 0;
     let lateMins = 0;
+    let lateWithoutAllowanceCount = 0;
     tmp.forEach((x) => {
       if (x.isLate || x.lateAllowanceMissing) {
         lates++;
@@ -159,6 +167,10 @@ export function DailyAbsent(props: any) {
 
         workDayAbsents[x.workDay]++;
       }
+
+      if (x.lateWithoutAllowance) {
+        lateWithoutAllowanceCount++;
+      }
     });
 
     let absentsWhole = 0;
@@ -175,6 +187,7 @@ export function DailyAbsent(props: any) {
     setTotalAbsentsNoExcuse(absentsNoExcuse / 2);
     setTotalAbsentsWhole(absentsWhole);
     setTotalAbsentsHalf(absentsHalf);
+    setTotalLatesWithoutAllowance(lateWithoutAllowanceCount);
     setData(tmp);
     setLoading(false);
 
@@ -188,23 +201,6 @@ export function DailyAbsent(props: any) {
     };
 
     props.history.push(location);
-  }
-
-  function msToTime(s: number) {
-    // Pad to 2 or 3 digits, default is 2
-    function pad(n: number, z: any = null) {
-      z = z || 2;
-      return ('00' + n).slice(-z);
-    }
-
-    const ms = s % 1000;
-    s = (s - ms) / 1000;
-    const secs = s % 60;
-    s = (s - secs) / 60;
-    const mins = s % 60;
-    const hrs = (s - mins) / 60;
-
-    return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) + '.' + pad(ms, 3);
   }
 
   const query = 'e' + employeeFilter.value + 's' + date.value;
@@ -255,6 +251,7 @@ export function DailyAbsent(props: any) {
           <p>Total Absents Whole Day: {totalAbsentsWhole}</p>
           <p>Total Absents Half Day: {totalAbsentsHalf}</p>
           <p>Total Absents No Excuse: {totalAbsentsNoExcuse}</p>
+          <p>Total Lates Without Allowance: {totalLatesWithoutAllowance}</p>
         </div>
       ) : (
         ''

@@ -30,6 +30,7 @@ interface ITimesheetSchedule {
   lateAllowanceMissing: number;
   isLate: boolean;
   isAbsent: boolean;
+  lateWithoutAllowance: boolean;
 }
 
 export async function list(args = {}, secondary = {}) {
@@ -103,12 +104,15 @@ export async function list(args = {}, secondary = {}) {
 
     let lateAllowance = null;
     let lateAllowanceMissing = 0;
+    let lateWithoutAllowance = null;
     const lateAmount = getLateAmount(timesheet, used, realStart.getTime());
     if (lateAmount) {
       if (lateAmount < 15 * 60 * 1000) {
         lateAllowance = true;
         workDayWorked += lateAmount;
         lateAllowanceMissing += lateAmount;
+      } else {
+        lateWithoutAllowance = true;
       }
     }
 
@@ -148,6 +152,7 @@ export async function list(args = {}, secondary = {}) {
       lateAllowanceMissing: lateAllowanceMissing,
       isLate: isLate,
       isAbsent: isAbsent,
+      lateWithoutAllowance: lateWithoutAllowance,
     });
   }
 
