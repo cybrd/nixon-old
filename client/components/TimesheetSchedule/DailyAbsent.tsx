@@ -131,7 +131,7 @@ export function DailyAbsent(props: any) {
 
     setLoading(true);
     let tmp: any[] = await list(args);
-    tmp = tmp.filter((x) => x.isAbsent);
+    tmp = tmp.filter((x) => x.isAbsent || x.lateWithoutAllowance);
 
     const workDayAbsents: any = {};
     let absents = 0;
