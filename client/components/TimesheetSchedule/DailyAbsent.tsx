@@ -58,6 +58,7 @@ export function DailyAbsent(props: any) {
     'employeeName',
     'scheduleName',
     'workDay',
+    'lateWithoutAllowance',
     'isAbsent',
     'notes',
   ];
