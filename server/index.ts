@@ -2,6 +2,7 @@ import { join } from 'path';
 import * as express from 'express';
 import { urlencoded, json } from 'body-parser';
 import * as morgan from 'morgan';
+import * as cors from 'cors';
 
 import { setMongoDb } from './my.mongoose';
 import { setSession } from './my.session';
@@ -19,6 +20,7 @@ declare module 'express-serve-static-core' {
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(urlencoded({ extended: false }));
 app.use(json());
 app.use(express.static(join(__dirname, '../dist')));
