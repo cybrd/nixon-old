@@ -1,3 +1,5 @@
+import { serverURI } from '../constants';
+
 export function myFetchJSON(uri: string, options: any = {}, cache = false) {
   if (cache) {
     const tmp1 = getItem(JSON.stringify([uri, options]));
@@ -8,19 +10,19 @@ export function myFetchJSON(uri: string, options: any = {}, cache = false) {
   }
 
   return new Promise((resolve, reject) => {
-    fetch(uri, options)
-      .then(res => {
+    fetch(serverURI + uri, options)
+      .then((res) => {
         if (res.ok) {
           return res.json();
         } else {
           throw res.status;
         }
       })
-      .then(data => {
+      .then((data) => {
         setItem(JSON.stringify([uri, options]), JSON.stringify(data));
         resolve(data);
       })
-      .catch(err => {
+      .catch((err) => {
         myResolve(resolve, err);
       });
   });
@@ -36,19 +38,19 @@ export function myFetch(uri: string, options: any = {}, cache = false) {
   }
 
   return new Promise((resolve, reject) => {
-    fetch(uri, options)
-      .then(res => {
+    fetch(serverURI + uri, options)
+      .then((res) => {
         if (res.ok) {
           return res.text();
         } else {
           throw res.status;
         }
       })
-      .then(data => {
+      .then((data) => {
         setItem(JSON.stringify([uri, options]), JSON.stringify(data));
         resolve(data);
       })
-      .catch(err => {
+      .catch((err) => {
         myResolve(resolve, err);
       });
   });
