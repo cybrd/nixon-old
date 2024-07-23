@@ -20,6 +20,7 @@ declare module 'express-serve-static-core' {
 const app = express();
 const port = 3000;
 
+app.set('trust proxy', 1);
 app.use(cors());
 app.use(urlencoded({ extended: false }));
 app.use(json());

@@ -8,6 +8,7 @@ export function setSession(myExpress: Express) {
       resave: false,
       saveUninitialized: true,
       proxy: true,
+      name: 'backend',
     })
   );
 }
