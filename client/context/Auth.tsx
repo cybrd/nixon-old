@@ -34,6 +34,9 @@ export class AuthProvider extends React.Component {
       if (data) {
         this.setState(data);
         localStorage.setItem('auth', JSON.stringify(this.state));
+
+        localStorage.setItem('token', data.token);
+        document.cookie = data.token;
       }
     };
 
@@ -44,6 +47,9 @@ export class AuthProvider extends React.Component {
         role: '',
       });
       localStorage.removeItem('auth');
+
+      localStorage.removeItem('token');
+      document.cookie = '';
     };
   }
 

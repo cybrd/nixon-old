@@ -11,16 +11,10 @@ export function login(username: string, password: string) {
     }),
   });
 
-  localStorage.setItem('token', result.token);
-  document.cookie = result.token;
-
   return result;
 }
 
 export function logout() {
-  localStorage.removeItem('token');
-  document.cookie = '';
-
   return fetch(serverURI + '/api/auth/logout', {
     headers: { pragma: 'no-cache', 'cache-control': 'no-cache' },
   });
