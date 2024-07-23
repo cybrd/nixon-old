@@ -10,7 +10,15 @@ export function myFetchJSON(uri: string, options: any = {}, cache = false) {
   }
 
   return new Promise((resolve, reject) => {
-    fetch(serverURI + uri, options)
+    const token = localStorage.getItem('token') || document.cookie;
+
+    fetch(serverURI + uri, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: 'Bearer ' + token,
+      },
+    })
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -38,7 +46,15 @@ export function myFetch(uri: string, options: any = {}, cache = false) {
   }
 
   return new Promise((resolve, reject) => {
-    fetch(serverURI + uri, options)
+    const token = localStorage.getItem('token') || document.cookie;
+
+    fetch(serverURI + uri, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: 'Bearer ' + token,
+      },
+    })
       .then((res) => {
         if (res.ok) {
           return res.text();
