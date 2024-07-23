@@ -10,10 +10,9 @@ import { router } from './router';
 
 import { IUser } from './models/user';
 
-declare global {
-  namespace Express {
-    // tslint:disable-next-line
-    interface User extends IUser {}
+declare module 'express-serve-static-core' {
+  interface Request {
+    user: IUser;
   }
 }
 
@@ -41,10 +40,4 @@ setPassport(app);
 
 app.use(router);
 
-app.all('/*', (req, res) => {
-  res.sendFile('index.html', { root: __dirname + '/../dist' });
-});
-
-app.listen(port, () =>
-  process.stdout.write(`App listening on port ${port}!\n`)
-);
+app.listen(port, () => console.log(`App listening on port ${port}!\n`));
