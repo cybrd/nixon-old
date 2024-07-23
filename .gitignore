@@ -1,6 +1,5 @@
 /node_modules
 /dist
 /logs/*
-!/logs/.gitkeep 
-package-lock.json
+!/logs/.gitkeep
 /server/photo
