@@ -29,8 +29,13 @@ morgan.token('myDate', () => {
 });
 
 app.use(
+  morgan(':myDate :method :url start', {
+    immediate: true,
+  })
+);
+app.use(
   morgan(
-    ':myDate :method :url :status :res[content-length] - :response-time ms'
+    ':myDate :method :url :status :response-time ms - :res[content-length] end'
   )
 );
 
