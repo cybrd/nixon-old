@@ -16,6 +16,10 @@ router.post('/auth/login', (req, res) => {
         return res.send(err);
       }
 
+      if (!user) {
+        return res.status(401).send('invalid login');
+      }
+
       res.send({
         username: user.username,
         role: user.role,
