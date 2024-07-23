@@ -1,21 +1,34 @@
-import {
-  initialize,
-  session,
-  serializeUser,
-  deserializeUser,
-  use
-} from 'passport';
-import { Strategy } from 'passport-local';
-import { Express } from 'express';
+import { use } from 'passport';
+import { Strategy, ExtractJwt } from 'passport-jwt';
 
-import { loginLocal } from './services/auth';
+import { UserCollection } from './models/user';
 
-export function setPassport(myExpress: Express) {
-  myExpress.use(initialize());
-  myExpress.use(session());
+export function setPassport() {
+  use(
+    new Strategy(
+      {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: 'secret',
+      },
+      (jwt_payload, done) => {
+        UserCollection.findOne(
+          {
+            username: jwt_payload.username,
+            password: jwt_payload.password,
+          },
+          (err, user) => {
+            if (err) {
+              return done(err, false);
+            }
 
-  serializeUser((user, done) => done(null, user));
-  deserializeUser((user, done) => done(null, user));
+            if (!user) {
+              return done(null, false);
+            }
 
-  use(new Strategy(loginLocal));
+            return done(null, user);
+          }
+        );
+      }
+    )
+  );
 }

@@ -1,10 +1,34 @@
 import { Router } from 'express';
-import { authenticate } from 'passport';
+import { sign } from 'jsonwebtoken';
+
+import { UserCollection } from '../models/user';
 
 const router = Router();
 
-router.post('/auth/login', authenticate('local'), (req, res) => {
-  res.json(req.user);
+router.post('/auth/login', (req, res) => {
+  UserCollection.findOne(
+    {
+      username: req.body.username,
+      password: req.body.password,
+    },
+    (err, user) => {
+      if (err) {
+        return res.send(err);
+      }
+
+      res.send({
+        username: user.username,
+        role: user.role,
+        token: sign(
+          {
+            username: req.body.username,
+            password: req.body.password,
+          },
+          'secret'
+        ),
+      });
+    }
+  );
 });
 
 router.get('/auth/logout', (req, res) => {

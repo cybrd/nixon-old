@@ -8,8 +8,10 @@ import { setMongoDb } from './my.mongoose';
 import { setSession } from './my.session';
 import { setPassport } from './my.passport';
 import { router } from './router';
+import { ApiCtrl } from './controllers/api';
 
 import { IUser } from './models/user';
+import { auth } from './middleware/auth';
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -43,9 +45,11 @@ app.use(
 );
 
 setMongoDb();
-setSession(app);
-setPassport(app);
+setPassport();
 
+app.use('/api', ApiCtrl);
+
+app.use(auth);
 app.use(router);
 
 app.listen(port, () => console.log(`App listening on port ${port}!\n`));

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-import { ApiCtrl } from './controllers/api';
 import { UserCtrl } from './controllers/user';
 import { TimesheetCtrl } from './controllers/timesheet';
 import { EmployeeCtrl } from './controllers/employee';
@@ -11,7 +10,6 @@ import { TimesheetScheduleCtrl } from './controllers/timesheetSchedule';
 
 export const router = Router();
 
-router.use('/api', ApiCtrl);
 router.use('/api/user', UserCtrl);
 router.use('/api/timesheet', TimesheetCtrl);
 router.use('/api/employee', EmployeeCtrl);
