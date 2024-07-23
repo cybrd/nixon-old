@@ -6,7 +6,8 @@ export function setSession(myExpress: Express) {
     session({
       secret: 'keyboard cat',
       resave: false,
-      saveUninitialized: true
+      saveUninitialized: true,
+      proxy: true,
     })
   );
 }
