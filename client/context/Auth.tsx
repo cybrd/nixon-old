@@ -15,7 +15,7 @@ const authDefault: IAuth = {
   role: '',
   formLoginError: false,
   login: () => ({}),
-  logout: () => ({}),
+  logout: () => ({})
 };
 
 const authLocal: IAuth = JSON.parse(localStorage.getItem('auth'));
@@ -41,7 +41,7 @@ export class AuthProvider extends React.Component {
       logout();
       this.setState({
         username: '',
-        role: '',
+        role: ''
       });
       localStorage.removeItem('auth');
     };

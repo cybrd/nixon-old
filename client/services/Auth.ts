@@ -2,7 +2,7 @@ import { serverURI } from '../constants';
 import { myFetchJSON } from './myFetch';
 
 export function login(username: string, password: string) {
-  const result = myFetchJSON('/api/auth/login', {
+  return myFetchJSON('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -10,18 +10,10 @@ export function login(username: string, password: string) {
       password: password,
     }),
   });
-
-  localStorage.setItem('token', result.token);
-  document.cookie = result.token;
-
-  return result;
 }
 
 export function logout() {
-  localStorage.removeItem('token');
-  document.cookie = '';
-
-  return fetch(serverURI + '/api/auth/logout', {
+  fetch(serverURI + '/api/auth/logout', {
     headers: { pragma: 'no-cache', 'cache-control': 'no-cache' },
   });
 }
