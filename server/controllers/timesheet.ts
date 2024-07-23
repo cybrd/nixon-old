@@ -15,7 +15,7 @@ import {
   createFromUploadCSV,
   update,
   remove,
-  removeMany
+  removeMany,
 } from '../services/timesheet';
 
 const router = Router();
@@ -26,7 +26,7 @@ router.post('/list', userGuard, async (req, res) => {
 });
 
 router.post('/create', adminGuard, async (req, res) => {
-  res.send(await create(req.user, req.body));
+  res.send(await create(req.user as any, req.body));
 });
 
 router.post(
@@ -39,7 +39,7 @@ router.post(
     writeFileSync(filename, req.file.buffer);
 
     const records = reader.readFileSync(filename);
-    res.send(await createFromUpload(req.user, records));
+    res.send(await createFromUpload(req.user as any, records));
   }
 );
 
@@ -53,20 +53,20 @@ router.post(
     writeFileSync(filename, req.file.buffer);
 
     const records = readFileSync(filename, 'utf8');
-    res.send(await createFromUploadCSV(req.user, records));
+    res.send(await createFromUploadCSV(req.user as any, records));
   }
 );
 
 router.post('/:id/remove', adminGuard, async (req, res) => {
-  res.send(await remove(req.user, req.params.id));
+  res.send(await remove(req.user as any, req.params.id));
 });
 
 router.post('/removeMany', adminGuard, async (req, res) => {
-  res.send(await removeMany(req.user, req.body.ids));
+  res.send(await removeMany(req.user as any, req.body.ids));
 });
 
 router.post('/:id/update', userGuard, async (req, res) => {
-  const result = await update(req.user, req.params.id, req.body);
+  const result = await update(req.user as any, req.params.id, req.body);
   res.send(result);
 });
 

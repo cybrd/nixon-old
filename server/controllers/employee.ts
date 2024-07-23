@@ -25,15 +25,15 @@ router.post('/list', userGuard, async (req, res) => {
 });
 
 router.post('/create', supervisorGuard, async (req, res) => {
-  res.send(await create(req.user, req.body));
+  res.send(await create(req.user as any, req.body));
 });
 
 router.post('/removeMany', adminGuard, async (req, res) => {
-  res.send(await removeMany(req.user, req.body.ids));
+  res.send(await removeMany(req.user as any, req.body.ids));
 });
 
 router.post('/:id/remove', adminGuard, async (req, res) => {
-  res.send(await remove(req.user, req.params.id));
+  res.send(await remove(req.user as any, req.params.id));
 });
 
 router.post('/listArchive', userGuard, async (req, res) => {
@@ -58,7 +58,7 @@ router.post(
     if (req.file) {
       await changePhoto(req.params.id, req.file);
     }
-    const result = await update(req.user, req.params.id, data);
+    const result = await update(req.user as any, req.params.id, data);
     res.send(result);
   }
 );
