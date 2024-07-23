@@ -22,7 +22,7 @@ export async function list(args: any = {}, sort = -1, secondary = {}) {
   }
 
   let results = await TimesheetCollection.find(args)
-    .sort({ timestamp: sort })
+    .sort({ timestamp: sort === -1 ? 'desc' : 'asc' })
     .limit(12000)
     .lean()
     .exec();

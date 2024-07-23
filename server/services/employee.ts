@@ -110,10 +110,7 @@ export async function createFromUpload(raw: any) {
       { ordered: false },
       (err, docs: any) => {
         if (err) {
-          return resolve({
-            errors: err.writeErrors.length,
-            inserted: err.result.result.nInserted,
-          });
+          return resolve(err);
         }
 
         resolve({

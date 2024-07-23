@@ -1,6 +1,6 @@
 import {
   EmployeeScheduleCollection,
-  EmployeeScheduleArchiveCollection
+  EmployeeScheduleArchiveCollection,
 } from '../models/employeeSchedule';
 import { IUser } from '../models/user';
 
@@ -49,22 +49,22 @@ export function create(user: IUser, data: any) {
   const record = new EmployeeScheduleCollection(data);
   record.modifiedBy = user.username;
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     if (!data.date) {
       return resolve({
-        errmsg: 'Error'
+        errmsg: 'Error',
       });
     }
 
     record
       .save()
-      .then(tmp => resolve(tmp))
-      .catch(err => resolve(err));
+      .then((tmp) => resolve(tmp))
+      .catch((err) => resolve(err));
   });
 }
 
 export function update(user: IUser, id: string, data: any) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     EmployeeScheduleCollection.findOneAndUpdate(
       { _id: id },
       data,
@@ -146,25 +146,22 @@ export async function createFromUpload(user: IUser, raw: any) {
       scheduleId: schedulesObj[tmp[2]],
       date: new Date(tmp[3]),
       notes: tmp[4],
-      modifiedBy: user.username
+      modifiedBy: user.username,
     });
   });
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     EmployeeScheduleCollection.insertMany(
       data,
       { ordered: false },
       (err, docs: any) => {
         if (err) {
-          return resolve({
-            errors: err.writeErrors.length,
-            inserted: err.result.result.nInserted
-          });
+          return resolve(err);
         }
 
         resolve({
           errors: 0,
-          inserted: docs.length
+          inserted: docs.length,
         });
       }
     );

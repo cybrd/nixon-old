@@ -1,16 +1,12 @@
 import { set, connect } from 'mongoose';
+import { config } from 'dotenv';
+config();
 
 set('debug', false);
-set('useCreateIndex', true);
 
 export function setMongoDb() {
-  const db = 'mongodb://localhost:27017';
-
-  connect(db, {
-    user: 'admin',
-    pass: '123qwe',
-    dbName: 'nixon',
+  return connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   });
 }
